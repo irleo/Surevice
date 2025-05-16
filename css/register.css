@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+:root {
+  --primary-color: #d4d4d4;            
+  --text-color: #333333;        
+}
+
+html {
+  font-family: Poppins, 'Segoe UI', sans-serif;
+  color: #c9c9c9;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #e4e4e4;
+}
+
+/* LEFT BOX */
+.left-box {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+#bg-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: inherit;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;  
+  z-index: 2; 
+  pointer-events: none; 
+  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3);
+}
+
+/* RIGHT BOX */
+.right-box {
+  font-family: Poppins, 'Segoe UI', sans-serif;
+  color: var(--text-color);
+  padding: 1rem 4rem 2rem 4rem;
+  margin: 0;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+#logo {
+  width: 100%;
+  height: 50%;
+  position: relative;
+}
+
+legend {
+  font-size: 20px;
+  font-weight: 490;
+  margin-bottom: 5px;
+}
+
+::placeholder {
+  font-size: 15px;
+}
+
+#password-warning {
+  color: red; 
+  font-size: 12px;
+  margin: 0.2em;
+  float: right;
+}

@@ -1,0 +1,78 @@
+CREATE DATABASE Surevice_db;
+
+-- Create a login at the server level
+CREATE LOGIN surevice_admin WITH PASSWORD = 'surevice_db121';
+
+-- Map the login to a user in your database and assign a role
+USE [Surevice_db];
+CREATE USER surevice_admin FOR LOGIN surevice_admin;
+EXEC sp_addrolemember 'db_owner', 'surevice_admin';
+
+
+-- 1. Users Table
+CREATE TABLE Users (
+    user_id INT IDENTITY(1,1) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    user_type VARCHAR(20) CHECK (user_type IN ('customer', 'provider', 'admin')) NOT NULL,
+    is_verified BIT DEFAULT 0,
+    created_at DATETIME DEFAULT GETDATE()
+);
+
+-- 2. Services Table
+CREATE TABLE Services (
+    service_id INT PRIMARY KEY AUTO_INCREMENT,
+    provider_id INT NOT NULL,
+    title VARCHAR(150) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    category VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (provider_id) REFERENCES Users(user_id)
+);
+
+-- 3. Bookings Table
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    service_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    scheduled_for DATETIME,
+    status ENUM('pending', 'in_progress', 'completed', 'cancelled') DEFAULT 'pending',
+    FOREIGN KEY (service_id) REFERENCES Services(service_id),
+    FOREIGN KEY (customer_id) REFERENCES Users(user_id)
+);
+
+-- 4. Payments Table
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    fee_deducted DECIMAL(10,2) NOT NULL,
+    provider_earnings DECIMAL(10,2) NOT NULL,
+    status ENUM('held', 'released', 'refunded') DEFAULT 'held',
+    paid_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
+
+-- 5. Wallets Table
+CREATE TABLE Wallets (
+    wallet_id INT PRIMARY KEY AUTO_INCREMENT,
+    provider_id INT NOT NULL,
+    balance DECIMAL(10,2) DEFAULT 0.00,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (provider_id) REFERENCES Users(user_id)
+);
+
+-- 6. Reviews Table * OPTIONAL
+CREATE TABLE Reviews (
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
