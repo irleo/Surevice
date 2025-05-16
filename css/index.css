@@ -9,11 +9,13 @@
   margin: 0;
   padding: 0;
 }
+
 html {
   font-family: Poppins, 'Segoe UI', sans-serif;
   color: var(--text-color);
-  scroll-behavior: smooth;
+  overflow: hidden;
 }
+
 body {
   min-height: 100vh;
   min-height: 100dvh;
@@ -26,7 +28,9 @@ nav {
   border-bottom: 1px solid #cecdcd;
   position: sticky;
   top: 0;
-  z-index: 99;
+  left: 0;
+  right: 0;
+  z-index: 999;
 }
 
 nav ul{
@@ -68,7 +72,7 @@ nav a.accent-link{
   color: #fff;
 }
 
-#logo {
+nav #logo {
   height: 25px;
   width: auto;
   margin-right: 0.5rem;
@@ -215,7 +219,11 @@ nav a.accent-link{
 main {
   padding: min(3em, 5%);
   background-color: #eeeeee;
+  overflow-y: auto;
+  height: calc(100vh - 56px);
+  width: 100%;
 }
+
 
 .product-grid {
   display: flex;
