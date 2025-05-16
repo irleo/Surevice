@@ -1,0 +1,5 @@
+# Ignore all files inside the 'ini' folder
+/ini/*
+
+# Ignore the 'config.php' file inside the 'utils' folder
+/utils/config.php
