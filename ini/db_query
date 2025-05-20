@@ -19,7 +19,8 @@ CREATE TABLE Users (
     phone VARCHAR(20),
     user_type VARCHAR(20) CHECK (user_type IN ('customer', 'provider', 'admin')) NOT NULL,
     is_verified BIT DEFAULT 0,
-    created_at DATETIME DEFAULT GETDATE()
+    created_at DATETIME DEFAULT GETDATE(),
+    last_name_change DATETIME NULL
 );
 
 -- 2. Services Table

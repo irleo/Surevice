@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
 :root {
   --primary-color: #d4d4d4;      
   --hover-color: #e0e0e0;        
@@ -53,6 +54,7 @@ body {
   text-decoration: none;
   color: var(--text-color);
   padding: 1em 2em;
+  cursor: pointer;
 }
 
 #nav-top a:hover:not(.active-link) {
@@ -108,6 +110,46 @@ body {
   font-size: 1em;
 }
 
+/* PROFILE */
+.offcanvas-orange {
+  background-color: #fffaf5;
+  color:  var(--text-color);
+}
+
+.offcanvas-orange .nav-link {
+  color: #d35400;
+  font-weight: 400;
+  transition: background-color 0.2s;
+}
+
+.offcanvas-orange .nav-link:hover {
+  background-color: #ffe6cc;
+  color: #c0392b;
+}
+
+.offcanvas-orange .nav-link.text-danger:hover {
+  background-color: #ffe5e0;
+}
+
+.offcanvas-orange .offcanvas-title {
+  color: var(--accent-color);
+}
+
+.offcanvas-orange hr {
+  border-color: #ffccaa;
+}
+
+@media (min-width: 768px) {
+    #offcanvasExample {
+      width: 300px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    #offcanvasExample {
+      width: 330px;
+    }
+  }
 /* CATEGORIES */
 #nav-top .popdown {
   position: relative;

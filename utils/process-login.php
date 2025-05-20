@@ -11,7 +11,7 @@ if (!$email || !$password) {
 }
 
 // Prepare SQL statement with parameter
-$sql = "SELECT * FROM Users WHERE email = ?";
+$sql = "SELECT user_id, first_name, last_name, user_type, password_hash FROM Users WHERE email = ?";
 $params = [$email];
 
 $stmt = sqlsrv_query($conn, $sql, $params);
@@ -25,12 +25,12 @@ $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 if ($user) {
     if (password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['user_name'] = $user['name']; // Or adjust to your actual column name
+        $_SESSION['name'] = $user['first_name'] . ' ' . $user['last_name'];
         $_SESSION['user_type'] = $user['user_type'];
 
         switch ($user['user_type']) {
             case 'customer':
-                header("Location: index.php");
+                header("Location: ../index.php");
                 break;
             case 'provider':
                 header("Location: ../dashboard/provider.php");

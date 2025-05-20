@@ -1,11 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-$isLoggedIn = isset($_SESSION['user_id']);
-$userName = $_SESSION['first_name'] ?? 'User'; // Customize this based on your session
-?>
 
 <nav id="nav-top">
     <ul>
@@ -14,10 +6,10 @@ $userName = $_SESSION['first_name'] ?? 'User'; // Customize this based on your s
                 <img src="assets/images/logo-nobg.png" id="logo" alt="logo">Surevice
             </a>
         </li>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.php">Home</a></li>
         <li class="popdown">
-            <a class="disabled">Categories</a>
-            <ul class="popdown-menu">
+            <a class="disabled dropdown-toggle align-items-center">Categories</a>
+            <ul class="popdown-menu align-items-center">
                 <li><a href="#">Cleaning</a></li>
                 <li><a href="#">Repairs</a></li>
                 <li><a href="#">Gardening</a></li>
@@ -35,20 +27,68 @@ $userName = $_SESSION['first_name'] ?? 'User'; // Customize this based on your s
         </li>
 
         <?php if ($isLoggedIn): ?>
-            <!-- Dropdown User Profile -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-circle"></i> <?php echo htmlspecialchars($userName); ?>
+            <li class="nav-item">
+                <a class="nav-link accent-link align-items-center" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                    <i class="bi bi-person-circle me-1"></i>
+                    <span class="d-none d-md-inline">Profile</span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                    <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
-                </ul>
+
+                <div class="offcanvas offcanvas-end d-flex flex-column offcanvas-orange" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header border-bottom my-1">
+                        <h6 class="offcanvas-title ms-2" id="offcanvasExampleLabel">Welcome to Surevice</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+
+                    <div class="offcanvas-body flex-grow-1 d-flex flex-column justify-content-between py-1 px-2">
+                        <ul class="nav flex-column w-100">
+                            <li class="nav-item">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom mt-0" href="user/profile.php">
+                                    <i class="bi bi-person-lines-fill me-2"></i> <?php echo htmlspecialchars($userName); ?>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom" href="settings.php">
+                                    <i class="bi bi-gear me-2"></i> Settings
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom" href="bookings.php">
+                                    <i class="bi bi-card-checklist me-2"></i> Bookings
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom disabled" href="favorites.php" aria-disabled="true">
+                                    <i class="bi bi-heart-fill me-2"></i> Favorites
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom disabled" href="notifications.php" aria-disabled="true">
+                                    <i class="bi bi-bell-fill me-2"></i> Notifications
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom" href="support.php">
+                                    <i class="bi bi-question-circle-fill me-2"></i> Help & Support
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="w-100">
+                            <hr class="m-0">
+                            <a class="nav-link text-danger w-100 my-1" href="utils/logout.php">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                            <hr class="mt-0 mb-2">
+                            <div class="text-center text-muted small py-2">
+                                © 2025 Surevice<br>
+                                Built by Hyphomycetes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
+
         <?php else: ?>
-            <li><a class="login-link" href="login.php">Login</a></li>
             <li><a class="accent-link" href="register.php">Register</a></li>
         <?php endif; ?>
     </ul>
