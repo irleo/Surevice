@@ -66,10 +66,10 @@ $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
 // Insert new user
 $sqlInsert = "
-    INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified, created_at, phone)
-    VALUES (?, ?, ?, ?, ?, 0, GETDATE(), ?)
+    INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified, created_at, phone, gender)
+    VALUES (?, ?, ?, ?, ?, 0, GETDATE(), ?, ?)
 ";
-$params = $params = [$firstName, $lastName, $email, $passwordHash, $userType, $full_phone];
+$params = [$firstName, $lastName, $email, $passwordHash, $userType, $full_phone, $gender];
 
 $stmtInsert = sqlsrv_query($conn, $sqlInsert, $params);
 
