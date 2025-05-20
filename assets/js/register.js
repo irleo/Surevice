@@ -45,3 +45,14 @@ function clearFields() {
 
     dobInput.max = maxDate;
   });
+
+
+  function nextStep() {
+      document.getElementById('step-1').classList.remove('active');
+      document.getElementById('step-2').classList.add('active');
+    }
+
+    function prevStep() {
+      document.getElementById('step-2').classList.remove('active');
+      document.getElementById('step-1').classList.add('active');
+    }

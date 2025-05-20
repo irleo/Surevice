@@ -73,7 +73,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
 
       <div class="text-center">
-        <small>Don't have an account? <a href="register.html">Register</a></small>
+        <small>Don't have an account? <a href="register.php">Register</a></small>
       </div>
     </form> 
   </div>
