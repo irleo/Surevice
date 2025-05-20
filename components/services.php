@@ -16,11 +16,12 @@ SELECT
     s.service_id,
     s.title,
     s.description,
-    s.price,
+    s.service_fee,
     s.average_rating,
     u.first_name + ' ' + u.last_name AS provider_name,
     u.email,
     u.user_id,
+    u.phone,
     si.image_path
 FROM Services s
 JOIN Users u ON s.provider_id = u.user_id
@@ -41,11 +42,12 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     $serviceId = $row['service_id'];
     $title = htmlspecialchars($row['title']);
     $description = htmlspecialchars($row['description']);
-    $price = number_format($row['price'], 2);
-    $rawPrice = $row['price'];
+    $service_fee = number_format($row['service_fee'], 2);
+    $rawFee = $row['service_fee'];
     $rating = $row['average_rating'];
     $provider = htmlspecialchars($row['provider_name']);
     $email = htmlspecialchars($row['email']);
+    $phone = htmlspecialchars($row['phone']);
 
     // Fetch all images
     $imageSql = "SELECT image_path FROM ServiceImages WHERE service_id = ?";
@@ -59,38 +61,47 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     }
     $dataImages = htmlspecialchars(implode(',', $images));
 
-    // Get categories
+    // Get categories with colors
     $categorySql = "
-        SELECT c.name 
+        SELECT c.name, c.color 
         FROM ServiceCategoryLink scl 
         JOIN Categories c ON scl.category_id = c.category_id
         WHERE scl.service_id = ?
     ";
+
     $catStmt = sqlsrv_query($conn, $categorySql, [$serviceId]);
     $categories = [];
+    $categoryNames = [];
     while ($catRow = sqlsrv_fetch_array($catStmt, SQLSRV_FETCH_ASSOC)) {
-        $categories[] = $catRow['name'];
+        $categories[] = [
+            'name' => $catRow['name'],
+            'color' => $catRow['color']
+        ];
+        $categoryNames[] = $catRow['name'];
     }
-    $categoryList = htmlspecialchars(implode(', ', $categories));
+    $categoryData = htmlspecialchars(json_encode($categories), ENT_QUOTES, 'UTF-8');
+    $categoryList = htmlspecialchars(implode(', ', $categoryNames), ENT_QUOTES, 'UTF-8');
     $ratingStars = str_repeat("★", floor($rating)) . (fmod($rating, 1) >= 0.5 ? "☆" : "");
 
     echo <<<HTML
-    <div class="product-card">
+    <div class="product-card" data-category="{$categoryList}" data-categories="{$categoryData}">
         <img src="{$images[0]}" alt="{$title}">
         <h3>{$title}</h3>
-        <p>₱{$price}</p>
+        <p>₱{$service_fee}</p>
         <div class="check-out">
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#serviceModal" 
                 data-images="{$dataImages}" 
                 data-title="{$title}" 
-                data-price="{$rawPrice}" 
+                data-fee="{$rawFee}" 
                 data-review="{$ratingStars} ({$rating})"
-                data-categories="{$categoryList}" 
+                data-categories="{$categoryData}" 
                 data-description="{$description}" 
-                data-provider="{$provider}, {$email}">
+                data-provider="{$provider}"
+                data-email="{$email}"
+                data-phone="{$phone}">
                 View Details
             </button>
-            <a href="billing.html?product={$title}&price={$rawPrice}&qty=1" class="btn btn-primary">Book Now</a>
+            <a href="billing.html?product={$title}&fee={$rawFee}" class="btn btn-primary">Book Now</a>
         </div>
     </div>
 HTML;

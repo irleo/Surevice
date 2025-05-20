@@ -73,9 +73,17 @@
               <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
               <label class="form-check-label" for="male">Male</label>
             </div>
-            <div class="form-check form-check-inline ms-1">
+            <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
               <label class="form-check-label" for="female">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="other" value="Other" required>
+              <label class="form-check-label" for="other">Other</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="none" value="Prefer not to say" required>
+              <label class="form-check-label" for="none">Prefer not to say</label>
             </div>
           </div>
         </div>

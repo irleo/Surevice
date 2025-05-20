@@ -16,38 +16,44 @@
     <fieldset id="billing">
       <legend class="text-center fs-3 mb-2">Billing Information</legend>
     
-      <form id="billingForm">
+      <form id="billingForm" method="POST" action="submit-booking.php">
+        <input type="hidden" name="service_id" id="serviceId" value="">
+
         <div class="mb-3">
-          <label for="billingAddress" class="form-label mb-0">Billing Address</label>
-          <textarea class="form-control" id="billingAddress" name="billingAddress" placeholder="Enter your complete address" rows="3" required></textarea>
+          <label for="address" class="form-label mb-0">Complete Address</label>
+          <textarea class="form-control" id="address" name="address" placeholder="Enter your complete address" rows="3" required></textarea>
         </div>
+
         <div class="mb-3">
-          <label for="productName" class="form-label mb-0">Product Name</label>
-          <input type="text" class="form-control" id="productName" name="productName" placeholder="Chosen Product" required>
+          <label for="productName" class="form-label mb-0">Service Name</label>
+          <input type="text" class="form-control" id="productName" name="productName" placeholder="Chosen Service" readonly>
         </div>
+
         <div class="mb-3">
-          <label for="quantity" class="form-label mb-0">Quantity</label>
-          <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Total Quantity" min="1" required>
+          <label for="service_fee" class="form-label mb-0">Service Fee</label>
+          <input type="number" class="form-control" id="service_fee" name="service_fee" placeholder="Fee (₱)"? min="0" required disabled>
         </div>
+
         <div class="mb-3">
-          <label for="price" class="form-label mb-0">Price per Unit</label>
-          <input type="number" class="form-control" id="price" name="price" placeholder="Price (₱)" min="0" step="0.01" required>
+          <label for="scheduledFor" class="form-label mb-0">Schedule Date</label>
+          <input type="datetime-local" class="form-control" id="scheduledFor" name="scheduled_for" required>
         </div>
+
         <div class="mb-3">
           <label for="paymentMethod" class="form-label mb-0">Payment Method</label>
-          <select class="form-select" id="paymentMethod" required>
+          <select class="form-select" id="paymentMethod" name="payment_method" required>
             <option value="" disabled selected>Select a method</option>
             <option value="credit">Credit Card</option>
             <option value="paypal">PayPal</option>
             <option value="bank">Bank Transfer</option>
           </select>
         </div>
+
         <div class="d-flex mt-4 align-items-center justify-content-between">
           <a href="index.php">Go back</a>
-          
           <div class="ms-auto d-flex gap-2">
-            <button type="button" onclick="clearCart()" class="btn btn-danger btn-sm">Clear Cart</button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="calculate()">Calculate Total</button>
+            <button type="button" onclick="clearCart()" class="btn btn-danger btn-sm">Clear</button>
+            <button type="submit" class="btn btn-primary btn-sm">Confirm Booking</button>
           </div>
         </div>
       </form>

@@ -1,49 +1,47 @@
-const wrapper = document.querySelector('.category-wrapper');
-const leftBtn = document.querySelector('.scroll-btn.left');
-const rightBtn = document.querySelector('.scroll-btn.right');
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.querySelector('.search-input');
+  const productCards = document.querySelectorAll('.product-card');
 
-leftBtn.addEventListener('click', () => {
-  wrapper.scrollBy({ left: -300, behavior: 'smooth' });
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+
+    productCards.forEach(card => {
+      const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+      card.style.display = title.includes(query) ? '' : 'none';
+    });
+  });
 });
 
-rightBtn.addEventListener('click', () => {
-  wrapper.scrollBy({ left: 300, behavior: 'smooth' });
+document.addEventListener('DOMContentLoaded', () => {
+  const checkboxes = document.querySelectorAll('#categoryFilterForm input[type="checkbox"]');
+  const productCards = document.querySelectorAll('.product-card');
+  const clearBtn = document.getElementById('clearFilters');
+
+  const filterCards = () => {
+    const selected = Array.from(checkboxes)
+      .filter(cb => cb.checked)
+      .map(cb => cb.value.toLowerCase());
+
+    productCards.forEach(card => {
+      const cardCategories = (card.dataset.category || '')
+        .toLowerCase()
+        .split(',')
+        .map(cat => cat.trim());
+
+      const matches = selected.length === 0 || selected.some(cat => cardCategories.includes(cat));
+      card.style.display = matches ? '' : 'none';
+    });
+  };
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterCards);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    checkboxes.forEach(cb => cb.checked = false);
+    filterCards(); // show all
+  });
 });
-
- const serviceModal = document.getElementById('serviceModal')
-  serviceModal.addEventListener('show.bs.modal', event => {
-    const button = event.relatedTarget
-    const image = button.getAttribute('data-image')
-    const title = button.getAttribute('data-title')
-    const price = button.getAttribute('data-price')
-    const review = button.getAttribute('data-review')
-    const categories = button.getAttribute('data-categories')  // comma separated
-    const description = button.getAttribute('data-description')
-    const provider = button.getAttribute('data-provider')
-
-    // Populate modal content
-    serviceModal.querySelector('#modalImage').src = image
-    serviceModal.querySelector('#serviceModalLabel').textContent = title
-    serviceModal.querySelector('#modalServiceName').textContent = title
-    serviceModal.querySelector('#modalPrice').textContent = parseFloat(price).toFixed(2)
-    serviceModal.querySelector('#modalReview').textContent = review
-    serviceModal.querySelector('#modalDescription').textContent = description
-    serviceModal.querySelector('#modalProviderProfile').innerHTML = provider.replace(/, /g, '<br>')
-
-    // Populate categories as badges
-    const categoriesContainer = serviceModal.querySelector('#modalCategories')
-    categoriesContainer.innerHTML = ''  // clear previous
-    if (categories) {
-      const categoryList = categories.split(',').map(cat => cat.trim())
-      categoryList.forEach(cat => {
-        const badge = document.createElement('span')
-        badge.className = 'badge bg-primary me-1'
-        badge.textContent = cat
-        categoriesContainer.appendChild(badge)
-      })
-    }
-  })
-
 
 
 

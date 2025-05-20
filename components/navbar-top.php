@@ -10,12 +10,12 @@
         <li class="popdown">
             <a class="disabled dropdown-toggle align-items-center">Categories</a>
             <ul class="popdown-menu align-items-center">
-                <li><a href="#">Cleaning</a></li>
-                <li><a href="#">Repairs</a></li>
-                <li><a href="#">Gardening</a></li>
-                <li><a href="#">Computer Assistance</a></li>
-                <li><a href="#">Training</a></li>
-                <li><a href="#">Man for Hire</a></li>
+                <li><a href="#">Maintenance & Repair</a></li>
+                <li><a href="#">Home Improvement</a></li>
+                <li><a href="#">Security & Smart Home</a></li>
+                <li><a href="#">Cleaning Services</a></li>
+                <li><a href="#">Outdoor & Landscaping</a></li>
+                <li><a href="#">Other Services</a></li>
             </ul>
         </li>
         <li class="bill-li"><a href="billing.html">Billing</a></li>
@@ -52,7 +52,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link w-100 px-4 py-3 border-bottom" href="bookings.php">
+                                <a class="nav-link w-100 px-4 py-3 border-bottom" href="user/bookings.php">
                                     <i class="bi bi-card-checklist me-2"></i> Bookings
                                 </a>
                             </li>

@@ -24,14 +24,14 @@
 
           <!-- Details -->
           <div class="col-md-7">
-            <h3 id="modalServiceName">Service Name</h3>
-            <h4 class="text-success">₱<span id="modalPrice">0.00</span></h4>
-            <div class="mb-3">
+            <h3 id="modalServiceName" class="fw-bold">Service Name</h3>
+            <h5 class="text-success fw-semibold">₱<span id="modalFee">0.00</span></h5>
+            <div class="mt-2 mb-3">
               <strong>Rating:</strong> <span id="modalReview">★★★★☆ (4.0)</span>
             </div>
             <div>
-              <h5>Description</h5>
-              <p id="modalDescription">Service description goes here.</p>
+              <h5 class="mb-0">Description</h5>
+              <p id="modalDescription" class="mt-0">Service description goes here.</p>
             </div>
             <div class="mt-2">
               <div id="modalCategories" class="mb-3"></div>
@@ -48,7 +48,9 @@
           </div>
           <div class="col-10">
             <h5>Service Provider</h5>
-            <p id="modalProviderProfile">Provider details...</p>
+            <p id="modalProviderProfile" class="mb-0">Provider details...</p>
+            <p id="modalProviderEmail" class="mb-0">Email...</p>
+            <p id="modalProviderPhone" class="mb-0">Phone number...</p>
           </div>
         </div>
       </div>

@@ -15,22 +15,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('modalServiceName').textContent = button.getAttribute('data-title');
-    document.getElementById('modalPrice').textContent = parseFloat(button.getAttribute('data-price')).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+    document.getElementById('modalFee').textContent = parseFloat(button.getAttribute('data-fee')).toLocaleString('en-PH', { minimumFractionDigits: 2 });
     document.getElementById('modalReview').textContent = button.getAttribute('data-review');
     document.getElementById('modalDescription').textContent = button.getAttribute('data-description');
 
-    const providerText = button.getAttribute('data-provider');
-    document.getElementById('modalProviderProfile').innerHTML = `Provider: <strong>${providerText}</strong>`;
+    const providerName = button.getAttribute('data-provider');
+    const providerEmail = button.getAttribute('data-email');
+    const providerPhone = button.getAttribute('data-phone');
 
-    const categories = button.getAttribute('data-categories').split(',');
+    document.getElementById('modalProviderProfile').innerHTML = `${providerName}`;
+    document.getElementById('modalProviderEmail').innerHTML = `${providerEmail}`;
+    document.getElementById('modalProviderPhone').innerHTML = `${providerPhone}`;
+
     const catContainer = document.getElementById('modalCategories');
     catContainer.innerHTML = '';
+
+    let categories;
+    try {
+      categories = JSON.parse(button.getAttribute('data-categories'));
+    } catch (e) {
+      categories = [];
+    }
+
     categories.forEach(cat => {
-      catContainer.innerHTML += `<span class="badge bg-primary me-1">${cat.trim()}</span>`;
+      const badge = document.createElement('span');
+      badge.className = 'badge me-1';
+      badge.style.backgroundColor = cat.color || '#ccc';  
+      badge.textContent = cat.name;
+      catContainer.appendChild(badge);
     });
 
     const title = encodeURIComponent(button.getAttribute('data-title'));
-    const price = button.getAttribute('data-price');
-    document.getElementById('modalBookNowLink').href = `billing.html?product=${title}&price=${price}&qty=1`;
+    const fee = button.getAttribute('data-fee');
+    document.getElementById('modalBookNowLink').href = `billing.html?product=${title}&fee=${fee}`;
   });
 });
