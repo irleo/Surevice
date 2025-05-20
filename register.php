@@ -51,8 +51,20 @@
           <input type="text" class="form-control" name="lastName" placeholder="Enter your last name" required>
         </div>
         <div class="mb-3">
-          <label class="form-label mb-0">Phone Number</label>
-          <input type="tel" class="form-control" name="phone" placeholder="Enter your phone number" required>
+          <label class="form-label mb-0" for="phone">Mobile Number</label>
+          <div class="input-group">
+            <span class="input-group-text">+63</span>
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              name="phone"
+              pattern="[0-9]{10}"
+              inputmode="numeric"
+              placeholder="XXXXXXXXXXX"
+              required
+            >
+          </div>
         </div>
         <div class="mb-3">
           <label class="form-label mb-0 d-block">Gender</label>
