@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,10 +5,21 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f9fafb;
-  color: #333;
+  height: 100px;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-image: url(/assets/images/surevice-bg.png); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
 }
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.87); 
+  min-height: 100vh;
+}
+
 
 .logo-section {
   text-align: center;
@@ -327,3 +337,4 @@ button {
     width: 100%;
   }
 }
+

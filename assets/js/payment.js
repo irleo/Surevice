@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   const selectedMethod = localStorage.getItem('selectedPaymentMethod');
   const selectedMethodDisplay = document.getElementById('selectedMethodDisplay');
