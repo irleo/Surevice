@@ -23,15 +23,29 @@ body {
   background-color: var(--primary-color);
 }
 
+main {
+  padding-block: min(2em, 5%);   
+  padding-inline: min(0.5em, 3%);;
+  background-color: #eeeeee;
+  overflow-y: auto;
+  min-height: calc(100vh - 60px);
+  width: calc(100% - 330px);
+  left: 330px;
+  flex-grow: 1;
+
+}
+
 /* NAVBAR-TOP */
 #nav-top {
   background-color: #f5f5f5;
   border-bottom: 1px solid #cecdcd;
   position: sticky;
+  height: 60px;
   top: 0;
   left: 0;
   right: 0;
   z-index: 999;
+  box-shadow: 0 0 7px 0 rgba(0,0,0,0.2);
 }
 
 #nav-top ul {
@@ -85,29 +99,32 @@ body {
 }
 
 #nav-top .search-li {
+  position: relative;
   display: flex;
+  width: 40%;
   align-items: center;
-  margin: 0 1rem;
+  margin: 0 2rem;
 }
 
 #nav-top .search-input {
-  padding: 0.4em 0.6em;
+  width: 100%;
+  padding: 0.4em 0.1em 0.4em 0.8em;
   font-size: 1em;
   border: 1px solid #ccc;
-  border-radius: 8px 0 0 8px;
+  border-radius: 10px;
   outline: none;
 }
 
-#nav-top .search-btn {
-  padding: 0.4em 0.8em;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-left: none;
-  background-color: var(--accent-color); 
-  color: white;
-  border-radius: 0 8px 8px 0;
+#nav-top .search-input:focus {
+  border-color: var(--accent-color);
+}
+
+
+#nav-top .search-li i {
+  position: absolute;
+  top: 16px;
+  right: 15px;
   cursor: pointer;
-  font-size: 1em;
 }
 
 /* PROFILE */
@@ -151,17 +168,6 @@ body {
     background-color: #f8f9fa;
 }
 
-@media (min-width: 768px) {
-    #offcanvasExample {
-      width: 300px;
-    }
-  }
-
-  @media (min-width: 992px) {
-    #offcanvasExample {
-      width: 330px;
-    }
-  }
 
 /* CATEGORIES */
 #nav-top .popdown {
@@ -281,36 +287,26 @@ body {
   display: inline-block;
 }
 
+
 /* PRODUCTS */
-main {
-  padding-block: min(2em, 5%);   
-  padding-inline: min(0.5em, 3%);
-  background-color: #eeeeee;
-  overflow-y: auto;
-  height: calc(100vh - 56px);
-  flex-grow: 1;
-  width: 100%;
-}
- 
 .product-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
   gap: 1.5rem;
-  justify-content: center;
+  padding: 0 1.5rem;
 }
 
 .product-card {
-  flex: 0 0 calc(23% - 1rem); 
-  max-width: calc(25% - 1rem);
-  box-sizing: border-box;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
-  height: 100%;
-  width: auto;
   text-align: center;
+  height: 100%;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .product-card img {
@@ -318,10 +314,19 @@ main {
   height: 230px;
   object-fit: cover;
   border-radius: 4px;
+  margin-bottom: 1rem;
 }
 
-.product-card button, .check-out a.btn {
-  margin-top: 1rem;
+.check-out {
+  display: flex;
+  gap: 10px; 
+  justify-content: center; 
+  margin-top: auto; /* Pushes buttons to bottom */
+  flex-wrap: wrap;
+}
+
+.product-card button,
+.view-details a.btn {
   padding: 0.5rem 1rem;
   background-color: var(--accent-color, orange);
   color: white;
@@ -329,22 +334,20 @@ main {
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9em;
-}
-
-.product-card button:hover {
-  background-color: #e69500;
-}
-
-.check-out {
-  display: flex;
-  gap: 10px; 
-  justify-content: center; 
-}
-
-.check-out a.btn {
   text-decoration: none;
-  background-color: #5e5e5e;
+  display: inline-block;
 }
+
+.product-card button:hover,
+.check-out a.btn:hover {
+  background-color: #e69500;
+  color: var(--text-color);
+}
+
+.product-card a.btn {
+  background-color: #6c757d;
+}
+
 
 .carousel-item img {
   height: 280px; 
@@ -405,7 +408,44 @@ footer i {
   background-color: #f5f5f5;
   border-right: 1px solid #cecdcd;
   position: sticky;
-  top: 1rem;
+  top: 60px;
   flex: 0 0 0 250px;
-  width: 380px;
+  width: 330px;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  #offcanvasExample {
+      width: 330px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: 40vh;
+    overflow-y: auto;
+  }
+  #offcanvasExample {
+    width: 300px;
+  }
 }

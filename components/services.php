@@ -88,7 +88,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <img src="{$images[0]}" alt="{$title}">
         <h3>{$title}</h3>
         <p>₱{$service_fee}</p>
-        <div class="check-out">
+        <div class="view-details">
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#serviceModal" 
                 data-images="{$dataImages}" 
                 data-title="{$title}" 

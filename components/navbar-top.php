@@ -6,25 +6,12 @@
                 <img src="assets/images/logo-nobg.png" id="logo" alt="logo">Surevice
             </a>
         </li>
-        <li><a href="index.php">Home</a></li>
-        <li class="popdown">
-            <a class="disabled dropdown-toggle align-items-center">Categories</a>
-            <ul class="popdown-menu align-items-center">
-                <li><a href="#">Maintenance & Repair</a></li>
-                <li><a href="#">Home Improvement</a></li>
-                <li><a href="#">Security & Smart Home</a></li>
-                <li><a href="#">Cleaning Services</a></li>
-                <li><a href="#">Outdoor & Landscaping</a></li>
-                <li><a href="#">Other Services</a></li>
-            </ul>
-        </li>
-        <li class="bill-li"><a href="billing.html">Billing</a></li>
-        <li class="search-li">
-            <form id="searchForm">
-                <input type="text" placeholder="Search..." name="search" class="search-input">
-                <button type="submit" class="search-btn"><i class="bi bi-search"></i></button>
-            </form>
-        </li>
+        <li class="me-auto"><a href="index.php" >Home</a></li>
+
+        <div class="search-li"> 
+            <input type="text" placeholder="Search..." name="search" class="search-input">
+            <label for="search"><i class="bi bi-search"></i></label>
+        </div>
 
         <?php if ($isLoggedIn): ?>
             <li class="nav-item">
