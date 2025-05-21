@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'utils/config.php';
+require __DIR__ . '/config.php';  
 
 $user_id = $_SESSION['user_id'] ?? null;
 $address = '';
@@ -20,18 +20,18 @@ if ($user_id) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Billing Form</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/billing.css">
+  <link rel="stylesheet" href="../assets/css/billing.css">
   
 </head>
 <body>
-  <img src="assets/images/left-pic.jpg" alt="background" id="bg-img">
+  <img src="../assets/images/left-pic.jpg" alt="background" id="bg-img">
   <div class="layer"></div>
 
   <div class="billing-form">
     <fieldset id="billing">
       <legend class="text-center fs-3 mb-2">Billing Information</legend>
     
-      <form id="billingForm" method="POST" action="utils/submit-booking.php">
+      <form id="billingForm" method="POST" action="submit-booking.php">
         <input type="hidden" name="service_id" id="serviceId" value="">
 
         <div class="mb-3">
@@ -83,6 +83,6 @@ if ($user_id) {
     </fieldset>
   </div>
 
-  <script src="assets/js/billing.js" defer></script>
+  <script src="../assets/js/billing.js" defer></script>
 </body>
 </html>

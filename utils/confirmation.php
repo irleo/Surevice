@@ -52,7 +52,7 @@ $booking_id = (int)$_GET['booking_id'];
       <p class="text-danger">Invalid booking ID.</p>
     <?php endif; ?>
 
-    <a href="bookings.php" class="btn btn-success me-2">View Bookings</a>
+    <a href="../user/bookings.php" class="btn btn-success me-2">View Bookings</a>
     <a href="../index.php" class="btn btn-secondary">Return Home</a>
   </div>
 
