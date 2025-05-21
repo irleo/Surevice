@@ -101,7 +101,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                 data-phone="{$phone}">
                 View Details
             </button>
-            <a href="billing.html?product={$title}&fee={$rawFee}" class="btn btn-primary">Book Now</a>
+            <a href="billing.php?service_id={$serviceId}&product={$title}&fee={$rawFee}" class="btn btn-primary">Book Now</a>
         </div>
     </div>
 HTML;

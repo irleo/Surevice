@@ -1,3 +1,18 @@
+<?php
+session_start();
+require 'utils/config.php';
+
+$user_id = $_SESSION['user_id'] ?? null;
+$address = '';
+
+if ($user_id) {
+    $stmt = sqlsrv_query($conn, "SELECT address FROM Users WHERE user_id = ?", [$user_id]);
+    if ($stmt && $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        $address = htmlspecialchars($row['address'] ?? '');
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,12 +31,20 @@
     <fieldset id="billing">
       <legend class="text-center fs-3 mb-2">Billing Information</legend>
     
-      <form id="billingForm" method="POST" action="submit-booking.php">
+      <form id="billingForm" method="POST" action="utils/submit-booking.php">
         <input type="hidden" name="service_id" id="serviceId" value="">
 
         <div class="mb-3">
+          <label for="addressOption" class="form-label mb-0">Choose Address</label>
+          <select class="form-select" id="addressOption" onchange="toggleAddressInput(this.value)">
+            <option value="new">Enter new address</option>
+            <option value="saved">Use saved address</option>
+          </select>
+        </div>
+
+        <div class="mb-3" id="addressField">
           <label for="address" class="form-label mb-0">Complete Address</label>
-          <textarea class="form-control" id="address" name="address" placeholder="Enter your complete address" rows="3" required></textarea>
+          <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your address"><?= $address ?></textarea>
         </div>
 
         <div class="mb-3">

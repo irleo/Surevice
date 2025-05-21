@@ -1,11 +1,13 @@
 window.onload = () => {
   const product = getQueryParam('product');
   const fee = getQueryParam('fee');
+  const serviceId = getQueryParam('service_id');
 
   if (product) document.getElementById('productName').value = decodeURIComponent(product);
   if (fee) document.getElementById('service_fee').value = fee;
-
+  if (serviceId) document.getElementById('serviceId').value = serviceId;  
 };
+
 
 function getQueryParam(name) {
 const urlParams = new URLSearchParams(window.location.search);
@@ -41,4 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function clearCart() {
   document.getElementById('billingForm').reset();
+}
+
+function toggleAddressInput(value) {
+  const field = document.getElementById('addressField');
+  if (value === 'saved') {
+    field.style.display = 'none';
+  } else {
+    field.style.display = 'block';
+  }
 }

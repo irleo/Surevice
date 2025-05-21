@@ -8,7 +8,7 @@ body {
   height: 100px;
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-image: url(/assets/images/surevice-bg.png); 
+  background-image: url(../images/surevice-bg.png); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
