@@ -13,7 +13,7 @@ $success = '';
 $user_id = $_SESSION['user_id'];
 
 // Fetch full user data
-$sql = "SELECT first_name, last_name, email, phone, gender, user_type, address, is_verified, created_at, last_name_change FROM Users WHERE user_id = ?";
+$sql = "SELECT first_name, last_name, email, phone, gender, user_type, is_verified, created_at, last_name_change FROM Users WHERE user_id = ?";
 $params = [$user_id];
 $stmt = sqlsrv_query($conn, $sql, $params);
 
@@ -176,14 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         </div>
     </div>
 
-    <!-- Address -->
-    <div class="profile-section">
-        <h5>Addresses</h5>
-        <div class="profile-info">
-            <p>No saved address.</p> 
-        </div>
-    </div>
-
     <!-- Status & Actions -->
     <div class="d-flex justify-content-between align-items-center">
         <?php $lastChange = $user['last_name_change'] ?? null; ?>
@@ -237,10 +229,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
               <option value="Female" <?= $user['gender'] === 'Female' ? 'selected' : '' ?>>Female</option>
               <option value="Other" <?= $user['gender'] === 'Other' ? 'selected' : '' ?>>Other</option>
             </select>
-          </div>
-          <div class="mb-3">
-            <label for="editAddress" class="form-label">Address</label>
-            <input type="text" class="form-control" name="address" id="editAddress" value="<?= htmlspecialchars($user['address'] ?? '') ?>">
           </div>
         </div>
         <div class="modal-footer">

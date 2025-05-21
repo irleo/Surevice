@@ -72,7 +72,6 @@ $insertPayment = "
 ";
 sqlsrv_query($conn, $insertPayment, [$booking_id, $fee, $fee_deducted, $provider_earnings]);
 
-// Redirect to confirmation page
 header("Location: confirmation.php?booking_id=" . $booking_id);
 exit;
 ?>

@@ -6,7 +6,7 @@
 
   <!-- Category Filter Section -->
   <div class="mb-4 border-top border-2 p-1">
-    <h3 class="fs-5 fw-bold mb-3 mt-3">Filter by Category</h3>
+    <h3 class="fs-5 fw-bold mb-3 mt-3">Filter by Category <i class="bi bi-filter"></i></h3>
     <form id="categoryFilterForm" class="d-flex flex-column gap-2">
       <div class="form-check">
         <input class="form-check-input" type="checkbox" value="Cleaning Services" id="cat-cleaning">

@@ -105,3 +105,19 @@ CREATE TABLE ServiceCategoryLink (
     FOREIGN KEY (service_id) REFERENCES Services(service_id),
     FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
+
+-- 10. Addresses Table
+CREATE TABLE Addresses (
+    address_id INT PRIMARY KEY IDENTITY(1,1),
+    user_id INT NOT NULL,
+    label VARCHAR(50),           -- like, "Home", "Work"
+    street VARCHAR(255),
+    barangay VARCHAR(100),
+    city VARCHAR(100),
+    province VARCHAR(100),
+    postal_code VARCHAR(10),
+    is_default BIT DEFAULT 0,
+    created_at DATETIME DEFAULT GETDATE(),
+
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
