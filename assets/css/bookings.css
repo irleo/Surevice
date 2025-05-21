@@ -131,6 +131,30 @@ h2 {
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: capitalize;
+  flex-shrink: 0; 
+  width: 120px;   
+  text-align: center;
+}
+
+.service-info {
+  flex-grow: 1;   
+  min-width: 0;   
+}
+
+/* .service-info {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
+
+.actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.actions .btn {
+  border-radius: 5px;
 }
 
 .status.pending {
@@ -235,3 +259,6 @@ th {
     grid-template-columns: 1fr; /* Stack on small screens */
   }
 }
+
+
+
