@@ -1,11 +1,16 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-  const selectedMethod = localStorage.getItem('selectedPaymentMethod');
+  const methodPage = document.getElementById('methodPage');
+  const checkoutPage = document.getElementById('checkoutPage');
   const selectedMethodDisplay = document.getElementById('selectedMethodDisplay');
-  const payBtn = document.querySelector('.pay-btn');
+  const payBtn = document.getElementById('payBtn');
   const completeBtn = document.getElementById('completeBtn');
   const statusBox = document.getElementById('paymentStatusBox');
   const statusText = document.getElementById('paymentStatusText');
+
+  const feeAmountElem = document.getElementById('feeAmount');
+  const platformFeeElem = document.getElementById('platformFee');
+  const totalAmountElem = document.getElementById('totalAmount');
+  const serviceFeeElem = document.getElementById('serviceFee');
 
   const methodLabels = {
     card: `<strong>Credit/Debit Card</strong><br><small>Visa, Mastercard, JCB</small>`,
@@ -23,35 +28,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const serviceFee = 1000;
 
-  if (selectedMethod && methodLabels[selectedMethod]) {
-    selectedMethodDisplay.innerHTML = methodLabels[selectedMethod];
+  function formatCurrency(amount) {
+    return `₱${amount.toLocaleString()}`;
+  }
 
-    const platformFee = platformFees[selectedMethod] || 50;
+  function showCheckoutPage(method) {
+    methodPage.classList.add('hidden');
+    checkoutPage.classList.remove('hidden');
+
+    const platformFee = platformFees[method] ?? 50;
     const totalAmount = serviceFee + platformFee;
 
-    document.getElementById('feeAmount').innerText = `₱${platformFee}`;
-    document.getElementById('platformFee').innerText = `₱${platformFee}`;
-    document.getElementById('totalAmount').innerText = `₱${totalAmount}`;
-    document.getElementById('serviceFee').innerText = `₱${serviceFee}`;
+    // Set breakdown values
+    selectedMethodDisplay.innerHTML = methodLabels[method];
+    if (feeAmountElem) feeAmountElem.innerText = formatCurrency(serviceFee);
+    if (platformFeeElem) platformFeeElem.innerText = formatCurrency(platformFee);
+    if (totalAmountElem) totalAmountElem.innerText = formatCurrency(totalAmount);
+    if (serviceFeeElem) serviceFeeElem.innerText = formatCurrency(serviceFee);
 
-    payBtn.innerText = `Pay Now – ₱${totalAmount}`;
-    payBtn.addEventListener('click', () => showModal('pay'));
-    completeBtn.addEventListener('click', () => showModal('complete'));
-  } else {
-    selectedMethodDisplay.innerHTML = `<strong>No method selected</strong>`;
-    payBtn.disabled = true;
+    payBtn.innerText = `Pay Now – ${formatCurrency(totalAmount)}`;
+    payBtn.disabled = false;
     completeBtn.disabled = true;
+
+    payBtn.onclick = () => showModal('pay');
+    completeBtn.onclick = () => showModal('complete');
+  }
+
+  // Handle method selection
+  document.querySelectorAll('.method').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const method = btn.dataset.method;
+      localStorage.setItem('selectedPaymentMethod', method);
+      showCheckoutPage(method);
+    });
+  });
+
+  // Load stored method if exists
+  const storedMethod = localStorage.getItem('selectedPaymentMethod');
+  if (storedMethod && methodLabels[storedMethod]) {
+    showCheckoutPage(storedMethod);
   }
 
   // Modal logic
   let currentAction = null;
 
-  function showModal(action = 'pay') {
+  function showModal(action) {
     currentAction = action;
-    document.getElementById('modalMessage').innerText = action === 'pay'
-      ? 'Are you sure you want to pay now?'
-      : 'Mark the service as complete?';
-    document.getElementById('confirmationModal').style.display = 'flex';
+    const modal = document.getElementById('confirmationModal');
+    const message = document.getElementById('modalMessage');
+
+    message.textContent = action === 'pay'
+      ? 'Are you sure you want to proceed with payment?'
+      : 'Are you sure you want to mark this as complete?';
+
+    modal.style.display = 'flex';
   }
 
   function closeModal() {
@@ -62,27 +92,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function confirmAction() {
     if (!currentAction) return;
 
-    statusBox.style.display = 'flex';
+    statusBox.style.display = 'block';
 
     if (currentAction === 'pay') {
       statusBox.classList.remove('success');
       statusBox.classList.add('warning');
-      statusText.innerText = 'Payment held securely in Escrow.';
+      statusText.textContent = 'Payment held securely in Escrow.';
       completeBtn.disabled = false;
     } else if (currentAction === 'complete') {
       statusBox.classList.remove('warning');
       statusBox.classList.add('success');
-      statusText.innerText = 'Service marked as complete. Funds released to Service Provider.';
+      statusText.textContent = 'Service marked as complete. Funds released to Service Provider.';
     }
 
     closeModal();
   }
 
-  // Hook up modal buttons
-  document.getElementById("confirmBtn").addEventListener("click", confirmAction);
-  document.getElementById("cancelBtn").addEventListener("click", closeModal);
+  document.getElementById('confirmBtn').addEventListener('click', confirmAction);
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
 });
 
+// Go back to payment method selection
 function goBack() {
-  window.location.href = 'select-method.html';
+  document.getElementById('checkoutPage').classList.add('hidden');
+  document.getElementById('methodPage').classList.remove('hidden');
 }

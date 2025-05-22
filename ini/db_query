@@ -21,8 +21,7 @@ CREATE TABLE Users (
     is_verified BIT DEFAULT 0,
     created_at DATETIME DEFAULT GETDATE(),
     last_name_change DATETIME NULL,
-    gender VARCHAR(10) NOT NULL DEFAULT 'Other' CHECK (gender IN ('Male', 'Female', 'Other'),
-    address VARCHAR(255);
+    gender VARCHAR(10) NOT NULL DEFAULT 'Other' CHECK (gender IN ('Male', 'Female', 'Other')
 );
 
 -- 2. Services Table

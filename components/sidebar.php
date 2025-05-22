@@ -1,66 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Filter Page</title>
+  <link rel="stylesheet" href="/assets/css/sidebar.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <div class="intro">
+        <h1>Find the Right Home Service for You</h1>
+        <p>Explore a wide range of home services tailored to your needs.</p>
+      </div>
 
-  <div class="mb-3">
-    <h1 class="fs-4 fw-bold mb-1">Find the Right Service for You</h1>
-    <p class="text-muted mb-0">Explore a wide range of services tailored to your needs.</p>
+      <div class="filter">
+        <h3>Filter by Category</h3>
+        <form id="categoryFilterForm">
+          <label><input type="checkbox" value="Cleaning Services" /> Cleaning Services</label>
+          <label><input type="checkbox" value="Maintenance & Repair" /> Maintenance & Repair</label>
+          <label><input type="checkbox" value="Home Improvement" /> Home Improvement</label>
+          <label><input type="checkbox" value="Security & Smart Home" /> Security & Smart Home</label>
+          <label><input type="checkbox" value="Outdoor & Landscaping" /> Outdoor & Landscaping</label>
+          <label><input type="checkbox" value="Other Services" /> Other Services</label>
+          <button type="button" id="clearFilters">Clear All Filters</button>
+        </form>
+      </div>
+
+      <div class="contact">
+        <h3>Contact Us</h3>
+        <ul>
+          <li><i class="bi bi-facebook"></i> Facebook</li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 6px;">
+              <path d="M1.64 0h2.26l3.24 4.74L10.94 0h2.26L9.14 6.26 14.5 14H12.1L8.1 8.84 3.9 14H1.64l5.64-7.4L1.64 0Zm2.13 1l4.23 6.2L3.8 13h.66l4.26-5.57 3.84 5.57h.64l-4.17-6.04L12.4 1h-.66l-4 5.21L4.48 1h-.71Z"/>
+            </svg>Twitter</li>
+          <li><i class="bi bi-instagram"></i> Instagram</li>
+          <li><i class="bi bi-google"></i> Gmail</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <div class="overlay">
+    </div>
   </div>
-
-  <!-- Category Filter Section -->
-  <div class="mb-4 border-top border-2 p-1">
-    <h3 class="fs-5 fw-bold mb-3 mt-3">Filter by Category <i class="bi bi-filter"></i></h3>
-    <form id="categoryFilterForm" class="d-flex flex-column gap-2">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="Cleaning Services" id="cat-cleaning">
-        <label class="form-check-label" for="cat-cleaning">Cleaning Services</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="Maintenance & Repair" id="cat-maintenance">
-        <label class="form-check-label" for="cat-maintenance">Maintenance & Repair</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="Home Improvement" id="cat-home">
-        <label class="form-check-label" for="cat-home">Home Improvement</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="Security & Smart Home" id="cat-security">
-        <label class="form-check-label" for="cat-security">Security & Smart Home</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="Outdoor & Landscaping" id="cat-outdoor">
-        <label class="form-check-label" for="cat-outdoor">Outdoor & Landscaping</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="Other Services" id="cat-other">
-        <label class="form-check-label" for="cat-other">Other Services</label>
-      </div>
-
-      <button type="button" id="clearFilters" class="btn btn-outline-secondary btn-sm mt-2">Clear All Filters</button>
-    </form>
-  </div>
-
-  <!-- Contact Section -->
-  <div class="border-top border-2 p-1">
-    <h3 class="fs-5 fw-bold mb-3 mt-3">Contact Us</h3>
-    <ul class="list-unstyled">
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-facebook me-2"></i>Facebook
-        </a>
-      </li>
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-twitter me-2"></i>Twitter
-        </a>
-      </li>
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-instagram me-2"></i>Instagram
-        </a>
-      </li>
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-google me-2"></i>Gmail
-        </a>
-      </li>
-    </ul>
-  </div>
-
+</body>

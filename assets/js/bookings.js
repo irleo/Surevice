@@ -1,75 +1,123 @@
 document.addEventListener("DOMContentLoaded", function () {
   const currentList = document.getElementById("currentBookings");
   const pastTable = document.getElementById("pastTransactions");
+  const pageIndicator = document.getElementById("pageIndicator");
+  const prevBtn = document.getElementById("prevPage");
+  const nextBtn = document.getElementById("nextPage");
+  const editAddressBtn = document.getElementById("editAddressBtn");
+
+  const ITEMS_PER_PAGE = 5;
+  let currentPage = 1;
   let selectedBookingId = null;
-  // Render current bookings
-  currentList.innerHTML = "";
-  currentBookings.forEach(booking => {
-    const div = document.createElement("div");
-    div.classList.add("booking-item");
-    div.innerHTML = `
-      <div class="service-info">
-        <strong>${booking.service}</strong><br/>
-        <small>${booking.date}</small>
-      </div>
-      <span class="status ${booking.status}">${booking.status.replace('_', ' ')}</span>
-      <div class="actions">
-        <button class="btn btn-sm btn-success mark-complete" data-id="${booking.booking_id}">Complete</button>
-        <button class="btn btn-sm btn-danger cancel-booking" data-id="${booking.booking_id}">Cancel</button>
-      </div>
-    `;
-    currentList.appendChild(div);
-  });
-  // Render past transactions
-  pastTable.innerHTML = "";
-  pastTransactions.forEach(tx => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${tx.service}</td>
-      <td>${tx.date}</td>
-      <td><span class="status ${tx.status}">${tx.status.replace('_', ' ')}</span></td>
-      <td>${tx.amount ?? '₱0.00'}</td>
-    `;
-    pastTable.appendChild(tr);
-  });
 
+  const currentBookings = [
+    { booking_id: 1, service: "Aircon Cleaning", date: "2025-05-20", status: "pending" },
+    { booking_id: 2, service: "Electrical Repair", date: "2025-05-21", status: "pending" },
+    // more bookings ...
+  ];
 
-  // Handle Complete or Cancel clicks
-  currentList.addEventListener("click", function (e) {
-    const bookingId = e.target.dataset.id;
+  const pastTransactions = [
+    { service: "Aircon Cleaning", date: "2025-04-20", status: "completed", amount: "₱1500.00" },
+    { service: "Electrical Repair", date: "2025-04-15", status: "cancelled", amount: "₱0.00" },
+  ];
 
-    if (e.target.classList.contains("mark-complete")) {
-      // Complete booking immediately
-      updateBookingStatus(bookingId, "completed");
-    }
+  function renderCurrentBookings() {
+    currentList.innerHTML = "";
+    currentBookings.forEach(booking => {
+      const div = document.createElement("div");
+      div.classList.add("booking-item");
+      div.innerHTML = `
+        <div class="service-info">
+          <strong>${booking.service}</strong><br/>
+          <small>${booking.date}</small>
+        </div>
+        <span class="status ${booking.status}">${booking.status.replace('_', ' ')}</span>
+        <div class="actions">
+          <button class="btn btn-sm btn-success mark-complete" data-id="${booking.booking_id}">Complete</button>
+          <button class="btn btn-sm btn-danger cancel-booking" data-id="${booking.booking_id}">Cancel</button>
+        </div>
+      `;
+      currentList.appendChild(div);
+    });
+  }
 
-    if (e.target.classList.contains("cancel-booking")) {
-      // Open confirmation modal
-      selectedBookingId = bookingId;
-      const cancelModal = new bootstrap.Modal(document.getElementById("confirmCancelModal"));
-      cancelModal.show();
-    }
-  });
+  function renderPastTransactions() {
+    pastTable.innerHTML = "";
 
-  // Confirm cancel button in modal
-  document.getElementById("confirmCancelBtn").addEventListener("click", function () {
-    if (selectedBookingId) {
-      updateBookingStatus(selectedBookingId, "cancelled");
-    }
-  });
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const currentItems = pastTransactions.slice(start, end);
 
-  // Reusable update function
+    currentItems.forEach(tx => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${tx.service}</td>
+        <td>${tx.date}</td>
+        <td><span class="status ${tx.status}">${tx.status.replace('_', ' ')}</span></td>
+        <td>${tx.amount ?? '₱0.00'}</td>
+      `;
+      pastTable.appendChild(tr);
+    });
+
+    pageIndicator.textContent = `Page ${currentPage}`;
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = end >= pastTransactions.length;
+  }
+
   function updateBookingStatus(bookingId, status) {
     fetch('../utils/update-booking-status.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `booking_id=${bookingId}&status=${status}`
     })
-    .then(res => res.text())
-    .then(msg => {
-      console.log(msg);
-      location.reload(); // Refresh to reflect changes
-    })
-    .catch(err => console.error("Error:", err));
+      .then(res => res.text())
+      .then(msg => {
+        console.log(msg);
+        location.reload(); 
+      })
+      .catch(err => console.error("Error:", err));
   }
+
+  currentList.addEventListener("click", function (e) {
+    const bookingId = e.target.dataset.id;
+
+    if (e.target.classList.contains("mark-complete")) {
+      updateBookingStatus(bookingId, "completed");
+    }
+
+    if (e.target.classList.contains("cancel-booking")) {
+      selectedBookingId = bookingId;
+      if (confirm("Are you sure you want to cancel this booking?")) {
+        updateBookingStatus(selectedBookingId, "cancelled");
+      }
+    }
+  });
+
+  // Pagination Controls
+  prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderPastTransactions();
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if ((currentPage * ITEMS_PER_PAGE) < pastTransactions.length) {
+      currentPage++;
+      renderPastTransactions();
+    }
+  });
+
+  // Edit Address
+  editAddressBtn.addEventListener("click", () => {
+    const addressP = document.getElementById("savedAddress");
+    const newAddress = prompt("Edit your address:", addressP.textContent);
+    if (newAddress) {
+      addressP.textContent = newAddress;
+    }
+  });
+
+  // Initial rendering
+  renderCurrentBookings();
+  renderPastTransactions();
 });

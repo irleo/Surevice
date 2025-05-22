@@ -1,0 +1,126 @@
+/* Layout */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f8f8; 
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.87); 
+  min-height: 100vh;
+  
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.left-panel {
+  width: 50%;
+  padding: 3rem 2rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto; 
+  height: 100vh;
+}
+
+.right-panel {
+  width: 50%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  background-image: url('/assets/images/surevice-bg.png');
+  background-repeat: no-repeat;
+  background-size: 200%;
+  background-position: right;
+  z-index: 0; 
+}
+
+.right-panel .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.801);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.intro h1 {
+  font-size: 2rem;
+  color: #f27c00;
+  font-weight: 700;
+}
+
+.intro p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.filter h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+#categoryFilterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#categoryFilterForm label {
+  font-size: 0.95rem;
+}
+
+#clearFilters {
+  margin-top: 0.8rem;
+  width: fit-content;
+  background-color: #f27c00;
+  color: #ffffff;
+  border: none;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-style: bold;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+#clearFilters:hover {
+  background-color: #e56b00;
+}
+
+/* Contact Section */
+.contact {
+  margin-top: 2rem;
+}
+
+.contact h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.contact ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contact li {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+

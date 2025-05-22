@@ -141,11 +141,6 @@ h2 {
   min-width: 0;   
 }
 
-/* .service-info {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-} */
 
 .actions {
   flex-shrink: 0;
@@ -159,7 +154,7 @@ h2 {
 
 .status.pending {
   background-color: #fef9c3;
-  color: #92400e;
+  color: #282828be;
 }
 .status.in_progress {
   background-color: #dbeafe;
@@ -201,7 +196,6 @@ th {
   gap: 24px;
 }
 
-/* Responsive tweaks */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -229,7 +223,7 @@ th {
   }
  .profile,
   .menu {
-    display: none; /* Optional: hide on small screens */
+    display: none; 
   }
 
   .main-content {
@@ -258,6 +252,83 @@ th {
   .address-payment-grid {
     grid-template-columns: 1fr; /* Stack on small screens */
   }
+}
+
+.pagination-controls {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-sm {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+}
+
+.btn {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: white;
+  user-select: none;
+}
+
+.btn-sm {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+.btn-success {
+  background-color: #ff8210;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+  background-color: #efae6f;
+  outline: none;
+}
+
+.btn-danger {
+  background-color: #282828;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: #c82333;
+  outline: none;
+}
+
+.btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 

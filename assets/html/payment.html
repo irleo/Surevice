@@ -3,69 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Payment</title>
-  <link rel="stylesheet" href="/assets/css/payment.css">
+  <title>Checkout & Payment</title>
+  <link rel="stylesheet" href="/assets/css/payment.css" />
+  <style>
+    /* minimal styling for demonstration */
+    .hidden { display: none; }
+    .modal {
+      position: fixed; top: 0; left:0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white; padding: 1.5rem; border-radius: 8px; max-width: 320px;
+      text-align: center;
+    }
+    .modal-buttons button {
+      margin: 0 0.5rem; padding: 0.5rem 1rem; cursor: pointer;
+    }
+    button.method {
+      cursor: pointer; margin: 0.5rem 0; width: 100%;
+    }
+  </style>
 </head>
 <body>
   <div class="overlay">
-  <div class="container">
-  <header class="logo-container">
-    <img src="/assets/images/logo-go.png" alt="Surevice Logo">
-  </header>
-      <h1 class="page-title">Booking Checkout & Payment</h1>
-    </div>
-  <div class="main-container">
 
-    <!-- LEFT: Summary -->
-    <div class="left-column">
-      <div class="card">
-        <div class="section-title">Service Summary</div>
-        <p class="title" id="serviceTitle">Deep House Cleaning Service</p>
-        <p>Schedule: <span id="serviceSchedule">May 20, 2025 - 10:00 AM</span></p>
-        <p>Duration: <span id="serviceDuration">4 hours</span></p>
-        <div class="price" id="serviceFee">₱1000</div>
-      </div>
+    <header class="logo-container">
+      <img src="/assets/images/logo-go.png" alt="Surevice Logo" />
+    </header>
+    <h1 class="page-title">Booking Checkout & Payment</h1>
 
+    <!-- Page 1: Payment Method Selection -->
+    <main class="select-methods" id="methodPage">
       <div class="card">
-        <div class="section-title">Payment Breakdown</div>
-        <div class="breakdown">
-          <div><span>Service Fee</span><span id="feeAmount">₱1000</span></div>
-          <div><span>Platform Fee</span><span id="platformFee">₱50</span></div>
-          <div class="total"><span>Total to Pay</span><span id="totalAmount">₱1050</span></div>
+        <div class="section-title">Select Payment Method</div>
+        <div class="methods" id="methodList">
+          <button class="method" data-method="card">
+            <strong>Credit/Debit Card</strong><br /><small>Visa, Mastercard, JCB</small>
+          </button>
+          <button class="method" data-method="paypal">
+            <strong>PayPal</strong><br /><small>Pay securely via PayPal</small>
+          </button>
+          <button class="method" data-method="gcash">
+            <strong>GCash</strong><br /><small>Pay with your GCash wallet</small>
+          </button>
+          <button class="method" data-method="bank">
+            <strong>Bank Transfer</strong><br /><small>Direct bank transfer</small>
+          </button>
         </div>
       </div>
-    </div>
+    </main>
 
-   <!-- RIGHT: Payment Display -->
-  <div class="right-column">
-    <div class="card">
-      <div class="section-title">Payment Method</div>
-      <div class="methods">
-        <div class="method selected" id="selectedMethodDisplay"></div>
+    <!-- Page 2: Payment Checkout -->
+    <div class="main-container checkout-page hidden" id="checkoutPage">
+
+      <!-- LEFT: Summary -->
+      <div class="left-column">
+        <div class="card">
+          <div class="section-title">Service Summary</div>
+          <p class="title" id="serviceTitle">Deep House Cleaning Service</p>
+          <p>Schedule: <span id="serviceSchedule">May 20, 2025 - 10:00 AM</span></p>
+          <p>Duration: <span id="serviceDuration">4 hours</span></p>
+          <div class="price" id="serviceFee">₱1000</div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Payment Breakdown</div>
+          <div class="breakdown">
+            <div><span>Service Fee</span><span id="feeAmount">₱1000</span></div>
+            <div><span>Platform Fee</span><span id="platformFee">₱50</span></div>
+            <div class="total"><span>Total to Pay</span><span id="totalAmount">₱1050</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Payment Display -->
+      <div class="right-column">
+        <div class="card">
+          <div class="section-title">Selected Payment Method</div>
+          <div class="methods">
+            <div class="method selected" id="selectedMethodDisplay"></div>
+          </div>
+        </div>
+
+        <div class="card notice status-box" id="paymentStatusBox" style="display: none;">
+          <span id="paymentStatusText"></span>
+        </div>
+
+        <div class="action-buttons">
+          <button class="pay-btn" id="payBtn" disabled>Pay Now</button>
+          <button class="complete-btn" id="completeBtn" disabled>Mark as Complete</button>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">← Back to Payment Methods</button>
       </div>
     </div>
 
-    <div class="card notice status-box" id="paymentStatusBox" style="display: none;">
-      <span id="paymentStatusText"></span>
-    </div>
-    <div class="action-buttons">
-      <button class="pay-btn" onclick="showModal()">Pay Now</button>
-      <button class="complete-btn" onclick="showModal('complete')" id="completeBtn" disabled>Mark as Complete</button>
-    </div>
-
-    <button class="back-btn" onclick="goBack()">← Back to Payment Methods</button>
-  </div>
-
-    <div class="modal" id="confirmationModal" style="display: none;">
+    <!-- Modal -->
+    <div class="modal hidden" id="confirmationModal">
       <div class="modal-content">
         <h3>Confirm Action</h3>
-        <p id="modalMessage">Are you sure?</p>
+        <p id="modalMessage">Are you sure you want to proceed with payment?</p>
         <div class="modal-buttons">
           <button class="confirm" id="confirmBtn">Yes</button>
           <button class="cancel" id="cancelBtn">Cancel</button>
         </div>
       </div>
     </div>
-  <script src="/assets/js/payment.js"></script>
+  </div>
+
+  <script>
+    const methodPage = document.getElementById('methodPage');
+    const checkoutPage = document.getElementById('checkoutPage');
+    const selectedMethodDisplay = document.getElementById('selectedMethodDisplay');
+    const payBtn = document.getElementById('payBtn');
+    const completeBtn = document.getElementById('completeBtn');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const paymentStatusBox = document.getElementById('paymentStatusBox');
+    const paymentStatusText = document.getElementById('paymentStatusText');
+
+    // Store selected payment method
+    let selectedMethod = null;
+
+    // Show checkout page with selected method
+    function showCheckout(method) {
+      selectedMethod = method;
+
+      // Display the method nicely
+      let methodName = '';
+      switch(method) {
+        case 'card': methodName = 'Credit/Debit Card'; break;
+        case 'paypal': methodName = 'PayPal'; break;
+        case 'gcash': methodName = 'GCash'; break;
+        case 'bank': methodName = 'Bank Transfer'; break;
+      }
+
+      selectedMethodDisplay.textContent = methodName;
+
+      // Show checkout page
+      methodPage.classList.add('hidden');
+      checkoutPage.classList.remove('hidden');
+
+      // Enable Pay button
+      payBtn.disabled = false;
+
+      // Reset status box and complete button
+      paymentStatusBox.style.display = 'none';
+      completeBtn.disabled = true;
+    }
+
+    // Go back to method selection
+    function goBack() {
+      checkoutPage.classList.add('hidden');
+      methodPage.classList.remove('hidden');
+      payBtn.disabled = true;
+      completeBtn.disabled = true;
+      paymentStatusBox.style.display = 'none';
+      selectedMethod = null;
+    }
+
+    // Show modal confirmation before payment
+    function confirmPayment() {
+      confirmationModal.classList.remove('hidden');
+    }
+
+    // Close modal
+    function closeModal() {
+      confirmationModal.classList.add('hidden');
+    }
+
+    // On payment confirmed
+    function onPaymentConfirmed() {
+      closeModal();
+
+      // Simulate payment processing
+      paymentStatusBox.style.display = 'block';
+      paymentStatusText.textContent = `Payment successful via ${selectedMethodDisplay.textContent}!`;
+
+      // Disable pay button, enable complete button
+      payBtn.disabled = true;
+      completeBtn.disabled = false;
+    }
+
+    // Event listeners for payment method buttons
+    document.querySelectorAll('.method').forEach(button => {
+      button.addEventListener('click', () => {
+        showCheckout(button.dataset.method);
+      });
+    });
+
+    // Pay button click
+    payBtn.addEventListener('click', () => {
+      confirmPayment();
+    });
+
+    // Confirm modal buttons
+    confirmBtn.addEventListener('click', onPaymentConfirmed);
+    cancelBtn.addEventListener('click', closeModal);
+  </script>
 </body>
 </html>
