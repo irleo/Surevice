@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<<<<<<< HEAD
   <title>Checkout & Payment</title>
   <link rel="stylesheet" href="/assets/css/payment.css">
   <script src="/assets/js/payment.js" defer></script>
@@ -83,6 +84,62 @@
 
     <!-- Modal -->
     <div class="modal hidden" id="confirmationModal">
+=======
+  <title>Payment</title>
+  <link rel="stylesheet" href="/assets/css/payment.css">
+</head>
+<body>
+  <div class="overlay">
+  <div class="container">
+  <header class="logo-container">
+    <img src="/assets/images/logo-go.png" alt="Surevice Logo">
+  </header>
+      <h1 class="page-title">Booking Checkout & Payment</h1>
+    </div>
+  <div class="main-container">
+
+    <!-- LEFT: Summary -->
+    <div class="left-column">
+      <div class="card">
+        <div class="section-title">Service Summary</div>
+        <p class="title" id="serviceTitle">Deep House Cleaning Service</p>
+        <p>Schedule: <span id="serviceSchedule">May 20, 2025 - 10:00 AM</span></p>
+        <p>Duration: <span id="serviceDuration">4 hours</span></p>
+        <div class="price" id="serviceFee">₱1000</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Payment Breakdown</div>
+        <div class="breakdown">
+          <div><span>Service Fee</span><span id="feeAmount">₱1000</span></div>
+          <div><span>Platform Fee</span><span id="platformFee">₱50</span></div>
+          <div class="total"><span>Total to Pay</span><span id="totalAmount">₱1050</span></div>
+        </div>
+      </div>
+    </div>
+
+   <!-- RIGHT: Payment Display -->
+  <div class="right-column">
+    <div class="card">
+      <div class="section-title">Payment Method</div>
+      <div class="methods">
+        <div class="method selected" id="selectedMethodDisplay"></div>
+      </div>
+    </div>
+
+    <div class="card notice status-box" id="paymentStatusBox" style="display: none;">
+      <span id="paymentStatusText"></span>
+    </div>
+    <div class="action-buttons">
+      <button class="pay-btn" onclick="showModal()">Pay Now</button>
+      <button class="complete-btn" onclick="showModal('complete')" id="completeBtn" disabled>Mark as Complete</button>
+    </div>
+
+    <button class="back-btn" onclick="goBack()">← Back to Payment Methods</button>
+  </div>
+
+    <div class="modal" id="confirmationModal" style="display: none;">
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
       <div class="modal-content">
         <h3>Confirm Action</h3>
         <p id="modalMessage">Are you sure?</p>
@@ -92,6 +149,10 @@
         </div>
       </div>
     </div>
+<<<<<<< HEAD
   </div>
+=======
+  <script src="/assets/js/payment.js"></script>
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 </body>
 </html>

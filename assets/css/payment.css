@@ -8,7 +8,11 @@ body {
   height: 100px;
   margin: 0;
   font-family: 'Inter', sans-serif;
+<<<<<<< HEAD
   background-image: url(../images/surevice-bg.png); 
+=======
+  background-image: url(/assets/images/surevice-bg.png); 
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -62,6 +66,10 @@ body {
   display: none !important;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 .payment-methods-page {
   display: flex;
   flex-direction: column;
@@ -109,6 +117,10 @@ body {
   border-color: #0d6efd;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 .checkout-page {
   display: flex;
   gap: 40px;
@@ -152,10 +164,13 @@ body {
   font-size: 18px;
   font-weight: bold;
   margin-top: 10px;
+<<<<<<< HEAD
   border: 1.5px solid #ff8210;
   border-radius: 50px;
   box-sizing: border-box;
   padding: 5px;
+=======
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 
 .breakdown div {
@@ -169,10 +184,13 @@ body {
   font-weight: bold;
   font-size: 16px;
   margin-top: 10px;
+<<<<<<< HEAD
   padding: 5px;
   border: 1.5px solid #ff8210;
   border-radius: 50px;
   box-sizing: border-box;
+=======
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 
 button {
@@ -219,13 +237,20 @@ button {
 }
 
 .complete-btn:hover {
+<<<<<<< HEAD
   background-color: #f69432;
+=======
+  background-color: #1f1f1f;
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 
 .back-btn {
   display: block;
   margin: 20px auto;
+<<<<<<< HEAD
   font-size: 13px;
+=======
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
   background: none;
   border: none;
   color: #0d6efd;
@@ -236,7 +261,11 @@ button {
 }
 
 .back-btn:hover {
+<<<<<<< HEAD
   color: #282828;
+=======
+  color: #084298;
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 
 .modal {

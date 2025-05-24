@@ -1,18 +1,28 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
+<<<<<<< HEAD
   background-image: url(../images/surevice-bg.png); 
+=======
+  background-image: url(/assets/images/surevice-bg.png); 
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
+<<<<<<< HEAD
 
 .overlay {
   background-color: rgba(255, 255, 255, 0.87); 
   min-height: 100vh;
   
+=======
+.overlay {
+  background-color: rgba(255, 255, 255, 0.87); 
+  min-height: 100vh;
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 
 .grid {
@@ -131,6 +141,7 @@ h2 {
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: capitalize;
+<<<<<<< HEAD
   flex-shrink: 0; 
   width: 120px;   
   text-align: center;
@@ -150,11 +161,17 @@ h2 {
 
 .actions .btn {
   border-radius: 5px;
+=======
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 
 .status.pending {
   background-color: #fef9c3;
+<<<<<<< HEAD
   color: #282828be;
+=======
+  color: #92400e;
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 }
 .status.in_progress {
   background-color: #dbeafe;
@@ -196,6 +213,10 @@ th {
   gap: 24px;
 }
 
+<<<<<<< HEAD
+=======
+/* Responsive tweaks */
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -223,7 +244,11 @@ th {
   }
  .profile,
   .menu {
+<<<<<<< HEAD
     display: none; 
+=======
+    display: none; /* Optional: hide on small screens */
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
   }
 
   .main-content {
@@ -253,6 +278,7 @@ th {
     grid-template-columns: 1fr; /* Stack on small screens */
   }
 }
+<<<<<<< HEAD
 
 .pagination-controls {
   margin-top: 12px;
@@ -333,3 +359,5 @@ th {
 
 
 
+=======
+>>>>>>> 153431a06cee846cdda8c8ba39a9d30a86f3c3d7
