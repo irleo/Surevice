@@ -4,6 +4,7 @@
     <p class="text-muted mb-0">Explore a wide range of services tailored to your needs.</p>
   </div>
 
+
   <!-- Category Filter Section -->
   <div class="mb-4 border-top border-2 p-1">
     <h3 class="fs-5 fw-bold mb-3 mt-3">Filter by Category <i class="bi bi-filter"></i></h3>

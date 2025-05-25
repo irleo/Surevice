@@ -15,6 +15,37 @@ $users = [];
 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     $users[] = $row;
 }
+
+// Fetch all providers with is_verified = 0 and their pending documents
+$sql = "
+    SELECT u.user_id, u.first_name, u.last_name, d.document_id, d.filename, d.status
+    FROM Users u
+    LEFT JOIN ProviderDocuments d ON u.user_id = d.user_id AND d.status = 'Pending'
+    WHERE u.user_type = 'provider' AND u.is_verified = 0
+";
+$stmt = sqlsrv_query($conn, $sql);
+if ($stmt === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+$providers = [];
+while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    $userId = $row['user_id'];
+    if (!isset($providers[$userId])) {
+        $providers[$userId] = [
+            'user_id' => $userId,
+            'name' => $row['first_name'] . ' ' . $row['last_name'],
+            'documents' => [],
+        ];
+    }
+    if ($row['document_id'] !== null) {
+        $providers[$userId]['documents'][] = [
+            'document_id' => $row['document_id'],
+            'filename' => $row['filename'],
+            'status' => $row['status'],
+        ];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,18 +97,29 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></td>
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars(ucfirst($user['user_type'])) ?></td>
-            <td><?= ucfirst($user['account_status']) ?></td>
+            <?php
+              $statusText = '';
+              if ($user['user_type'] === 'provider') {
+                if ($user['is_verified'] == 0) {
+                  $statusText = 'Pending Verification';
+                } else {
+                  $statusText = ucfirst($user['account_status']);
+                }
+              } else {
+                $statusText = ucfirst($user['account_status']);
+              }
+            ?>
+            <td><?= $statusText ?></td>
             <td>
               <?php if ($user['account_status'] === 'Pending'): ?>
                 <button class="btn approve-btn" data-id="<?= $user['user_id'] ?>">Approve</button>
               <?php endif; ?>
-
               <?php if ($user['account_status'] === 'Suspended'): ?>
                 <button class="btn reactivate-btn" data-id="<?= $user['user_id'] ?>">Reactivate</button>
               <?php elseif ($user['account_status'] === 'Active'): ?>
                 <button class="btn suspend-btn" data-id="<?= $user['user_id'] ?>">Suspend</button>
               <?php endif; ?>
-
+            </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
@@ -88,14 +130,32 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     <div id="serviceVerify" class="section">
       <h2>Service Provider Verification</h2>
       <p>Review submitted documents and ID for verification.</p>
-      <div class="doc-box">
-        <strong>Provider:</strong> Jane Doe <br>
-        <strong>Submitted ID:</strong> <a href="#">view-id.jpg</a> <br><br>
-        <button class="btn">Approve</button>
-        <button class="btn">Reject</button>
-      </div>
-    </div>
 
+      <?php if (empty($providers)): ?>
+          <p>No providers pending verification.</p>
+      <?php else: ?>
+          <?php foreach ($providers as $provider): ?>
+              <div class="doc-box">
+                  <strong>Provider:</strong> <?= htmlspecialchars($provider['name']) ?><br>
+
+                  <?php if (count($provider['documents']) === 0): ?>
+                      <em>No submitted documents.</em><br>
+                  <?php else: ?>
+                      <ul>
+                          <?php foreach ($provider['documents'] as $doc): ?>
+                              <li>
+                                  <a href="../uploads/<?= htmlspecialchars($doc['filename']) ?>" target="_blank"><?= htmlspecialchars($doc['filename']) ?></a>
+                                  <button class="btn approve-doc" data-doc-id="<?= $doc['document_id'] ?>">Approve</button>
+                                  <button class="btn reject-doc" data-doc-id="<?= $doc['document_id'] ?>">Reject</button>
+                              </li>
+                          <?php endforeach; ?>
+                      </ul>
+                  <?php endif; ?>
+              </div>
+              <hr>
+          <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
 
     <!-- Service Monitoring -->
     <div id="monitoring" class="section">

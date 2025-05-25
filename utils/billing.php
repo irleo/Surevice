@@ -24,7 +24,7 @@ if ($user_id) {
   
 </head>
 <body>
-  <img src="../assets/images/left-pic.jpg" alt="background" id="bg-img">
+  <img src="../assets/images/surevice-bg.png" alt="background" id="bg-img">
   <div class="layer"></div>
 
   <div class="billing-form">
@@ -73,7 +73,7 @@ if ($user_id) {
         </div>
 
         <div class="d-flex mt-4 align-items-center justify-content-between">
-          <a href="index.php">Go back</a>
+          <a href="../index.php">Go back</a>
           <div class="ms-auto d-flex gap-2">
             <button type="button" onclick="clearCart()" class="btn btn-danger btn-sm">Clear</button>
             <button type="submit" class="btn btn-primary btn-sm">Confirm Booking</button>

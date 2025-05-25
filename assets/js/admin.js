@@ -44,3 +44,31 @@ function updateUserStatus(userId, action) {
   });
 }
 
+
+// Handle Approve/Reject 
+document.querySelectorAll('.approve-doc').forEach(button => {
+    button.addEventListener('click', () => {
+        const docId = button.dataset.docId;
+        if (confirm('Approve this document?')) {
+            fetch('../utils/verify-document.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ document_id: docId, action: 'approve' })
+            }).then(() => location.reload());
+        }
+    });
+});
+
+document.querySelectorAll('.reject-doc').forEach(button => {
+    button.addEventListener('click', () => {
+        const docId = button.dataset.docId;
+        if (confirm('Reject this document?')) {
+            fetch('../utils/verify-document.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ document_id: docId, action: 'reject' })
+            }).then(() => location.reload());
+        }
+    });
+});
+

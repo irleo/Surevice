@@ -9,19 +9,39 @@
 
    <style>
     body {
+      position: relative;
       background-color: #f8f9fa;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      background-image: url('assets/images/surevice-bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;  
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); 
+      pointer-events: none; 
+      z-index: 0;
     }
     .card {
       width: 100%;
       max-width: 450px;
-      padding: 2rem;
+      padding: 1.4rem 2rem 2rem ;
+      transform: scale(1.05); 
+      transform-origin: center center; 
     }
     .bi-person-plus {
       font-size: 60px;
+      margin: 0 auto;
     }
     .step {
       display: none;
@@ -37,6 +57,27 @@
     <i class="bi bi-person-plus text-center d-block mb-3"></i>
     <h4 class="text-center mb-0">Create an Account</h4>
     <small class="text-center mb-3">Welcome to Surevice</small>
+
+    <?php if (isset($_GET['error'])): ?>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" id="server-error-alert" style="position: fixed; top: 1rem; right: 1rem; z-index: 1050; min-width: 300px;">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong> Warning! </strong> <?= htmlspecialchars($_GET['error']) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['success'])): ?>
+      <div class="alert alert-success alert-dismissible fade show" role="alert" id="server-success-alert" style="position: fixed; top: 1rem; right: 1rem; z-index: 1050; min-width: 300px;">
+        <strong> Success! </strong> <?= htmlspecialchars($_GET['success']) ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <script>
+        setTimeout(() => {
+          window.location.href = 'login.php'; 
+        }, 3000); 
+      </script>
+    <?php endif; ?>
+
 
     <form method="post" action="utils/process-register.php" onsubmit="return checkPasswords()" autocomplete="off">
       
@@ -61,6 +102,7 @@
               name="phone"
               pattern="[0-9]{10}"
               inputmode="numeric"
+              maxlength="10"
               placeholder="XXXXXXXXXXX"
               required
             >
@@ -70,15 +112,15 @@
           <label class="form-label mb-0 d-block">Gender</label>
           <div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+              <input class="form-check-input border-dark" type="radio" name="gender" id="male" value="Male" required>
               <label class="form-check-label" for="male">Male</label>
             </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
+            <div class="form-check form-check-inline ms-5">
+              <input class="form-check-input border-dark" type="radio" name="gender" id="female" value="Female" required>
               <label class="form-check-label" for="female">Female</label>
             </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="other" value="Other" required>
+            <div class="form-check form-check-inline ms-5">
+              <input class="form-check-input border-dark" type="radio" name="gender" id="other" value="Other" required>
               <label class="form-check-label" for="other">Other</label>
             </div>
           </div>

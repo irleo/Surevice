@@ -121,3 +121,13 @@ CREATE TABLE Addresses (
 
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+-- 11. Documents Table
+CREATE TABLE ProviderDocuments (
+    document_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    uploaded_at DATETIME DEFAULT GETDATE(),
+    status VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Approved', 'Rejected')),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);

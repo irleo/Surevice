@@ -45,11 +45,23 @@ function clearCart() {
   document.getElementById('billingForm').reset();
 }
 
+
 function toggleAddressInput(value) {
-  const field = document.getElementById('addressField');
+  const addressTextarea = document.getElementById('address');
+  const savedAddress = addressTextarea.defaultValue.trim();
+
   if (value === 'saved') {
-    field.style.display = 'none';
+    if (savedAddress !== '') {
+      addressTextarea.value = savedAddress;
+      addressTextarea.placeholder = '';  // Clear placeholder if address exists
+    } else {
+      addressTextarea.value = '';
+      addressTextarea.placeholder = 'No saved address available';  // Set placeholder if no saved address
+    }
+    addressTextarea.readOnly = true;
   } else {
-    field.style.display = 'block';
+    addressTextarea.readOnly = false;
+    addressTextarea.value = '';
+    addressTextarea.placeholder = 'Enter your address here';  // Placeholder for manual input
   }
 }

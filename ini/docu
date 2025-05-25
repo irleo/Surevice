@@ -1,0 +1,45 @@
+
+1. System Overview
+  Surevice is a platform connecting customers with service providers offering various services. The system supports user management, service listings, bookings, payments, reviews, and provider verification workflows.
+    - Users can be customers, providers, or admins.
+    - Providers list services and upload verification documents.
+    - Admins manage users, verify providers, oversee bookings and payments.
+    - Customers book services and pay through the system.
+
+2. Database Schema Overview
+  Users -	Stores user information, roles (customer/provider/admin), status, and verification flags.
+  Services - Contains service listings created by providers.
+  Bookings - Records customer bookings for services.
+  Payments - Tracks payment details linked to bookings.
+  Wallets	- Manages provider earnings and balances.
+  Reviews	- Allows customers to rate and comment on completed services.
+  ServiceImages	- Stores images for each service, supporting a primary image.
+  Categories	- Holds categories to organize services.
+  ServiceCategoryLink	- Links services to multiple categories (many-to-many).
+  Addresses	- Stores multiple addresses per user, with default flags.
+  ProviderDocuments	- Stores uploaded verification documents by providers.
+
+3. Core Functional Modules
+3.1 User Management
+  - Users register as customers or providers.
+  - Admins can approve, suspend, or reactivate users.
+  - account_status field controls current state (Pending, Active, Suspended, Deactivated).
+  - is_verified flag indicates if a provider's identity is confirmed.
+  - Customers can save their address and edit their profile details every 14 days.
+ 
+3.2 Service Management
+  - Providers create service listings with titles, descriptions, fees, and images.
+  - Services can be active or inactive.
+  - Services linked to one or more categories for filtering.
+  - Average rating calculated from reviews.
+
+3.3 Booking and Payment
+  - Customers book services for specific dates.
+  - Booking status: pending, in_progress, completed, cancelled.
+  - Payments linked to bookings with status (held, released, refunded).
+  - Provider earnings tracked in wallets, updated after payment release.
+
+3.4 Provider Verification
+  - Providers upload documents stored in ProviderDocuments.
+  - Admins review documents to approve or reject.
+

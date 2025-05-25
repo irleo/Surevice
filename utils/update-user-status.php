@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     switch ($action) {
         case 'approve':
-            $sql = "UPDATE Users SET is_verified = 1, account_status = 'Active' WHERE user_id = ?";
+            $sql = "UPDATE Users SET account_status = 'Active' WHERE user_id = ?";
             break;
         case 'suspend':
             $sql = "UPDATE Users SET account_status = 'Suspended' WHERE user_id = ?";

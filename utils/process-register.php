@@ -15,11 +15,13 @@ $lastName = trim($_POST['lastName'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $gender = $_POST['gender'] ?? '';
 $dob = $_POST['dob'] ?? '';
-$userType = 'customer'; // Default for registration
+$userType = 'customer'; 
 $phone = $_POST['phone'] ?? '';
 
+;
 if (!preg_match('/^[0-9]{10}$/', $phone)) {
-    die("Invalid phone number.");
+    header("Location: ../register.php?step=1&error=" . urlencode("Invalid phone number."));
+    exit;
 }
 $full_phone = '+63' . $phone;
 
@@ -27,14 +29,15 @@ $password = $_POST['password'] ?? '';
 $confirmPassword = $_POST['confirm_password'] ?? '';
 
 if ($password !== $confirmPassword) {
-    header("Location: ../register.php?error=" . urlencode("Passwords do not match."));
+    header("Location: ../register.php?step=2&error=" . urlencode("Passwords do not match."));
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header("Location: ../register.php?error=" . urlencode("Invalid email format."));
+    header("Location: ../register.php?step=2&error=" . urlencode("Invalid email format."));
     exit;
 }
+
 
 // Check if email already exists
 $sqlCheckEmail = "SELECT user_id FROM Users WHERE email = ?";
@@ -44,7 +47,7 @@ if ($stmtEmail === false) {
     die(print_r(sqlsrv_errors(), true)); // handle query error
 }
 if (sqlsrv_fetch($stmtEmail)) {
-    header("Location: ../register.php?error=" . urlencode("Email already registered."));
+    header("Location: ../register.php?step=2&error=" . urlencode("Email already registered."));
     exit;
 }
 
@@ -56,7 +59,7 @@ if ($stmtPhone === false) {
     die(print_r(sqlsrv_errors(), true)); // handle query error
 }
 if (sqlsrv_fetch($stmtPhone)) {
-    header("Location: ../register.php?error=" . urlencode("Phone number already registered."));
+    header("Location: ../register.php?step=1&error=" . urlencode("Phone number already registered."));
     exit;
 }
 
@@ -73,16 +76,16 @@ $params = [$firstName, $lastName, $email, $passwordHash, $userType, $full_phone,
 
 $stmtInsert = sqlsrv_query($conn, $sqlInsert, $params);
 
-if ($stmtInsert) {
-    header("Location: ../login.php?success=" . urlencode("Account created! Please log in."));
-    exit;
-} else {
+if ($stmtInsert === false) {
     $errorMsg = "Registration failed.";
     if (($errors = sqlsrv_errors()) != null) {
         foreach ($errors as $error) {
             $errorMsg .= " SQLSTATE: " . $error['SQLSTATE'] . " - Message: " . $error['message'];
         }
     }
-    header("Location: ../register.php?error=" . urlencode($errorMsg));
+    header("Location: ../register.php?step=2&error=" . urlencode($errorMsg));
     exit;
 }
+
+header("Location: ../register.php?success=" . urlencode("Registration successful! You may now log in."));
+exit;

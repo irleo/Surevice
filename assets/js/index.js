@@ -43,5 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Toggle sidebar visibility
+const btn = document.getElementById('toggleSidebarBtn');
+const sidebar = document.getElementById('sidebar');
 
-
+btn.addEventListener('click', () => {
+  if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+    sidebar.style.display = 'block';
+    btn.textContent = '<';  
+  } else {
+    sidebar.style.display = 'none';
+    btn.textContent = '☰';  
+  }
+});

@@ -16,19 +16,45 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <style>
     body {
+      position: relative;
       background-color: #f8f9fa;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      background-image: url('assets/images/surevice-bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;  
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); 
+      pointer-events: none; 
+      z-index: 0;
     }
     .card {
+      z-index: 1;
       width: 100%;
       max-width: 400px;
-      padding: 2rem;
+      padding: .7rem 2rem 2rem ;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      transform: scale(1.15); 
+      transform-origin: center center; 
     }
-    .bi-person-circle {
-      font-size: 60px;
+    .card img {
+      width: 230px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      padding: 0;
     }
   </style>
 </head>
@@ -36,7 +62,7 @@ if (isset($_SESSION['user_id'])) {
 <body>
 
   <div class="card shadow-sm">
-    <i class="bi bi-person-circle text-center d-block mb-3"></i>
+    <img src="assets/images/logo.png" alt="surevice logo">
     <h4 class="text-center mb-4">Login to Surevice</h4>
 
     <?php if (isset($_GET['error'])): ?>

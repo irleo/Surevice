@@ -24,11 +24,13 @@ $userName = $_SESSION['name'] ?? 'User';
 <body>
 
   <?php include 'components/navbar-top.php'; ?>
-
+  
   <div class="layout d-flex">
-    <aside class="sidebar p-4">
+    <aside id="sidebar" class="sidebar p-4">
       <?php include 'components/sidebar.php'; ?>
     </aside>
+     <button id="toggleSidebarBtn" class="btn toggle-btn" aria-label="Toggle Sidebar">&#9776;</button>
+     
     <main>
       <div class="product-grid">
         <?php include 'components/services.php'; ?>

@@ -46,6 +46,8 @@ body {
   max-width: 600px;
   width: 100%;
   position: relative;
+  transform: scale(0.95); 
+  transform-origin: center center; 
 }
 
 #billing legend {
