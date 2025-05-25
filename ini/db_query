@@ -22,7 +22,7 @@ CREATE TABLE Users (
     created_at DATETIME DEFAULT GETDATE(),
     last_name_change DATETIME NULL,
     gender VARCHAR(10) NOT NULL DEFAULT 'Other' CHECK (gender IN ('Male', 'Female', 'Other'),
-    address VARCHAR(255);
+    account_status VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (account_status IN ('Pending', 'Active', 'Suspended', 'Deactivated'))
 );
 
 -- 2. Services Table

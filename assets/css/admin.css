@@ -59,6 +59,10 @@ body {
   background-color: #efae6f;
   margin-top: auto;
   margin-bottom: 1rem;
+  width: 90%;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 /* Main content */
@@ -83,7 +87,7 @@ body {
 }
 
 /* Buttons in table rows or sections */
-.btn {
+.btn, .logout-btn {
   margin-right: 5px;
   padding: 0.4rem 0.8rem;
   background-color: #ff8210;

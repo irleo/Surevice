@@ -10,8 +10,7 @@ if (!$email || !$password) {
     exit;
 }
 
-// Prepare SQL statement with parameter
-$sql = "SELECT user_id, first_name, last_name, user_type, password_hash FROM Users WHERE email = ?";
+$sql = "SELECT user_id, first_name, last_name, user_type, password_hash, account_status FROM Users WHERE email = ?";
 $params = [$email];
 
 $stmt = sqlsrv_query($conn, $sql, $params);
@@ -23,6 +22,12 @@ if ($stmt === false) {
 $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
 if ($user) {
+    // Block Suspended and Deactivated accounts
+    if (in_array($user['account_status'], ['Suspended', 'Deactivated'])) {
+        header("Location: ../login.php?error=" . urlencode("Your account is currently {$user['account_status']}. Please contact support."));
+        exit;
+    }
+
     if (password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['name'] = $user['first_name'] . ' ' . $user['last_name'];
