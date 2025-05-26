@@ -25,6 +25,20 @@ $booking_id = (int)$_GET['booking_id'];
       justify-content: center;
       height: 100vh;
     }
+
+       body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: url('/assets/images/surevice-bg.png') no-repeat center center fixed;
+      background-size: cover;
+      opacity: 0.1; 
+      z-index: -1;
+    }
+
     .confirmation-box {
       background: white;
       padding: 2rem;
@@ -35,8 +49,46 @@ $booking_id = (int)$_GET['booking_id'];
     }
     .checkmark {
       font-size: 3rem;
-      color: green;
+      color: #ff8210;
     }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+      border: none;
+      user-select: none;
+    }
+
+    .btn-success {
+      background-color: #ff8210;  
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #f69432; 
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #282828;  
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #efae6f; 
+      color: white;
+    }
+
+    .me-2 {
+      margin-right: 0.5rem; 
+    }
+
   </style>
 </head>
 <body>

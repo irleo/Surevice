@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require __DIR__ . '/../utils/config.php';
 
@@ -167,9 +168,12 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <button class="btn">Disable</button>
         <button class="btn">Dismiss Report</button>
       </div>
+      </div>
     </div>
   </div>
-
-  <script src="../assets/js/admin.js"></script>
-</body>
+  <script>
+  const serviceChartData = <?= json_encode($serviceData) ?>;
+  </script>>
+    <script src="../assets/js/admin.js"></script>
+  </body>
 </html>
