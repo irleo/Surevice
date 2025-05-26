@@ -43,3 +43,74 @@
   - Providers upload documents stored in ProviderDocuments.
   - Admins review documents to approve or reject.
 
+
+4. Surevice System Architecture Diagram
+[User Registers/Login]
+        |
+        v
+[Users Table] ---------------------------+
+        |                                |
+        |                                v
+        |                          [Addresses Table]
+        |                                |
+        |                                v
+        |                        [ProviderDocuments] (if provider)
+        |
+        v
+[Creates Service] ------------------> [Services Table]
+        |                                |
+        |                                +--> [ServiceImages Table]
+        |                                |
+        |                                +--> [ServiceCategoryLink] <--> [Categories Table]
+        |
+        v
+[Customer Browses & Books Service]
+        |
+        v
+[Bookings Table]
+        |
+        +--> [Payments Table]
+        |        |
+        |        v
+        |  [Wallets Table] (for provider earnings)
+        |
+        v
+[Reviews Table] (optional)
+
+  4.1. User Registration and Management
+  - Users table stores all types of users: customer, provider, admin.
+  - Upon registration:
+      - user_type, is_verified, and account_status are set.
+      - Addresses can be added by users (e.g., home/work).
+      - ProviderDocuments can be uploaded for verification.
+        - Admin reviews and changes status of documents.
+      - Admin can change account_status to "Active" or "Suspended".
+
+  4.2. Provider Service Management
+  - A provider creates a Service:
+    - Linked to their user_id.
+    - Described by title, description, service_fee, etc.
+    - Each Service can have:
+      - ServiceImages (optional; supports primary image).
+      - Multiple Categories via ServiceCategoryLink.
+
+  4.3. Customer Booking Flow
+  - A customer browses and selects a Service to book:
+    - A Booking entry is created:
+      - Linked to the selected service_id and the customer_id.
+      - Contains booking status and scheduled_for datetime.
+
+  4.4. Payments and Wallets
+  - When a booking is paid:
+    - A Payment record is created:
+      - Linked to booking_id, and stores amount, fee_deducted, provider_earnings.
+    - Payment status transitions from held to released.
+  - Provider earnings go to the Wallets table:
+    - Tracks balance and last_updated.
+
+  4.5. Post-Booking Actions
+  - After a booking is completed, the customer may:
+    - Leave a Review (optional):
+      - Linked to booking_id.
+      - Stores rating and comment.
+
