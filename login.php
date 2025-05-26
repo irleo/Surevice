@@ -15,17 +15,15 @@ if (isset($_SESSION['user_id'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <style>
-    body {
+   body {
       position: relative;
       background-color: #f8f9fa;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-image: url('assets/images/surevice-bg.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      /* Remove background-image here */
+      background-image: none;
     }
 
     body::before {
@@ -35,10 +33,15 @@ if (isset($_SESSION['user_id'])) {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.4); 
-      pointer-events: none; 
-      z-index: 0;
+      background-image: url('assets/images/surevice-bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.5; 
+      pointer-events: none;
+      z-index: -1;
     }
+
     .card {
       z-index: 1;
       width: 100%;

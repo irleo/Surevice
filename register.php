@@ -10,28 +10,28 @@
    <style>
     body {
       position: relative;
-      background-color: #f8f9fa;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-image: url('assets/images/surevice-bg.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-color: #f8f9fa;
+      background-image: none;
     }
 
     body::before {
       content: '';
-      position: fixed;  
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4); 
-      pointer-events: none; 
-      z-index: 0;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('assets/images/surevice-bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.5;  
+      z-index: -1;
     }
+
+
     .card {
       width: 100%;
       max-width: 450px;
@@ -56,7 +56,7 @@
   <div class="card shadow-sm">
     <i class="bi bi-person-plus text-center d-block mb-3"></i>
     <h4 class="text-center mb-0">Create an Account</h4>
-    <small class="text-center mb-3">Welcome to Surevice</small>
+    <small class="text-center mb-3">Welcome to Surevice!</small>
 
     <?php if (isset($_GET['error'])): ?>
       <div class="alert alert-warning alert-dismissible fade show" role="alert" id="server-error-alert" style="position: fixed; top: 1rem; right: 1rem; z-index: 1050; min-width: 300px;">

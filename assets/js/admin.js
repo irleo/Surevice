@@ -72,3 +72,47 @@ document.querySelectorAll('.reject-doc').forEach(button => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof serviceChartData !== 'undefined' && serviceChartData.length > 0) {
+    const labels = serviceChartData.map(item => item.service_type);
+    const data = serviceChartData.map(item => item.count);
+    const backgroundColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8AFFC1', '#D276FF', '#FFA07A'];
+
+    const ctx = document.getElementById('servicePieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Service Type Distribution'
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const total = data.reduce((a, b) => a + b, 0);
+                const percent = ((context.raw / total) * 100).toFixed(1);
+                return `${context.label}: ${context.raw} (${percent}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Highlight most popular service
+    const maxIndex = data.indexOf(Math.max(...data));
+    const popular = labels[maxIndex];
+    const count = data[maxIndex];
+    document.getElementById('popularService').textContent = `Most Popular Service: ${popular} (${count} listings)`;
+  }
+});
+
