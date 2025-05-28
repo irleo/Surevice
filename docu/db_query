@@ -11,7 +11,7 @@ EXEC sp_addrolemember 'db_owner', 'surevice_admin';
 -- Login
 Customer: yen@example.com - customer123
 Provider: kang@example.com - provider123
-Admin: leo@example.com - admin123
+Admin: admin@example.com - admin123
 
 -- 1. Users Table
 CREATE TABLE Users (
@@ -21,24 +21,25 @@ CREATE TABLE Users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     phone VARCHAR(20),
-    user_type VARCHAR(20) CHECK (user_type IN ('customer', 'provider', 'admin')) NOT NULL,
+    user_type VARCHAR(20) NOT NULL CHECK (user_type IN ('customer', 'provider', 'admin')),
     is_verified BIT DEFAULT 0,
     created_at DATETIME DEFAULT GETDATE(),
     last_name_change DATETIME NULL,
-    gender VARCHAR(10) NOT NULL DEFAULT 'Other' CHECK (gender IN ('Male', 'Female', 'Other'),
+    gender VARCHAR(10) NOT NULL DEFAULT 'Other' CHECK (gender IN ('Male', 'Female', 'Other')),
     account_status VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (account_status IN ('Pending', 'Active', 'Suspended', 'Deactivated'))
 );
 
+
 -- 2. Services Table
 CREATE TABLE Services (
-    service_id INT PRIMARY KEY AUTO_INCREMENT,
+    service_id INT IDENTITY(1,1) PRIMARY KEY,
     provider_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
-    description TEXT,
+    description TEXT NULL,
     service_fee DECIMAL(10,2) NOT NULL,
     average_rating DECIMAL(2,1) DEFAULT 0.0, 
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active BIT DEFAULT 1,
+    created_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (provider_id) REFERENCES Users(user_id)
 );
 
@@ -48,11 +49,13 @@ CREATE TABLE Bookings (
     service_id INT NOT NULL,
     customer_id INT NOT NULL,
     booking_date DATETIME DEFAULT GETDATE(),
-    scheduled_for DATETIME,
-    status VARCHAR(20) CHECK (status IN ('pending', 'in_progress', 'completed', 'cancelled')) DEFAULT 'pending',
+    scheduled_for DATETIME NULL,
+    address VARCHAR(500) NULL,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'in_progress', 'completed', 'cancelled')),
     FOREIGN KEY (service_id) REFERENCES Services(service_id),
     FOREIGN KEY (customer_id) REFERENCES Users(user_id)
 );
+
 
 -- 4. Payments Table
 CREATE TABLE Payments (
@@ -61,10 +64,11 @@ CREATE TABLE Payments (
     amount DECIMAL(10,2) NOT NULL,
     fee_deducted DECIMAL(10,2) NOT NULL,
     provider_earnings DECIMAL(10,2) NOT NULL,
-    status VARCHAR(20) CHECK (status IN ('held', 'released', 'refunded')) DEFAULT 'held',
+    status VARCHAR(20) DEFAULT 'held' CHECK (status IN ('held', 'released', 'refunded')),
     paid_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
 );
+
 
 -- 5. Wallets Table
 CREATE TABLE Wallets (
@@ -75,12 +79,13 @@ CREATE TABLE Wallets (
     FOREIGN KEY (provider_id) REFERENCES Users(user_id)
 );
 
+
 -- 6. Reviews Table (Optional)
 CREATE TABLE Reviews (
     review_id INT IDENTITY(1,1) PRIMARY KEY,
     booking_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
-    comment TEXT,
+    comment VARCHAR(MAX) NULL,
     created_at DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
 );
@@ -98,7 +103,7 @@ CREATE TABLE ServiceImages (
 CREATE TABLE Categories (
     category_id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(100) UNIQUE,
-    color VARCHAR(20)
+    color VARCHAR(20) NULL
 );
 
 -- 9. ServiceCategoryLink
@@ -112,19 +117,19 @@ CREATE TABLE ServiceCategoryLink (
 
 -- 10. Addresses Table
 CREATE TABLE Addresses (
-    address_id INT PRIMARY KEY IDENTITY(1,1),
+    address_id INT IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
-    label VARCHAR(50),           -- like, "Home", "Work"
-    street VARCHAR(255),
-    barangay VARCHAR(100),
-    city VARCHAR(100),
-    province VARCHAR(100),
-    postal_code VARCHAR(10),
+    label VARCHAR(50) NULL,
+    street VARCHAR(255) NULL,
+    barangay VARCHAR(100) NULL,
+    city VARCHAR(100) NULL,
+    province VARCHAR(100) NULL,
+    postal_code VARCHAR(10) NULL,
     is_default BIT DEFAULT 0,
     created_at DATETIME DEFAULT GETDATE(),
-
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
 
 -- 11. Documents Table
 CREATE TABLE ProviderDocuments (
@@ -135,3 +140,6 @@ CREATE TABLE ProviderDocuments (
     status VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Approved', 'Rejected')),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+

@@ -9,13 +9,16 @@ document.addEventListener("DOMContentLoaded", function () {
     div.classList.add("booking-item");
     div.innerHTML = `
       <div class="service-info">
-        <strong>${booking.service}</strong><br/>
-        <small>${booking.date}</small>
+        <strong class="fs-6">${booking.service} - </strong>
+        <small class="fw-medium">${booking.service_fee}</small><br>
+        <small>${booking.date}</small> 
       </div>
       <span class="status ${booking.status}">${booking.status.replace('_', ' ')}</span>
       <div class="actions">
-        <button class="btn btn-sm btn-success mark-complete" data-id="${booking.booking_id}">Complete</button>
-        <button class="btn btn-sm btn-danger cancel-booking" data-id="${booking.booking_id}">Cancel</button>
+        ${booking.status === "in_progress" 
+        ? `<button class="btn btn-sm btn-success mark-complete" data-id="${booking.booking_id}">Mark Complete</button>` 
+        : ""}
+        <button class="btn btn-sm btn-danger cancel-booking" data-id="${booking.booking_id}>Cancel</button>
       </div>
     `;
     currentList.appendChild(div);
@@ -39,8 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const bookingId = e.target.dataset.id;
 
     if (e.target.classList.contains("mark-complete")) {
-      // Complete booking immediately
-      updateBookingStatus(bookingId, "completed");
+      const confirmComplete = confirm("Are you sure you want to mark this booking as complete?");
+      if (confirmComplete) {
+        updateBookingStatus(bookingId, "completed");
+      }
     }
 
     if (e.target.classList.contains("cancel-booking")) {

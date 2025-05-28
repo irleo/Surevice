@@ -1,0 +1,56 @@
+-- Booking in_progress = Payment held
+CREATE TRIGGER trg_BookingInProgress_InsertPayment
+ON Bookings
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE p
+    SET p.status = 'held', p.paid_at = NULL
+    FROM Payments p
+    JOIN inserted i ON p.booking_id = i.booking_id
+    WHERE i.status = 'in_progress' AND p.status <> 'held';
+
+    -- Optional: insert payment if not exists
+    INSERT INTO Payments (booking_id, amount, fee_deducted, provider_earnings, status)
+    SELECT i.booking_id, s.service_fee, 0.00, s.service_fee, 'held'
+    FROM inserted i
+    JOIN Bookings b ON i.booking_id = b.booking_id
+    JOIN Services s ON b.service_id = s.service_id
+    WHERE i.status = 'in_progress'
+    AND NOT EXISTS (
+        SELECT 1 FROM Payments p WHERE p.booking_id = i.booking_id
+    );
+END;
+
+-- Booking completed = Release payment
+CREATE TRIGGER trg_BookingCompleted_ReleasePayment
+ON Bookings
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Payments
+    SET status = 'released',
+        paid_at = GETDATE()
+    FROM Payments p
+    JOIN inserted i ON p.booking_id = i.booking_id
+    WHERE i.status = 'completed' AND p.status = 'held';
+END;
+
+-- Booking cancelled = Refund payment
+CREATE TRIGGER trg_BookingCancelled_Refund
+ON Bookings
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Payments
+    SET status = 'refunded'
+    FROM Payments p
+    JOIN inserted i ON p.booking_id = i.booking_id
+    WHERE i.status = 'cancelled' AND p.status = 'released';
+END;

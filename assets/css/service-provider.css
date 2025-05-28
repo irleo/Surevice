@@ -11,7 +11,7 @@ body {
       left: 0;
       height: 100%;
       width: 100%;
-      background: url('/assets/images/surevice-bg.png') no-repeat center center fixed;
+      background: url('../images/surevice-bg.png') no-repeat center center fixed;
       background-size: cover;
       opacity: 0.1; /* Adjust this value from 0 (invisible) to 1 (fully visible) */
       z-index: -1;
@@ -119,9 +119,9 @@ body {
       background-color: #fff;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    #addServiceModal .form-control::placeholder {
+    /* #addServiceModal .form-control::placeholder {
       color: #efae6f;
-    }
+    } */
     #addServiceModal .form-control:focus,
     #addServiceModal .form-select:focus {
       border-color: #f69432;

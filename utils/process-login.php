@@ -38,7 +38,7 @@ if ($user) {
                 header("Location: ../index.php");
                 break;
             case 'provider':
-                header("Location: ../dashboard/provider.php");
+                header("Location: ../dashboard/service-provider.php");
                 break;
             case 'admin':
                 header("Location: ../dashboard/admin.php");

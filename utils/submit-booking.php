@@ -38,12 +38,12 @@ $scheduled_for = $date->format('Y-m-d H:i:s');
 
 // Insert into Bookings
 $insertBooking = "
-    INSERT INTO Bookings (service_id, customer_id, scheduled_for, status)
+    INSERT INTO Bookings (service_id, customer_id, scheduled_for, status, address)
     OUTPUT INSERTED.booking_id
-    VALUES (?, ?, ?, 'pending')
+    VALUES (?, ?, ?, 'pending', ?)
 ";
 
-$params = [$service_id, $user_id, $scheduled_for];
+$params = [$service_id, $user_id, $scheduled_for, $address];
 $stmt = sqlsrv_query($conn, $insertBooking, $params);
 
 if ($stmt === false) {
@@ -60,17 +60,7 @@ if (!$booking_id) {
     die("Failed to retrieve booking ID.");
 }
 
-// Optional: Log payment info (fake example)
-$fee = $_POST['service_fee'] ?? 0;
-$fee = floatval($fee);
-$fee_deducted = round($fee * 0.10, 2); // e.g., 10% fee
-$provider_earnings = $fee - $fee_deducted;
 
-$insertPayment = "
-    INSERT INTO Payments (booking_id, amount, fee_deducted, provider_earnings, status)
-    VALUES (?, ?, ?, ?, 'held')
-";
-sqlsrv_query($conn, $insertPayment, [$booking_id, $fee, $fee_deducted, $provider_earnings]);
 
 header("Location: confirmation.php?booking_id=" . $booking_id);
 exit;

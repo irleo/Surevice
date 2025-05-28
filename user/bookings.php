@@ -22,7 +22,7 @@ $user = sqlsrv_fetch_array($user_stmt, SQLSRV_FETCH_ASSOC);
 
 // Fetch current bookings
 $current_sql = "
-SELECT b.booking_id, s.title, b.scheduled_for, b.status
+SELECT b.booking_id, s.title, s.service_fee, b.scheduled_for, b.status
 FROM Bookings b
 JOIN Services s ON s.service_id = b.service_id
 WHERE b.customer_id = ? AND b.status IN ('pending', 'in_progress')
@@ -54,6 +54,7 @@ $addr_stmt = sqlsrv_query($conn, $addr_sql, [$user_id]);
 $address = sqlsrv_fetch_array($addr_stmt, SQLSRV_FETCH_ASSOC);
 
 // echo '<pre>';
+// print_r($current_bookings);
 // print_r($past_transactions);
 // echo '</pre>';
 // exit;
@@ -146,6 +147,7 @@ $address = sqlsrv_fetch_array($addr_stmt, SQLSRV_FETCH_ASSOC);
       return [
         'booking_id' => $b['booking_id'],
         'service' => $b['title'],
+        'service_fee' => "₱" . number_format(floatval($b['service_fee']), 2),
         'date' => $b['scheduled_for']->format('F j, Y - g:i A'),
         'status' => $b['status']
       ];
