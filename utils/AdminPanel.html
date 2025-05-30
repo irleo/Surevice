@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Sidebar with Logo and Navigation -->
+  <div class="sidebar">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="Surevice" class="logo">
+    </div>
+    <h2>Admin Panel</h2>
+    <button onclick="showSection('userMgmt')">User Management</button>
+    <button onclick="showSection('serviceVerify')">Service Provider Verification</button>
+    <button onclick="showSection('booking')">Booking Oversight</button>
+    <button onclick="showSection('monitoring')">Service Monitoring</button>
+    
+    <button class="logout-btn">Logout</button>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search...">
+      <button onclick="search()">Search</button>
+    </div>
+
+    <!-- User Management -->
+    <div id="userMgmt" class="section active">
+      <h2>User Management</h2>
+      <p>Approve or suspend user accounts.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>001</td>
+            <td>Alice Smith</td>
+            <td>alice@example.com</td>
+            <td>Pending</td>
+            <td>
+              <button class="btn">Approve</button>
+              <button class="btn">Suspend</button>
+            </td>
+          </tr>
+          <tr>
+            <td>002</td>
+            <td>Bob Johnson</td>
+            <td>bob@example.com</td>
+            <td>Active</td>
+            <td>
+              <button class="btn">Suspend</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Service Provider Verification -->
+    <div id="serviceVerify" class="section">
+      <h2>Service Provider Verification</h2>
+      <p>Review submitted documents and ID for verification.</p>
+      <div class="doc-box">
+        <strong>Provider:</strong> Jane Doe <br>
+        <strong>Submitted ID:</strong> <a href="#">view-id.jpg</a> <br><br>
+        <button class="btn">Approve</button>
+        <button class="btn">Reject</button>
+      </div>
+    </div>
+
+    <!-- Booking Oversight -->
+    <div id="booking" class="section">
+      <h2>Booking Oversight</h2>
+      <p>Resolve disputes or intervene in payment issues.</p>
+      <div class="dispute-box">
+        <strong>Dispute:</strong> Booking #1234 <br>
+        <strong>Issue:</strong> Payment not received. <br><br>
+        <button class="btn">Mark Resolved</button>
+        <button class="btn">Escalate</button>
+      </div>
+    </div>
+
+    <!-- Service Monitoring -->
+    <div id="monitoring" class="section">
+      <h2>Service Monitoring</h2>
+      <p>Manage or disable inappropriate listings.</p>
+      <div class="monitor-box">
+        <strong>Listing:</strong> "Premium Massage by Mark" <br>
+        <strong>Status:</strong> Reported <br><br>
+        <button class="btn">Disable</button>
+        <button class="btn">Dismiss Report</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
