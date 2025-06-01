@@ -59,9 +59,16 @@ function toggleAddressInput(value) {
       addressTextarea.placeholder = 'No saved address available';  // Set placeholder if no saved address
     }
     addressTextarea.readOnly = true;
+    addressTextarea.style.backgroundColor = '#f0f0f0';  // Light gray background for read-only
   } else {
     addressTextarea.readOnly = false;
     addressTextarea.value = '';
     addressTextarea.placeholder = 'Enter your address here';  // Placeholder for manual input
+    addressTextarea.style.backgroundColor = '#ffffff';  
   }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  const dropdown = document.getElementById('addressOption');
+  toggleAddressInput(dropdown.value);  // Trigger initial state
+});

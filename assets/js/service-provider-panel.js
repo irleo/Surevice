@@ -32,40 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-// Booking Stats Chart Setup
-const ctx = document.getElementById('statsChart').getContext('2d');
-  const statsChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Category Popularity',
-        data: data,
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-        borderRadius: 5
-      }]
-    },
-    options: {
-      responsive: true,
-    
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 5
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: false
-        }
-      }
-    }
-  });
-
 
   // Handle Form Submission
   const form = document.getElementById('addServiceForm');
@@ -153,20 +119,19 @@ const ctx = document.getElementById('statsChart').getContext('2d');
 });
 
 
-
 document.getElementById('addServiceForm').addEventListener('submit', function (e) {
 e.preventDefault();
 
 const formData = new FormData(this);
 
-fetch('add_service.php', {
+fetch('../utils/add-service.php', {
   method: 'POST',
   body: formData
 })
   .then(response => response.text())
   .then(result => {
     if (result.trim() === 'success') {
-      alert('Service schedule added!');
+      alert('Service added!');
       location.reload();
     } else {
       console.error(result);
@@ -180,40 +145,62 @@ fetch('add_service.php', {
 });
 
 const serviceImageInput = document.getElementById('serviceImage');
-  const primaryIndexInput = document.getElementById('primaryIndex');
-  const previewContainer = document.getElementById('previewContainer');
+const primaryIndexInput = document.getElementById('primaryIndex');
+const previewContainer = document.getElementById('previewContainer');
 
-  let files = [];
+let files = [];
 
-  serviceImageInput.addEventListener('change', () => {
-    files = Array.from(serviceImageInput.files);
-    renderPreviews();
+serviceImageInput.addEventListener('change', () => {
+  files = Array.from(serviceImageInput.files);
+  renderPreviews({
+    files,
+    container: previewContainer,
+    primaryIndex: parseInt(primaryIndexInput.value, 10) || 0
   });
+});
 
-  primaryIndexInput.addEventListener('input', () => {
-    renderPreviews();
+primaryIndexInput.addEventListener('input', () => {
+  renderPreviews({
+    files,
+    container: previewContainer,
+    primaryIndex: parseInt(primaryIndexInput.value, 10) || 0
   });
+});
 
-  function renderPreviews() {
-    previewContainer.innerHTML = '';
-    const primaryIndex = parseInt(primaryIndexInput.value, 10);
 
+function renderPreviews({ files = [], urls = [], container, primaryIndex }) {
+  container.innerHTML = '';
+
+  if (files.length > 0) {
     files.forEach((file, idx) => {
       const img = document.createElement('img');
       img.src = URL.createObjectURL(file);
-      img.style.width = '80px';
-      img.style.height = '80px';
-      img.style.objectFit = 'cover';
-      img.style.border = '3px solid transparent';
-      img.style.borderRadius = '8px';
-
-      if (primaryIndex === idx + 1) {
-        img.style.borderColor = 'orange';
-      }
-
-      previewContainer.appendChild(img);
+      stylePreview(img, idx, primaryIndex);
+      container.appendChild(img);
+    });
+  } else if (urls.length > 0) {
+    urls.forEach((url, idx) => {
+      const img = document.createElement('img');
+      img.src = url;
+      stylePreview(img, idx, primaryIndex);
+      container.appendChild(img);
     });
   }
+}
+
+function stylePreview(img, idx, primaryIndex) {
+  img.style.width = '110px';
+  img.style.height = '100px';
+  img.style.objectFit = 'cover';
+  img.style.border = '3px solid transparent';
+  img.style.borderRadius = '8px';
+
+  if (primaryIndex === idx + 1) {
+    img.style.borderColor = 'orange';
+  }
+}
+
+
 
 document.querySelectorAll('.booking-action').forEach(button => {
   button.addEventListener('click', function () {
@@ -253,4 +240,90 @@ document.querySelectorAll('.booking-action').forEach(button => {
     .catch(err => console.error("Error:", err));
   });
 });
+
+function confirmDelete(serviceId) {
+  fetch(`../utils/check-bookings.php?id=${serviceId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.hasBookings) {
+        alert("Cannot delete this service: it has existing bookings.");
+      } else {
+        if (confirm("Are you sure you want to delete this service?")) {
+          window.location.href = `../utils/delete-service.php?id=${serviceId}`;
+        }
+      }
+    })
+    .catch(() => {
+      alert("Error checking bookings.");
+    });
+}
+
+document.querySelectorAll('.edit-service-btn').forEach(button => {
+  button.addEventListener('click', function () {
+    const data = this.dataset;
+
+    document.getElementById('serviceId').value = data.id;
+    document.getElementById('editServiceTitle').value = data.title;
+    document.getElementById('editServiceDescription').value = data.description;
+    document.getElementById('editAmount').value = data.fee;
+    document.getElementById('editPrimaryIndex').value = data.primary;
+
+    // Log all data attributes
+    console.log('ID:', this.dataset.id);
+    console.log('Title:', this.dataset.title);
+    console.log('Description:', this.dataset.description);
+    console.log('Fee:', this.dataset.fee);
+    console.log('Categories:', this.dataset.categories); // usually a JSON string
+    console.log('Images:', this.dataset.images);         // usually a JSON string
+    console.log('Primary Image Index:', this.dataset.primary);
+
+    // Optional: parse categories/images if they're JSON-encoded
+    try {
+      const categories = JSON.parse(this.dataset.categories);
+      console.log('Parsed categories:', categories);
+    } catch (e) {
+      console.warn('Failed to parse categories');
+    }
+
+    try {
+      const images = JSON.parse(this.dataset.images);
+      console.log('Parsed images:', images);
+    } catch (e) {
+      console.warn('Failed to parse images');
+    }
+
+    // Handle categories (clear first)
+    document.querySelectorAll('#editServiceModal input[type="checkbox"]').forEach(cb => cb.checked = false);
+    const categories = data.categories ? JSON.parse(data.categories) : [];
+    categories.forEach(category => {
+      const cb = document.querySelector(`#editServiceModal input[type="checkbox"][value="${category}"]`);
+      if (cb) cb.checked = true;
+    });
+
+    
+
+    // Handle image previews (clear + repopulate)
+    const container = document.getElementById('editPreviewContainer');
+    container.innerHTML = '';
+    const imageUrls = data.images ? JSON.parse(data.images) : [];
+    imageUrls.forEach((url, idx) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.width = '110px';
+    img.style.height = '100px';
+    img.style.objectFit = 'cover';
+    img.style.border = '3px solid transparent';
+    img.style.borderRadius = '8px';
+
+    if (idx + 1 === parseInt(data.primary)) {
+      img.style.borderColor = 'orange';
+    }
+
+    container.appendChild(img);
+    });
+
+
+  });
+});
+
 

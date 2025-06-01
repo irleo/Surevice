@@ -1,8 +1,16 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
+if (isset($_SESSION['user_type'])) {
+    switch ($_SESSION['user_type']) {
+        case 'provider':
+            header("Location: dashboard/service-provider.php");
+            exit;
+        case 'admin':
+            header("Location: dashboard/admin.php");
+            exit;
+    }
+}
 $isLoggedIn = isset($_SESSION['user_id']);
 $userName = $_SESSION['name'] ?? 'User';
 

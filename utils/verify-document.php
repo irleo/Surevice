@@ -38,7 +38,7 @@ if ($action === 'approve') {
     $stmtGetUser = sqlsrv_query($conn, $sqlGetUser, [$documentId]);
     $row = sqlsrv_fetch_array($stmtGetUser, SQLSRV_FETCH_ASSOC);
     $userId = $row['user_id'] ?? null;
-
+    
     if ($userId) {
         // Check if any pending or rejected docs remain
         $sqlCheckPending = "SELECT COUNT(*) as pending_count FROM ProviderDocuments WHERE user_id = ? AND status IN ('Pending', 'Rejected')";

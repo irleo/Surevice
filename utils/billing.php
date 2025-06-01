@@ -2,13 +2,18 @@
 session_start();
 require __DIR__ . '/config.php';  
 
+$address = ''; 
 $user_id = $_SESSION['user_id'] ?? null;
-$address = '';
 
 if ($user_id) {
-    $stmt = sqlsrv_query($conn, "SELECT address FROM Users WHERE user_id = ?", [$user_id]);
+    $sql = "
+        SELECT street, barangay, city, province, postal_code
+        FROM Addresses
+        WHERE user_id = ? AND is_default = 1
+    ";
+    $stmt = sqlsrv_query($conn, $sql, array($user_id));
     if ($stmt && $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        $address = htmlspecialchars($row['address'] ?? '');
+        $address = trim("{$row['street']}, {$row['barangay']}, {$row['city']}, {$row['province']} {$row['postal_code']}");
     }
 }
 ?>
@@ -37,19 +42,21 @@ if ($user_id) {
         <div class="mb-3">
           <label for="addressOption" class="form-label mb-0">Choose Address</label>
           <select class="form-select" id="addressOption" onchange="toggleAddressInput(this.value)">
-            <option value="new">Enter new address</option>
-            <option value="saved">Use saved address</option>
+            <option value="new" <?= empty($address) ? 'selected' : '' ?>>Enter new address</option>
+            <option value="saved" <?= !empty($address) ? 'selected' : '' ?>>Use saved address</option>
           </select>
         </div>
 
         <div class="mb-3" id="addressField">
           <label for="address" class="form-label mb-0">Complete Address</label>
-          <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your address"><?= $address ?></textarea>
+          <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your address" required>
+            <?= htmlspecialchars($address) ?>
+          </textarea>
         </div>
 
         <div class="mb-3">
           <label for="productName" class="form-label mb-0">Service Name</label>
-          <input type="text" class="form-control" id="productName" name="productName" placeholder="Chosen Service" readonly>
+          <input type="text" class="form-control" id="productName" name="productName" placeholder="Chosen Service" readonly disabled>
         </div>
 
         <div class="mb-3">
@@ -66,6 +73,7 @@ if ($user_id) {
           <label for="paymentMethod" class="form-label mb-0">Payment Method</label>
           <select class="form-select" id="paymentMethod" name="payment_method" required>
             <option value="" disabled selected>Select a method</option>
+            <option value="e-wallet">E-Wallet</option>
             <option value="credit">Credit Card</option>
             <option value="paypal">PayPal</option>
             <option value="bank">Bank Transfer</option>
@@ -75,7 +83,7 @@ if ($user_id) {
         <div class="d-flex mt-4 align-items-center justify-content-between">
           <a href="../index.php">Go back</a>
           <div class="ms-auto d-flex gap-2">
-            <button type="button" onclick="clearCart()" class="btn btn-danger btn-sm">Clear</button>
+            <!-- <button type="button" onclick="clearCart()" class="btn btn-danger btn-sm">Clear</button> -->
             <button type="submit" class="btn btn-primary btn-sm">Confirm Booking</button>
           </div>
         </div>

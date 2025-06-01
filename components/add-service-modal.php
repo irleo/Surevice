@@ -1,4 +1,4 @@
-<!-- Modal -->
+<!-- Add Service Modal -->
   <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
@@ -11,7 +11,7 @@
             <form id="addServiceForm" action="../utils/add-service.php" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="serviceTitle" class="form-label">Service Title</label>
-              <input type="text" id="serviceTitle" class="form-control" required />
+              <input type="text" id="serviceTitle" name="serviceTitle" class="form-control" required />
             </div>
             <div class="mb-3">
               <label for="serviceDescription" class="form-label">Service Description</label>
@@ -60,22 +60,26 @@
               </div>
             <div class="mb-3">
               <label for="amount" class="form-label">Amount</label>
-              <input type="number" id="amount" class="form-control" required />
+              <div class="input-group">
+                <span class="input-group-text">₱</span>
+                <input type="number" id="amount" class="form-control" name="amount" step="0.01" required />
+              </div>
             </div>
             <div class="mb-3">
               <label for="serviceImage" class="form-label">Upload Images</label>
               <input type="file" id="serviceImage" name="images[]" class="form-control" accept="image/*" multiple required />
             </div>
             <div class="mb-3">
-              <label for="primaryIndex" class="form-label">Primary Image Index </label>
+              <label for="primaryIndex" class="form-label">Image to Display</label>
               <input type="number" id="primaryIndex" name="primary_index" class="form-control" min="1" required />
             </div>
             <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px;"></div>
           </div>
-          </form>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-orange">Save</button>
-        </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-orange">Save</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

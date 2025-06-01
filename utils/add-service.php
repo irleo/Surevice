@@ -9,68 +9,58 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'provider') {
 }
 
 $provider_id = $_SESSION['user_id'];
+$title = $_POST['serviceTitle'] ?? '';
+$description = $_POST['serviceDescription'] ?? '';
+$fee = $_POST['amount'] ?? 0;
+$primary_index = $_POST['primary_index'] ?? 1;
+$categories = $_POST['serviceType'] ?? [];
 
-// Get inputs
-$title = $_POST['title'];
-$description = $_POST['description'];
-$amount = $_POST['amount'];
-$categories = $_POST['categories']; // array
-$primary_index = intval($_POST['primary_index']) - 1;
-
-
-// Find or create customer
-$sql = "SELECT user_id FROM Users WHERE CONCAT(first_name, ' ', last_name) = ?";
-$stmt = sqlsrv_query($conn, $sql, [$customer_name]);
-if ($stmt === false) die(print_r(sqlsrv_errors(), true));
-
-if ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-    $customer_id = $row['user_id'];
-} else {
-    die("Customer not found.");
+if (!$title || !$fee || empty($_FILES['images']['name']) || empty($categories)) {
+  echo "Missing required fields";
+  exit;
 }
 
-// Insert dummy service (you can adapt this to use an existing one)
-$service_sql = "
-  INSERT INTO Services (provider_id, title, description, service_fee)
-  VALUES (?, ?, ?, ?);
-  SELECT SCOPE_IDENTITY() AS service_id;
-";
-$service_stmt = sqlsrv_query($conn, $service_sql, [$provider_id, $category, '', $amount]);
-if ($service_stmt === false) die(print_r(sqlsrv_errors(), true));
-$service_id = sqlsrv_fetch_array($service_stmt, SQLSRV_FETCH_ASSOC)['service_id'];
+// Insert into Services table
+$sql = "INSERT INTO Services (provider_id, title, description, service_fee) VALUES (?, ?, ?, ?)";
+$stmt = sqlsrv_query($conn, $sql, [$provider_id, $title, $description, $fee]);
 
-// Insert Booking
-$booking_sql = "
-  INSERT INTO Bookings (service_id, customer_id, scheduled_for, status)
-  VALUES (?, ?, ?, 'pending');
-  SELECT SCOPE_IDENTITY() AS booking_id;
-";
-$booking_stmt = sqlsrv_query($conn, $booking_sql, [$service_id, $customer_id, $datetime]);
-if ($booking_stmt === false) die(print_r(sqlsrv_errors(), true));
-$booking_id = sqlsrv_fetch_array($booking_stmt, SQLSRV_FETCH_ASSOC)['booking_id'];
+if (!$stmt) {
+  echo "Failed to insert service.";
+  exit;
+}
 
-// Insert Payment
-$payment_sql = "
-  INSERT INTO Payments (booking_id, amount, fee_deducted, provider_earnings, status)
-  VALUES (?, ?, 0.00, ?, 'held');
-";
-$payment_stmt = sqlsrv_query($conn, $payment_sql, [$booking_id, $amount, $amount]);
-if ($payment_stmt === false) die(print_r(sqlsrv_errors(), true));
+// Get the new service_id
+$getId = sqlsrv_query($conn, "SELECT @@IDENTITY AS id");
+$service_id = sqlsrv_fetch_array($getId, SQLSRV_FETCH_ASSOC)['id'];
 
-// Handle uploaded images
-$upload_dir = "../uploads/services/";
-if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+// Handle image upload
+$upload_dir = '../assets/images/services/';
+$image_paths = [];
 
-foreach ($_FILES['images']['tmp_name'] as $index => $tmp_path) {
-    $filename = uniqid() . "_" . basename($_FILES['images']['name'][$index]);
-    $target_path = $upload_dir . $filename;
-    $is_primary = ($index === $primary_index) ? 1 : 0;
+for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+  $tmp_name = $_FILES['images']['tmp_name'][$i];
+  $name = basename($_FILES['images']['name'][$i]);
+  $target = $upload_dir . time() . "_" . $name;
 
-    if (move_uploaded_file($tmp_path, $target_path)) {
-        $image_sql = "INSERT INTO ServiceImages (service_id, image_path, is_primary) VALUES (?, ?, ?)";
-        $image_stmt = sqlsrv_query($conn, $image_sql, [$service_id, $filename, $is_primary]);
-        if ($image_stmt === false) die(print_r(sqlsrv_errors(), true));
-    }
+  if (move_uploaded_file($tmp_name, $target)) {
+    $relative_path = substr($target, strpos($target, 'assets/'));
+    $is_primary = ($i + 1 == (int)$primary_index) ? 1 : 0;
+    $image_paths[] = [$relative_path, $is_primary];
+  }
+}
+
+// Insert images to ServiceImages
+foreach ($image_paths as [$path, $is_primary]) {
+  sqlsrv_query($conn, "INSERT INTO ServiceImages (service_id, image_path, is_primary) VALUES (?, ?, ?)", [$service_id, $path, $is_primary]);
+}
+
+// Link categories
+foreach ($categories as $cat_name) {
+  $cat_query = sqlsrv_query($conn, "SELECT category_id FROM Categories WHERE name = ?", [$cat_name]);
+  if ($row = sqlsrv_fetch_array($cat_query, SQLSRV_FETCH_ASSOC)) {
+    $cat_id = $row['category_id'];
+    sqlsrv_query($conn, "INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES (?, ?)", [$service_id, $cat_id]);
+  }
 }
 
 echo "success";

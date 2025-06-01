@@ -316,7 +316,7 @@ $categoryCounts = json_encode(array_values($categoryData));
           <div id="servicesContent" style="display:none;">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h3 class="fw-bold m-0">Active Services</h3>
-              <button class="btn btn-orange" data-bs-toggle="modal" data-bs-target="#addServiceModal">+ Add Service</button>
+              <button class="btn btn-orange" data-bs-toggle="modal" data-bs-target="#addServiceModal" id="addServiceButton">+ Add Service</button>
               </div>
             <div class="table-responsive">
               <table class="table table-hover align-middle">
@@ -373,21 +373,57 @@ $categoryCounts = json_encode(array_values($categoryData));
                           WHERE scl.service_id = ?", [$serviceId]);
                       $categoryNames = [];
                       while ($catRow = sqlsrv_fetch_array($catStmt, SQLSRV_FETCH_ASSOC)) {
-                          $categoryNames[] = htmlspecialchars($catRow['name']);
+                          $categoryNames[] = $catRow['name'];
                       }
                       $categoryList = implode(', ', $categoryNames);
+                      $description = htmlspecialchars($row['description']);
+                      $service_fee = $row['service_fee'];
+                      $categoryArray = $categoryNames;
+
+                      // Fetch all images for the service
+                      $imageQuery = "SELECT image_path, is_primary FROM ServiceImages WHERE service_id = ?";
+                      $imageStmt = sqlsrv_query($conn, $imageQuery, [$serviceId]);
+
+                      $imagePaths = [];
+                      $primaryIndex = 1;
+                      $index = 1;
+
+                      while ($imgRow = sqlsrv_fetch_array($imageStmt, SQLSRV_FETCH_ASSOC)) {
+                          $imagePaths[] = $imgRow['image_path'];
+                          if ($imgRow['is_primary']) {
+                              $primaryIndex = $index;
+                          }
+                          $index++;
+                      }
+                      $encodedCategories = htmlspecialchars(json_encode($categoryNames), ENT_QUOTES);
+                      $fullImagePaths = array_map(fn($path) => "/Surevice/" . ltrim($path, "/"), $imagePaths);
+                      $encodedImages = htmlspecialchars(json_encode($fullImagePaths));
+                      
+                      $bookingCheck = sqlsrv_query($conn, "SELECT COUNT(*) AS count FROM Bookings WHERE service_id = ?", [$serviceId]);
+                      $count = sqlsrv_fetch_array($bookingCheck, SQLSRV_FETCH_ASSOC)['count'];
 
                       echo <<<HTML
                       <tr>
-                        <td>{$title}</td>
-                        <td>₱{$fee}</td>
-                        <td>{$stars} ({$rating})</td>
-                        <td>{$categoryList}</td>
-                        <td>
-                          <a href="edit_service.php?id={$serviceId}" class="btn btn-sm btn-warning">Edit</a>
-                          <a href="delete_service.php?id={$serviceId}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this service?')">Delete</a>
-                        </td>
-                      </tr>
+                      <td>{$title}</td>
+                      <td>₱{$fee}</td>
+                      <td>{$stars} ({$rating})</td>
+                      <td>{$categoryList}</td>
+                      <td>
+                        <button class="btn btn-sm btn-warning edit-service-btn"
+                          data-id="{$serviceId}"
+                          data-title="{$title}"
+                          data-description="{$description}"
+                          data-fee="{$service_fee}"
+                          data-categories='{$encodedCategories}'
+                          data-images='{$encodedImages}'
+                          data-primary="{$primaryIndex}"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editServiceModal">
+                          Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="confirmDelete({$serviceId})">Delete</button>
+                      </td>
+                    </tr>
           HTML;
                   }
                   ?>
@@ -444,7 +480,7 @@ $categoryCounts = json_encode(array_values($categoryData));
                           <td><?= $t['paid_at'] ? $t['paid_at']->format('M j, Y') : '-' ?></td>
                           <td><?= htmlspecialchars($t['title']) ?></td>
                           <td>₱<?= number_format($t['amount'], 2) ?></td>
-                          <td>₱<?= number_format($t['fee_deducted'], 2) ?></td>
+                          <td>₱<?= isset($t['fee_deducted']) ? number_format($t['fee_deducted'], 2) : '0.00' ?></td>
                           <td>₱<?= number_format($t['provider_earnings'], 2) ?></td>
                           <td>
                             <span class="badge bg-<?=
@@ -469,6 +505,7 @@ $categoryCounts = json_encode(array_values($categoryData));
 
   <!-- Add Service Modal -->
    <?php include '../components/add-service-modal.php'; ?>
+   <?php include '../components/edit-service-modal.php'; ?>
 
   <script>
   const earningsChartData = {
@@ -478,6 +515,7 @@ $categoryCounts = json_encode(array_values($categoryData));
 
   const labels = <?= json_encode(array_keys($categoryData)) ?>;
   const data = <?= json_encode(array_values($categoryData)) ?>;
+
   </script>
   <script src="../assets/js/service-provider-panel.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
