@@ -1,21 +1,22 @@
 -- Insert Admin
 INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified)
-VALUES ('Leo', 'Admin', 'admin@example.com', 'hashed_admin_pw', 'admin', 1);
+VALUES ('Leo', 'Admin', 'admin@gmail.com', 'hashed_admin_pw', 'admin', 1);
 
 -- Insert Customer
 INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified)
-VALUES ('Yen', 'Customer', 'yen@example.com', 'hashed_customer_pw', 'customer', 1);
+VALUES ('Yen', 'Customer', 'yen@gmail.com', 'hashed_customer_pw', 'customer', 1);
 
 -- Insert Service Provider
 INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified)
-VALUES ('Kang', 'Provider', 'kang@example.com', 'hashed_provider_pw', 'provider', 1);
+VALUES ('Kang', 'Provider', 'kang@gmail.com', 'hashed_provider_pw', 'provider', 1);
 
 INSERT INTO Categories (name) VALUES 
 ('Cleaning'), 
 ('Home'), 
 ('Urgent'), 
 ('Electrical'), 
-('Plumbing');
+('Plumbing')
+('Handyman');
 
 -- Assume (user_id = 3) is the provider
 INSERT INTO Services (provider_id, title, description, price, average_rating, is_active)
@@ -80,3 +81,48 @@ VALUES (3, 'assets/images/services/electrical1.jpg', 1),
 -- Service 4: One image
 INSERT INTO ServiceImages (service_id, image_path, is_primary)
 VALUES (4, 'assets/images/services/electrical1.jpg', 1);
+
+-- Service 5: One image
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (5, 'assets/images/services/pestcontrol1.jpg', 1);
+
+-- Service 6: Two images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (6, 'assets/images/services/housepainting1.jpg', 1),
+       (6, 'assets/images/services/housepainting2.jpg', 0);
+
+ -- Service 7: Two images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (7, 'assets/images/services/carpentry1.jpeg', 1),
+       (7, 'assets/images/services/carpentry2.jpeg', 0);      
+
+-- Service 8: Two images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (8, 'assets/images/services/appliance-repair1.jpg', 1),
+       (8, 'assets/images/services/appliance-repair2.jpg', 0);
+
+-- Service 9: One images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (9, 'assets/images/services/moving-help.jpg', 1);
+
+-- Service 10: Two images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (10, 'assets/images/services/laundry1.jpg', 1),
+       (10, 'assets/images/services/laundry2.jpg', 0);         
+
+-- just in case na need for examples sa demo
+
+/* Service 11: One images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (9, 'assets/images/services/outletinstallation.jpg', 1);
+
+    Service 12: Two images
+INSERT INTO ServiceImages (service_id, image_path, is_primary)
+VALUES (10, 'assets/images/services/guttercleaning.jpg', 1),
+       (10, 'assets/images/services/guttercleaning2.jpg', 0);  
+
+*/
+
+
+
+
