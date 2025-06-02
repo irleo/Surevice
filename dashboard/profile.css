@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
   background-color: #ecedea;
   height: 100vh;
-  overflow: hidden; /* prevents scrolling */
+  overflow: hidden; 
 }
 
 .sidebar {
@@ -13,7 +13,7 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Push content and button apart */
+  justify-content: space-between; 
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   height: 100vh;
   position: fixed;
@@ -59,13 +59,13 @@ body {
 }
 
 .main {
-  margin-left: 220px; /* accounts for fixed sidebar */
+  margin-left: 220px; 
   flex-grow: 1;
   padding: 8%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  height: 100vh; /* fixed: use 100vh instead of 3000vh */
+  height: 100vh; 
   box-sizing: border-box;
 }
 
