@@ -303,32 +303,38 @@ $categoryCounts = json_encode(array_values($categoryData));
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($charges as $row): ?>
+                    <?php if (empty($charges)): ?>
                       <tr>
-                        <td><?= $row['scheduled_for'] ? date_format($row['scheduled_for'], 'M j, Y - h:i A') : '-' ?></td>
-                        <td><?= htmlspecialchars($row['service_type']) ?></td>
-                        <td><?= htmlspecialchars($row['customer_name']) ?></td>
-                        <td style="max-width: 250px; max-height: 60px; overflow-y: auto; white-space: normal;">
-                          <?= nl2br(htmlspecialchars($row['address'])) ?>
-                        </td>
-                        <td>₱<?= number_format($row['amount'] ?? 0, 2) ?></td>
-                        <td>
-                          <?php if ($row['status'] === 'pending'): ?>
-                            <span class="badge bg-warning text-dark"><?= ucfirst($row['status']) ?></span>
-                          <?php elseif ($row['status'] === 'in_progress'): ?>
-                            <span class="badge bg-info text-dark">In Progress</span>
-                          <?php else: ?>
-                            <span class="badge"><?= ucfirst($row['status']) ?></span>
-                          <?php endif; ?>
-                        </td>
-                        <td>
-                          <?php if ($row['status'] === 'pending'): ?>
-                            <button class="btn btn-sm btn-success booking-action" data-id="<?= $row['booking_id'] ?>" data-action="confirm">Confirm</button>
-                            <button class="btn btn-sm btn-danger booking-action" data-id="<?= $row['booking_id'] ?>" data-action="decline">Decline</button>
-                          <?php endif; ?>
-                        </td>
+                        <td colspan="7" class="text-center text-muted">No bookings yet.</td>
                       </tr>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                      <?php foreach ($charges as $row): ?>
+                        <tr>
+                          <td><?= $row['scheduled_for'] ? date_format($row['scheduled_for'], 'M j, Y - h:i A') : '-' ?></td>
+                          <td><?= htmlspecialchars($row['service_type']) ?></td>
+                          <td><?= htmlspecialchars($row['customer_name']) ?></td>
+                          <td style="max-width: 250px; max-height: 60px; overflow-y: auto; white-space: normal;">
+                            <?= nl2br(htmlspecialchars($row['address'])) ?>
+                          </td>
+                          <td>₱<?= number_format($row['amount'] ?? 0, 2) ?></td>
+                          <td>
+                            <?php if ($row['status'] === 'pending'): ?>
+                              <span class="badge bg-warning text-dark"><?= ucfirst($row['status']) ?></span>
+                            <?php elseif ($row['status'] === 'in_progress'): ?>
+                              <span class="badge bg-info text-dark">In Progress</span>
+                            <?php else: ?>
+                              <span class="badge"><?= ucfirst($row['status']) ?></span>
+                            <?php endif; ?>
+                          </td>
+                          <td>
+                            <?php if ($row['status'] === 'pending'): ?>
+                              <button class="btn btn-sm btn-success booking-action" data-id="<?= $row['booking_id'] ?>" data-action="confirm">Confirm</button>
+                              <button class="btn btn-sm btn-danger booking-action" data-id="<?= $row['booking_id'] ?>" data-action="decline">Decline</button>
+                            <?php endif; ?>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
                   </tbody>
                 </table>
               </div>
@@ -392,8 +398,13 @@ $categoryCounts = json_encode(array_values($categoryData));
                       $serviceId = $row['service_id'];
                       $title = htmlspecialchars($row['title']);
                       $fee = number_format($row['service_fee'], 2);
-                      $rating = $row['average_rating'];
-                      $stars = str_repeat("★", floor($rating)) . (fmod($rating, 1) >= 0.5 ? "☆" : "");
+                      if ($row['average_rating'] === null) {
+                        $ratingDisplay = 'No reviews yet';
+                      } else {
+                        $ratingValue = floatval($row['average_rating']);
+                        $stars = str_repeat("★", floor($ratingValue)) . (fmod($ratingValue, 1) >= 0.5 ? "☆" : "");
+                        $ratingDisplay = number_format($ratingValue, 1) . " " . $stars;
+                      }
 
                       // Fetch categories
                       $catStmt = sqlsrv_query($conn, "
@@ -436,7 +447,7 @@ $categoryCounts = json_encode(array_values($categoryData));
                       <tr>
                       <td>{$title}</td>
                       <td>₱{$fee}</td>
-                      <td>{$stars} ({$rating})</td>
+                      <td>{$ratingDisplay}</td>
                       <td>{$categoryList}</td>
                       <td>
                         <button class="btn btn-sm btn-warning edit-service-btn"

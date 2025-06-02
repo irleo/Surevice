@@ -5,10 +5,11 @@ require __DIR__ . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $serviceId = $_POST['service_id'] ?? null;
-    $title = trim($_POST['title'] ?? '');
-    $description = trim($_POST['description'] ?? '');
-    $fee = floatval($_POST['service_fee'] ?? 0);
-    $categoryNames = $_POST['categories'] ?? [];
+    $title = trim($_POST['editServiceTitle'] ?? '');
+    $description = trim($_POST['editServiceDescription'] ?? '');
+    $fee = floatval($_POST['editAmount'] ?? 0);
+    $categoryNames = $_POST['serviceType'] ?? [];
+
 
     if (!$serviceId || !$title || $fee <= 0) {
         echo "Missing or invalid required fields.";
@@ -45,5 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     echo "Service updated successfully.";
+    header("Location: ../dashboard/service-provider.php");
+    
+    
 }
 ?>

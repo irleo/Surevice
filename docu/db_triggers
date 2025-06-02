@@ -84,3 +84,35 @@ BEGIN
     JOIN inserted i ON i.booking_id = b.booking_id
     WHERE i.status = 'cancelled' AND p.status = 'released';
 END;
+
+
+-- Update average rating after review insert or update
+CREATE OR ALTER TRIGGER trg_UpdateAverageRating
+ON Reviews
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Recalculate average rating per service
+    UPDATE s
+    SET s.average_rating = r.avg_rating
+    FROM Services s
+    LEFT JOIN (
+        SELECT 
+            b.service_id,
+            CAST(AVG(CAST(r.rating AS FLOAT)) AS DECIMAL(2,1)) AS avg_rating
+        FROM Reviews r
+        JOIN Bookings b ON r.booking_id = b.booking_id
+        GROUP BY b.service_id
+    ) r ON s.service_id = r.service_id
+    WHERE s.service_id IN (
+        SELECT DISTINCT b.service_id
+        FROM inserted i
+        JOIN Bookings b ON i.booking_id = b.booking_id
+        UNION
+        SELECT DISTINCT b.service_id
+        FROM deleted d
+        JOIN Bookings b ON d.booking_id = b.booking_id
+    );
+END;

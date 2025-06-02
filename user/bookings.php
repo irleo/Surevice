@@ -36,10 +36,11 @@ while ($row = sqlsrv_fetch_array($current_stmt, SQLSRV_FETCH_ASSOC)) {
 
 // Fetch past transactions
 $past_sql = "
-SELECT s.title, b.scheduled_for, b.status, p.amount
+SELECT s.title, b.scheduled_for, b.status, p.amount, r.rating, b.booking_id
 FROM Bookings b
 JOIN Services s ON s.service_id = b.service_id
 LEFT JOIN Payments p ON p.booking_id = b.booking_id
+LEFT JOIN Reviews r ON r.booking_id = b.booking_id
 WHERE b.customer_id = ? AND b.status IN ('completed', 'cancelled')
 ";
 $past_stmt = sqlsrv_query($conn, $past_sql, [$user_id]);
@@ -106,6 +107,7 @@ $address = sqlsrv_fetch_array($addr_stmt, SQLSRV_FETCH_ASSOC);
               <th>Date</th>
               <th>Status</th>
               <th>Amount</th>
+              <th>Review</th>
             </tr>
           </thead>
           <tbody id="pastTransactions">
@@ -139,7 +141,8 @@ $address = sqlsrv_fetch_array($addr_stmt, SQLSRV_FETCH_ASSOC);
 
 <!-- Modals -->
 <?php include '../components/edit-address-modal.php'; ?>
-<?php include '../components/confirm-cancel-modal.php'; ?>
+<?php include  '../components/confirm-cancel-modal.php'; ?>     
+<?php include '../components/review-modal.php'; ?>
 
 
   <script>
@@ -158,7 +161,9 @@ $address = sqlsrv_fetch_array($addr_stmt, SQLSRV_FETCH_ASSOC);
         'service' => $t['title'],
         'date' => ($t['scheduled_for'] instanceof DateTime) ? $t['scheduled_for']->format('F j, Y') : date('F j, Y', strtotime($t['scheduled_for'])),
         'status' => $t['status'],
-        'amount' => "₱" . number_format(floatval($t['amount']), 2)
+        'amount' => "₱" . number_format(floatval($t['amount']), 2),
+        'booking_id' => $t['booking_id'],
+        'rating' => $t['rating'] ? intval($t['rating']) : null,
       ];
     }, $past_transactions), JSON_HEX_TAG); ?>;
 

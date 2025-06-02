@@ -23,15 +23,29 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
     currentList.appendChild(div);
   });
+
   // Render past transactions
   pastTable.innerHTML = "";
   pastTransactions.forEach(tx => {
+    const isCompleted = tx.status === 'completed';
+    let reviewButton = '';
+
+    if (tx.rating) {
+      const stars = '★'.repeat(tx.rating) + '☆'.repeat(5 - tx.rating);
+      reviewButton = `<span class="text-warning">${stars}</span>`;
+    } else if (isCompleted) {
+      reviewButton = `<button class="btn btn-sm btn-outline-secondary leave-review-btn" 
+        data-bs-toggle="modal" data-bs-target="#reviewModal" 
+        data-booking-id="${tx.booking_id}">Leave Review</button>`;
+    }
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${tx.service}</td>
       <td>${tx.date}</td>
       <td><span class="status ${tx.status}">${tx.status.replace('_', ' ')}</span></td>
       <td>${tx.amount ?? '₱0.00'}</td>
+      <td>${reviewButton}</td>
     `;
     pastTable.appendChild(tr);
   });
@@ -77,4 +91,50 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch(err => console.error("Error:", err));
   }
+
+
+  
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const reviewModal = document.getElementById('reviewModal');
+  if (reviewModal) {
+    reviewModal.addEventListener('show.bs.modal', event => {
+      const button = event.relatedTarget;
+      const bookingId = button.getAttribute('data-booking-id');
+      reviewModal.querySelector('#bookingId').value = bookingId;
+    });
+  }
+
+  const form = document.getElementById("reviewForm");
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const data = {
+      booking_id: form.booking_id.value,
+      rating: form.rating.value,
+      comment: form.comment.value
+    };
+
+    fetch('../utils/submit-review.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Review submission failed');
+      return response.text();
+    })
+    .then(data => {
+      alert('Review submitted!');
+      const modalInstance = bootstrap.Modal.getInstance(reviewModal); 
+      modalInstance.hide();
+    })
+    .catch(err => alert(err.message));
+  });
+
+});
+
+
+
+
