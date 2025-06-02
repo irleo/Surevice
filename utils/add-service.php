@@ -8,6 +8,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'provider') {
     exit;
 }
 
+
+
 $provider_id = $_SESSION['user_id'];
 $title = $_POST['serviceTitle'] ?? '';
 $description = $_POST['serviceDescription'] ?? '';
@@ -47,6 +49,11 @@ for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
     $is_primary = ($i + 1 == (int)$primary_index) ? 1 : 0;
     $image_paths[] = [$relative_path, $is_primary];
   }
+}
+
+if ((int)$primary_index > count($_FILES['images']['name'])) {
+  echo "Primary index exceeds number of uploaded images.";
+  exit;
 }
 
 // Insert images to ServiceImages

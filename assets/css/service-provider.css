@@ -156,3 +156,20 @@ body {
     }
 
     
+#previewContainer img {
+  max-width: 100px;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#previewWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+#previewWrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+#previewWrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

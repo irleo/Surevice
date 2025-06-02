@@ -6,50 +6,7 @@
   <title>Register</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-   <style>
-    body {
-      position: relative;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f8f9fa;
-      background-image: none;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image: url('assets/images/surevice-bg.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.5;  
-      z-index: -1;
-    }
-
-
-    .card {
-      width: 100%;
-      max-width: 450px;
-      padding: 1.4rem 2rem 2rem ;
-      transform: scale(1.05); 
-      transform-origin: center center; 
-    }
-    .bi-person-plus {
-      font-size: 60px;
-      margin: 0 auto;
-    }
-    .step {
-      display: none;
-    }
-    .step.active {
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/register.css">
 </head>
 <body>
 
@@ -123,8 +80,13 @@
               <input class="form-check-input border-dark" type="radio" name="gender" id="other" value="Other" required>
               <label class="form-check-label" for="other">Other</label>
             </div>
+            <div class="mb-0 mt-2">
+              <label class="form-label mb-0">Date of Birth</label>
+              <input type="date" class="form-control" id="dob" name="dob" required>
+            </div>
           </div>
         </div>
+
         <div class="d-grid">
           <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
         </div>
@@ -147,8 +109,17 @@
         </div>
         
         <div class="mb-3">
-          <label class="form-label mb-0">Date of Birth</label>
-          <input type="date" class="form-control" id="dob" name="dob" required>
+          <label class="form-label mb-0 d-block">User Type</label>
+          <div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input border-dark" type="radio" name="userType" id="customer" value="customer" required>
+              <label class="form-check-label" for="customer">Customer</label>
+            </div>
+            <div class="form-check form-check-inline ms-5">
+              <input class="form-check-input border-dark" type="radio" name="userType" id="provider" value="provider" required>
+              <label class="form-check-label" for="provider">Service-Provider</label>
+            </div>
+          </div>
         </div>
 
         <div class="d-flex justify-content-between">

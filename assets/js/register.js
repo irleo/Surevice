@@ -30,6 +30,7 @@ function checkPasswords() {
   const gender = document.querySelector('input[name="gender"]:checked');
   const email = document.querySelector('input[name="email"]');
   const dob = document.querySelector('input[name="dob"]');
+  const userType = document.querySelector('input[name="userType"]:checked');
 
   if (
     !firstName.value.trim() ||
@@ -39,7 +40,9 @@ function checkPasswords() {
     !email.value.trim() ||
     !dob.value.trim() ||
     !password.value ||
-    !confirmPassword.value
+    !confirmPassword.value ||
+    !userType
+    
   ) {
     alert("Please complete all required fields.");
     return false;

@@ -15,8 +15,9 @@ $lastName = trim($_POST['lastName'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $gender = $_POST['gender'] ?? '';
 $dob = $_POST['dob'] ?? '';
-$userType = 'customer'; 
+$userType = $_POST['userType'] ?? ''; 
 $phone = $_POST['phone'] ?? '';
+
 
 ;
 if (!preg_match('/^[0-9]{10}$/', $phone)) {

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require __DIR__ . '/../utils/config.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -24,6 +26,25 @@ if ($stmt === false) {
 $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 if (!$user) {
     die("User not found.");
+}
+
+// *** Insert pending documents check here ***
+$hasPendingDocument = false;
+$hasRejectedDocument = false;
+
+$sqlDocStatus = "SELECT status, COUNT(*) AS count FROM ProviderDocuments WHERE user_id = ? AND status IN ('Pending', 'Rejected') GROUP BY status";
+$paramsDocStatus = [$user_id];
+$stmtDocStatus = sqlsrv_query($conn, $sqlDocStatus, $paramsDocStatus);
+
+if ($stmtDocStatus !== false) {
+    while ($row = sqlsrv_fetch_array($stmtDocStatus, SQLSRV_FETCH_ASSOC)) {
+        if ($row['status'] === 'Pending' && $row['count'] > 0) {
+            $hasPendingDocument = true;
+        }
+        if ($row['status'] === 'Rejected' && $row['count'] > 0) {
+            $hasRejectedDocument = true;
+        }
+    }
 }
 
 
@@ -59,18 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_name'])) {
     }
 }
 
-// Handle verification request
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_account'])) {
-    $verifySql = "UPDATE Users SET is_verified = 1 WHERE user_id = ?";
-    $verifyStmt = sqlsrv_query($conn, $verifySql, [$user_id]);
 
-    if ($verifyStmt) {
-        $user['is_verified'] = 1;
-        $success = "Account successfully verified!";
-    } else {
-        $errors[] = "Verification failed.";
-    }
-}
 // Handle profile update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $firstName = trim($_POST['first_name']);
@@ -99,6 +109,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $errors[] = "Failed to update profile.";
     }
 }
+
+if (isset($_SESSION['upload_success'])) {
+    echo '<div class="alert alert-success">' . $_SESSION['upload_success'] . '</div>';
+    unset($_SESSION['upload_success']);
+}
+if (isset($_SESSION['upload_errors'])) {
+    echo '<div class="alert alert-danger">';
+    foreach ($_SESSION['upload_errors'] as $err) {
+        echo "<div>$err</div>";
+    }
+    echo '</div>';
+    unset($_SESSION['upload_errors']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -160,10 +184,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             <?php endif; ?>
         </p>
         <?php if (!$user['is_verified']): ?>
-                <form method="POST" class="d-inline">
-                    <button type="submit" name="verify_account" class="btn btn-success btn-sm">Verify Now</button>
-                </form>
+            <button 
+                type="button" 
+                class="btn btn-primary btn-sm" 
+                data-bs-toggle="modal" 
+                data-bs-target="#verifyDocumentsModal"
+                <?= ($hasPendingDocument) ? 'disabled' : '' ?>>
+                Verify
+            </button>
+
+            <?php if ($hasPendingDocument): ?>
+                <span class="text-warning ms-2">(Pending Verification)</span>
+            <?php elseif ($hasRejectedDocument): ?>
+                <span class="text-danger ms-2">(Your document(s) have been rejected)</span>
             <?php endif; ?>
+        <?php endif; ?>
         </div>
     </div>
 
@@ -201,8 +236,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 </div>
 
 <!-- Edit Profile Modal -->
-<?php include '../components/edit-profile-modal.php'; ?>
-
+<?php 
+    include '../components/edit-profile-modal.php'; 
+    include '../components/submit-documents-modal.php'; 
+?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>

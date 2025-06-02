@@ -273,8 +273,8 @@ document.querySelectorAll('.edit-service-btn').forEach(button => {
     console.log('Title:', this.dataset.title);
     console.log('Description:', this.dataset.description);
     console.log('Fee:', this.dataset.fee);
-    console.log('Categories:', this.dataset.categories); // usually a JSON string
-    console.log('Images:', this.dataset.images);         // usually a JSON string
+    console.log('Categories:', this.dataset.categories); 
+    console.log('Images:', this.dataset.images);         
     console.log('Primary Image Index:', this.dataset.primary);
 
     // Optional: parse categories/images if they're JSON-encoded

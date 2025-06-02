@@ -32,22 +32,53 @@ if ($stmt === false) {
     exit;
 }
 
-if ($action === 'approve') {
-    // Check if all documents are approved for this provider, then set is_verified=1 in Users
-    $sqlGetUser = "SELECT user_id FROM ProviderDocuments WHERE document_id = ?";
-    $stmtGetUser = sqlsrv_query($conn, $sqlGetUser, [$documentId]);
-    $row = sqlsrv_fetch_array($stmtGetUser, SQLSRV_FETCH_ASSOC);
-    $userId = $row['user_id'] ?? null;
-    
-    if ($userId) {
-        // Check if any pending or rejected docs remain
-        $sqlCheckPending = "SELECT COUNT(*) as pending_count FROM ProviderDocuments WHERE user_id = ? AND status IN ('Pending', 'Rejected')";
-        $stmtCheckPending = sqlsrv_query($conn, $sqlCheckPending, [$userId]);
-        $pendingRow = sqlsrv_fetch_array($stmtCheckPending, SQLSRV_FETCH_ASSOC);
-        if ($pendingRow['pending_count'] == 0) {
-            // Mark user verified and active
+// Get user_id from the document
+$sqlGetUser = "SELECT user_id FROM ProviderDocuments WHERE document_id = ?";
+$stmtGetUser = sqlsrv_query($conn, $sqlGetUser, [$documentId]);
+$row = sqlsrv_fetch_array($stmtGetUser, SQLSRV_FETCH_ASSOC);
+$userId = $row['user_id'] ?? null;
+
+if ($userId) {
+    if ($action === 'approve') {
+        // Count pending documents
+        $sqlPending = "SELECT COUNT(*) as pending_count FROM ProviderDocuments WHERE user_id = ? AND status = 'Pending'";
+        $stmtPending = sqlsrv_query($conn, $sqlPending, [$userId]);
+        $rowPending = sqlsrv_fetch_array($stmtPending, SQLSRV_FETCH_ASSOC);
+        $hasPending = $rowPending['pending_count'] > 0;
+
+        // Count approved documents
+        $sqlApproved = "SELECT COUNT(*) as approved_count FROM ProviderDocuments WHERE user_id = ? AND status = 'Approved'";
+        $stmtApproved = sqlsrv_query($conn, $sqlApproved, [$userId]);
+        $rowApproved = sqlsrv_fetch_array($stmtApproved, SQLSRV_FETCH_ASSOC);
+        $hasApproved = $rowApproved['approved_count'] > 0;
+
+        if ($hasApproved && !$hasPending) {
+            // Mark user as verified
             $sqlVerifyUser = "UPDATE Users SET is_verified = 1, account_status = 'Active' WHERE user_id = ?";
             sqlsrv_query($conn, $sqlVerifyUser, [$userId]);
+
+            // Create wallet if doesn't exist
+            $sqlCheckWallet = "SELECT COUNT(*) AS wallet_exists FROM Wallets WHERE provider_id = ?";
+            $stmtCheckWallet = sqlsrv_query($conn, $sqlCheckWallet, [$userId]);
+            $walletRow = sqlsrv_fetch_array($stmtCheckWallet, SQLSRV_FETCH_ASSOC);
+
+            if ($walletRow['wallet_exists'] == 0) {
+                $sqlCreateWallet = "INSERT INTO Wallets (provider_id, balance) VALUES (?, 0.00)";
+                sqlsrv_query($conn, $sqlCreateWallet, [$userId]);
+            }
+        }
+    }
+
+    if ($action === 'reject') {
+        // Optional: only reset if no remaining approved docs
+        $sqlApproved = "SELECT COUNT(*) AS approved_count FROM ProviderDocuments WHERE user_id = ? AND status = 'Approved'";
+        $stmtApproved = sqlsrv_query($conn, $sqlApproved, [$userId]);
+        $rowApproved = sqlsrv_fetch_array($stmtApproved, SQLSRV_FETCH_ASSOC);
+
+        if ($rowApproved['approved_count'] == 0) {
+            // Reset verification
+            $sqlResetUser = "UPDATE Users SET is_verified = 0, account_status = 'Pending' WHERE user_id = ?";
+            sqlsrv_query($conn, $sqlResetUser, [$userId]);
         }
     }
 }

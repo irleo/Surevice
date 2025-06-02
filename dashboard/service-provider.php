@@ -8,7 +8,20 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'provider') {
     exit;
 }
 
+$stmt = sqlsrv_query($conn, "SELECT first_name, last_name, is_verified FROM Users WHERE user_id = ?", [$_SESSION['user_id']]);
+if ($stmt === false) {
+    die("SQL error: " . print_r(sqlsrv_errors(), true));
+}
+$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+if (!$row) {
+    die("No user found with user_id: " . $_SESSION['user_id']);
+}
+
+$_SESSION['is_verified'] = (bool)$row['is_verified'];
+$fullName = $row['first_name'] . ' ' . $row['last_name'];
+$userType = $_SESSION['user_type'] ?? 'provider'; 
 $provider_id = $_SESSION['user_id'];
+
 
 
 // Initialize values
@@ -209,18 +222,34 @@ $categoryCounts = json_encode(array_values($categoryData));
   <div class="container-fluid">
     <div class="row">
 
-      <!-- Sidebar -->
       <div class="col-md-2 sidebar">
         <div class="mb-5">
           <img src="../assets/images/logo-go.png" alt="Surevice Logo" style="width: 150px;" />
         </div>
-        <a href="#" id="dashboardLink" class="d-block mb-2">Dashboard</a>
-        <a href="" id="profileLink" class="d-block mb-2">Profile</a>
-        <a href="#" id="servicesLink" class="d-block mb-2">Services</a>
-        <a href="#" id="walletLink" class="d-block mb-2">Wallet</a>
-        <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Help</a>
+        <h5 class="mt-0 fw-bold"><?= htmlspecialchars($fullName) ?></h5>
+        <small class="mb-4 mt-0 fw-light fs-6"><?= htmlspecialchars(ucfirst(string: $userType)) ?></small>
+
+        <?php if ($_SESSION['is_verified']): ?>
+          <a href="#" id="dashboardLink" class="d-block mb-2">Dashboard</a>
+          <a href="" id="profileLink" class="d-block mb-2">Profile</a>
+          <a href="#" id="servicesLink" class="d-block mb-2">Services</a>
+          <a href="#" id="walletLink" class="d-block mb-2">Wallet</a>
+          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Help</a>
+        <?php else: ?>
+          <div class="alert alert-warning text-center fs-6">
+            Your account is not verified. Please complete your profile and wait for admin approval.
+          </div>
+          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Dashboard</a>
+          <a href="" id="profileLink" class="d-block mb-2">Profile</a>
+          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Services</a>
+          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Wallet</a>
+          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Help</a>
+        <?php endif; ?>
+
         <a href="../utils/logout.php" class="d-block mb-2">Logout</a>
       </div>
+
+
       
       <!-- Main Content -->
       <div class="col-md-10 p-4">
@@ -309,7 +338,7 @@ $categoryCounts = json_encode(array_values($categoryData));
 
         <!-- Profile Content -->
         <div id="profileContent" style="display:none;">
-          <p>Profile details go here.</p>
+          <?php include '../user/profile.php'; ?>
         </div>
 
         <!-- Services Content -->
@@ -331,6 +360,7 @@ $categoryCounts = json_encode(array_values($categoryData));
                 </thead>
                 <tbody>
                   <?php
+                  
                   // Query to get services with provider info
                     $sql = "
                     SELECT 
@@ -351,10 +381,10 @@ $categoryCounts = json_encode(array_values($categoryData));
                         FROM ServiceImages 
                         WHERE is_primary = 1
                     ) si ON s.service_id = si.service_id
-                    WHERE s.is_active = 1
+                    WHERE s.is_active = 1 and u.user_id = ?
                     ";
 
-                    $stmt = sqlsrv_query($conn, $sql);
+                    $stmt = sqlsrv_query($conn, $sql, [$provider_id]);
                     if ($stmt === false) {
                         die("Query failed:<br><pre>" . print_r(sqlsrv_errors(), true) . "</pre>");
                     }
@@ -504,8 +534,10 @@ $categoryCounts = json_encode(array_values($categoryData));
   </div>
 
   <!-- Add Service Modal -->
-   <?php include '../components/add-service-modal.php'; ?>
-   <?php include '../components/edit-service-modal.php'; ?>
+<?php 
+  include '../components/add-service-modal.php'; 
+  include '../components/edit-service-modal.php';                     
+?>
 
   <script>
   const earningsChartData = {
@@ -515,6 +547,7 @@ $categoryCounts = json_encode(array_values($categoryData));
 
   const labels = <?= json_encode(array_keys($categoryData)) ?>;
   const data = <?= json_encode(array_values($categoryData)) ?>;
+
 
   </script>
   <script src="../assets/js/service-provider-panel.js"></script>

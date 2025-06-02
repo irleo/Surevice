@@ -50,7 +50,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     $phone = htmlspecialchars($row['phone']);
 
     // Fetch all images
-    $imageSql = "SELECT image_path FROM ServiceImages WHERE service_id = ?";
+    $imageSql = "SELECT image_path, is_primary FROM ServiceImages WHERE service_id = ? ORDER BY is_primary DESC, image_id ASC";
     $imageStmt = sqlsrv_query($conn, $imageSql, [$serviceId]);
     $images = [];
     while ($imgRow = sqlsrv_fetch_array($imageStmt, SQLSRV_FETCH_ASSOC)) {

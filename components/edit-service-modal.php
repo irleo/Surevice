@@ -75,7 +75,9 @@
             <label for="editPrimaryIndex" class="form-label">Image to Display</label>
             <input type="number" id="editPrimaryIndex" name="primary_index" class="form-control" min="1" required />
           </div>
-          <div id="editPreviewContainer" style="display: flex; gap: 10px; margin-top: 10px; margin-bottom: 10px;"></div>
+          <div id="previewWrapper" style="overflow-x: auto; max-width: 100%; padding-bottom: 10px;">
+            <div id="previewContainer" style="display: flex; gap: 10px;"></div>
+          </div>
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-orange">Save</button>
