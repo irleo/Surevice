@@ -1,8 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
   /* Base styling */
   body {
     margin: 0;
-    display: flex;
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;  
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/surevice-bg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5; 
+    pointer-events: none;
+    z-index: -1;
   }
 
   /* Sidebar */
@@ -10,15 +30,15 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 240px;
+    width: 270px;
     height: 100vh;
     padding: 1rem;
-    background-color: #fff;
-    color: #ff8210;
+    background-color: #fafafa;
     box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
     align-items: center;
   }
 
@@ -27,64 +47,64 @@
     margin-bottom: 0.5rem; /* or even 0 */
   }
 
-  .sidebar h2 {
-    margin: 0.5rem 0; 
+  .sidebar h1 {
+    margin: 0 0 1rem 0; 
   }
 
+  .sidebar i {
+  margin-right: 8px;
+  }
 
   .logo {
     width: 120px;
     height: auto;
-    margin-bottom: 0.5rem;
   }
 
   /* Sidebar buttons */
-  .sidebar button,
-  .logout-btn {
-    width: 100%;
-    margin: 0.4rem 0;
-    padding: 0.6rem;
-    background-color: #ff8210;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  .sidebar .logout-btn {
+    font-size: 18px;
+    margin: auto 1rem 1rem 1rem; 
+    padding: 0.5rem 1rem;
+    color: #ff8210;
+    border: 1px solid #ff8210;
+    text-decoration: none;
     text-align: center;
-  }
-
-  .sidebar button:hover,
-  .logout-btn:hover {
-    background-color: #f69432;
-  }
-
-  .logout-btn {
-    background-color: #ff8210;
-    margin-top: auto;
-    margin-top: 50px;
     width: 90%;
+  }
+
+  .sidebar .logout-btn:hover {
+    background-color: #e87000;
+    color: white;
+  }
+
+  .sidebar button {
+    font-size: 18px;
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.5rem;
+    background-color: transparent;
+    color: #ff8210;
+    border: 1px solid #ff8210;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar button:hover {
+    background-color: #ff8210;
+    color: white;
   }
 
   /* Main content */
   .main {
     position: relative;
-    margin-left: 260px;
-    padding: 2rem 2rem 2rem 2.5rem;
+    margin-left: 280px;
+    padding: 2rem 2rem 2rem 3.5rem;
     flex-grow: 1;
     min-height: 100vh;
     color: #282828;
     z-index: 1;
   }
 
-  .main::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url(../images/surevice-bg.png) center/cover no-repeat;
-    opacity: 0.3;
-    z-index: -1;
-  }
 
   /* Sections */
   .section {

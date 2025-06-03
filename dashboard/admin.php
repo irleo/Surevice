@@ -64,13 +64,24 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     <div class="logo-container">
       <img src="../assets/images/logo.png" alt="Surevice" class="logo">
     </div>
-    <h2>Admin Panel</h2>
-    <button onclick="showSection('userMgmt')">User Management</button>
-    <button onclick="showSection('serviceVerify')">Service Provider Verification</button>
-    <button onclick="showSection('booking')">Booking Oversight</button>
-    <button onclick="showSection('monitoring')">Service Monitoring</button>
-    <a href="../utils/logout.php" class="logout-btn">Logout</a>
+    <h1>Admin Panel</h1>
+    <button onclick="showSection('userMgmt')">
+      <i class="bi bi-people-fill"></i> User Management
+    </button>
+    <button onclick="showSection('serviceVerify')">
+      <i class="bi bi-person-check-fill"></i> Service Provider Verification
+    </button>
+    <button onclick="showSection('booking')">
+      <i class="bi bi-calendar-check-fill"></i> Booking Oversight
+    </button>
+    <button onclick="showSection('monitoring')">
+      <i class="bi bi-graph-up-arrow"></i> Service Monitoring
+    </button>
+    <a href="../utils/logout.php" class="logout-btn">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
   </div>
+
 
   <div class="main">
     <div class="search-bar">
@@ -174,9 +185,12 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
       </div>
     </div>
   </div>
-  <script>
-  const serviceChartData = <?= json_encode($serviceData) ?>;
-  </script>>
+
+    <script>
+      const serviceChartData = <?= json_encode($serviceData) ?>;
+    </script>>
+
     <script src="../assets/js/admin.js" defer></script>
+
   </body>
 </html>

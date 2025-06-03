@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 if (isset($_SESSION['user_type'])) {
     switch ($_SESSION['user_type']) {
         case 'provider':
@@ -11,7 +17,7 @@ if (isset($_SESSION['user_type'])) {
             exit;
     }
 }
-$isLoggedIn = isset($_SESSION['user_id']);
+$isLoggedIn = true;
 $userName = $_SESSION['name'] ?? 'User';
 
 // echo '<pre>';

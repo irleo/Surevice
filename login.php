@@ -22,7 +22,6 @@ if (isset($_SESSION['user_id'])) {
       display: flex;
       justify-content: center;
       align-items: center;
-      /* Remove background-image here */
       background-image: none;
     }
 
