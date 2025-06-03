@@ -5,8 +5,11 @@
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: poppins, sans-serif;
     overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    box-sizing: border-box;
   }
   
   body::before {
@@ -20,7 +23,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.5; 
+    opacity: 0.4; 
     pointer-events: none;
     z-index: -1;
   }
@@ -44,19 +47,19 @@
 
   .logo-container {
     text-align: center;
-    margin-bottom: 0.5rem; /* or even 0 */
   }
 
   .sidebar h1 {
-    margin: 0 0 1rem 0; 
+    margin: 0 0 0.5rem 0; 
+    font-size: 2.4rem;
   }
 
   .sidebar i {
-  margin-right: 8px;
+    margin-right: 8px;
   }
 
   .logo {
-    width: 120px;
+    width: 200px;
     height: auto;
   }
 
@@ -89,7 +92,8 @@
     transition: all 0.3s ease;
   }
 
-  .sidebar button:hover {
+  .sidebar button:hover,
+  .sidebar button.active {
     background-color: #ff8210;
     color: white;
   }
@@ -105,6 +109,19 @@
     z-index: 1;
   }
 
+  h2, p {
+    color: rgb(0, 0, 0);
+    text-shadow: 6px 6px 8px rgba(255, 255, 255, 1);
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+  }
 
   /* Sections */
   .section {
@@ -166,31 +183,68 @@
   /* Table styling */
   table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 1rem;
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   thead {
-    background-color: #efae6f;
-    color: #282828;
+    background-color: #ffaf60;
+    color: #fff;
+    font-weight: 600;
   }
 
-  thead th,
-  tbody td {
-    padding: 0.75rem;
+  thead th {
+    padding: 1rem;
     text-align: left;
   }
 
-  tbody tr:nth-child(even) {
-    background-color: #f7f7f5;
+  tbody td {
+    padding: 1rem;
+    text-align: left;
+    border-top: 1px solid #f0f0f0;
   }
 
-  tbody td {
-    border-bottom: 1px solid #ddd;
+  tbody tr:nth-child(even) {
+    background-color: #fcf9f6;
   }
+
+  tbody tr:hover {
+    background-color: #fff4e6;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Pagination Styles */
+
+  .pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .pagination button {
+    background-color: #ffaf60;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .pagination button.active {
+    background-color: #e68a00;
+  }
+
+  .pagination button:hover {
+    background-color: #ffa133;
+  }
+
 
   /* Info Boxes */
   .doc-box,
@@ -202,4 +256,22 @@
     border-left: 5px solid #ff8210;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Booking Oversight */
+  .booking-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-height: calc(2 * 250px + 1rem); /* 2 rows + gap */
+    overflow-y: auto;
+    padding-right: 0.5rem; /* space for scrollbar */
+  }
+
+  .booking-box {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
   }

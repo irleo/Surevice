@@ -129,3 +129,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const rowsPerPage = 7;
+  const table = document.getElementById('userMgmt');
+  const tbody = table.querySelector('tbody');
+  const pagination = document.getElementById('pagination');
+  const rows = Array.from(tbody.rows);
+  const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+  function showPage(page) {
+    tbody.innerHTML = '';
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const pageRows = rows.slice(start, end);
+    pageRows.forEach(row => tbody.appendChild(row));
+
+    Array.from(pagination.children).forEach(btn => btn.classList.remove('active'));
+    pagination.children[page - 1].classList.add('active');
+  }
+
+  function setupPagination() {
+    pagination.innerHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.addEventListener('click', () => showPage(i));
+      pagination.appendChild(btn);
+    }
+  }
+
+  // Initialize
+  setupPagination();
+  showPage(1);

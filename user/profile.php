@@ -87,14 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $lastName = trim($_POST['last_name']);
     $phone = trim($_POST['phone']);
     $gender = $_POST['gender'];
-    $address = trim($_POST['address']);
 
     $updateProfileSql = "
         UPDATE Users
-        SET first_name = ?, last_name = ?, phone = ?, gender = ?, address = ?
+        SET first_name = ?, last_name = ?, phone = ?, gender = ?
         WHERE user_id = ?
     ";
-    $updateParams = [$firstName, $lastName, $phone, $gender, $address, $user_id];
+    $updateParams = [$firstName, $lastName, $phone, $gender, $user_id];
 
     $stmtUpdate = sqlsrv_query($conn, $updateProfileSql, $updateParams);
 
@@ -104,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $user['last_name'] = $lastName;
         $user['phone'] = $phone;
         $user['gender'] = $gender;
-        $user['address'] = $address;
     } else {
         $errors[] = "Failed to update profile.";
     }

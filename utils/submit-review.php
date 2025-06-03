@@ -39,4 +39,6 @@ if ($stmt === false) {
     exit;
 }
 
-echo "Review submitted";
+
+header("Location: ../user/profile.php?success=Review submitted successfully");
+exit;

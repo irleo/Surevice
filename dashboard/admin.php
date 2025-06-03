@@ -69,7 +69,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
       <i class="bi bi-people-fill"></i> User Management
     </button>
     <button onclick="showSection('serviceVerify')">
-      <i class="bi bi-person-check-fill"></i> Service Provider Verification
+      <i class="bi bi-person-check-fill"></i> User Verification
     </button>
     <button onclick="showSection('booking')">
       <i class="bi bi-calendar-check-fill"></i> Booking Oversight
@@ -95,7 +95,6 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
       <table>
         <thead>
           <tr>
-            <th>User ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>User Type</th>
@@ -106,7 +105,6 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <tbody>
           <?php foreach ($users as $user): ?>
           <tr>
-            <td><?= $user['user_id'] ?></td>
             <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></td>
             <td><?= htmlspecialchars($user['email']) ?></td>
             <td><?= htmlspecialchars(ucfirst($user['user_type'])) ?></td>
@@ -137,6 +135,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
           <?php endforeach; ?>
         </tbody>
       </table>
+      <div id="pagination" class="pagination"></div>
     </div>
 
     <!-- Service Provider Verification -->
@@ -145,7 +144,9 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
       <p>Review submitted documents and ID for verification.</p>
                 
       <?php if (empty($providers)): ?>
-          <p>No providers pending verification.</p>
+          <div class="doc-box">
+            <p>No providers pending verification.</p>
+          </div>
       <?php else: ?>
           <?php foreach ($providers as $provider): ?>
               <div class="doc-box">
@@ -170,6 +171,17 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
               <hr>
           <?php endforeach; ?>
       <?php endif; ?>
+    </div>
+                          
+    <!-- Booking Overview -->
+    <div class="section" id="booking">
+      <h2>Booking Oversight</h2>
+      <p>View and manage all bookings.</p>
+      
+      <div class="booking-container">
+        <?php include '../utils/booking-oversight.php'; ?>
+      </div>
+
     </div>
 
     <!-- Service Monitoring -->

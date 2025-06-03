@@ -486,8 +486,8 @@ $categoryCounts = json_encode(array_values($categoryData));
                       Last updated: <?= $lastUpdated ? $lastUpdated->format("F j, Y, g:i a") : 'N/A' ?>
                     </p>
                     <?php if ($walletBalance >= 0): ?>
-                    <form method="POST" action="request_payout.php">
-                      <button class="btn btn-orange mt-2">Request Payout</button>
+                    <form method="POST" action="../utils/request-payout.php">
+                      <button class="btn btn-orange btn-outline-warning text-black mt-2">Request Payout</button>
                     </form>
                   <?php endif ?>
                   </div>
