@@ -219,330 +219,64 @@ $categoryCounts = json_encode(array_values($categoryData));
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row">
 
-      <div class="col-md-2 sidebar">
-        <div class="mb-5">
-          <img src="../assets/images/logo-go.png" alt="Surevice Logo" style="width: 150px;" />
-        </div>
-        <h5 class="mt-0 fw-bold"><?= htmlspecialchars($fullName) ?></h5>
-        <small class="mb-4 mt-0 fw-light fs-6"><?= htmlspecialchars(ucfirst(string: $userType)) ?></small>
-
-        <?php if ($_SESSION['is_verified']): ?>
-          <a href="#" id="dashboardLink" class="d-block mb-2">Dashboard</a>
-          <a href="" id="profileLink" class="d-block mb-2">Profile</a>
-          <a href="#" id="servicesLink" class="d-block mb-2">Services</a>
-          <a href="#" id="walletLink" class="d-block mb-2">Wallet</a>
-          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Help</a>
-        <?php else: ?>
-          <div class="alert alert-warning text-center fs-6">
-            Your account is not verified. Please complete your profile and wait for admin approval.
-          </div>
-          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Dashboard</a>
-          <a href="" id="profileLink" class="d-block mb-2">Profile</a>
-          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Services</a>
-          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Wallet</a>
-          <a href="#" class="d-block mb-2 nav-link disabled text-secondary">Help</a>
-        <?php endif; ?>
-
-        <a href="../utils/logout.php" class="d-block mb-2">Logout</a>
-      </div>
-
-
-      
-      <!-- Main Content -->
-      <div class="col-md-10 p-4">
-        <h2 class="fw-bold mb-4" id="sectionTitle">Service Provider</h2>
-
-        <!-- Dashboard Content -->
-        <div id="dashboardContent">
-          <div class="row g-4 mb-4">
-            <div class="col-md-3">
-              <div class="card-style">
-                <h5>Wallet Balance</h5>
-                <h2 class="fw-bold">₱<?= number_format($walletBalance, 2) ?></h2>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-style">
-                <h5>Total Earnings</h5>
-                <h2 class="fw-bold">₱<?= number_format($totalEarnings, 2) ?></h2>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-style">
-                <h5>Monthly Income</h5>
-                <h2 class="fw-bold">₱<?= number_format($monthlyIncome, 2) ?></h2>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-style">
-                <h5>Pending Amount</h5>
-                <h2 class="fw-bold">₱<?= number_format($pendingAmount, 2) ?></h2>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <div class="table-box">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="fw-bold m-0">Service Requests</h5>
-                </div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Date & Time</th>
-                      <th>Service Type</th>
-                      <th>Customer</th>
-                      <th>Address</th>
-                      <th>Amount</th>
-                      <th>Status</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php if (empty($charges)): ?>
-                      <tr>
-                        <td colspan="7" class="text-center text-muted">No bookings yet.</td>
-                      </tr>
-                    <?php else: ?>
-                      <?php foreach ($charges as $row): ?>
-                        <tr>
-                          <td><?= $row['scheduled_for'] ? date_format($row['scheduled_for'], 'M j, Y - h:i A') : '-' ?></td>
-                          <td><?= htmlspecialchars($row['service_type']) ?></td>
-                          <td><?= htmlspecialchars($row['customer_name']) ?></td>
-                          <td style="max-width: 250px; max-height: 60px; overflow-y: auto; white-space: normal;">
-                            <?= nl2br(htmlspecialchars($row['address'])) ?>
-                          </td>
-                          <td>₱<?= number_format($row['amount'] ?? 0, 2) ?></td>
-                          <td>
-                            <?php if ($row['status'] === 'pending'): ?>
-                              <span class="badge bg-warning text-dark"><?= ucfirst($row['status']) ?></span>
-                            <?php elseif ($row['status'] === 'in_progress'): ?>
-                              <span class="badge bg-info text-dark">In Progress</span>
-                            <?php else: ?>
-                              <span class="badge"><?= ucfirst($row['status']) ?></span>
-                            <?php endif; ?>
-                          </td>
-                          <td>
-                            <?php if ($row['status'] === 'pending'): ?>
-                              <button class="btn btn-sm btn-success booking-action" data-id="<?= $row['booking_id'] ?>" data-action="confirm">Confirm</button>
-                              <button class="btn btn-sm btn-danger booking-action" data-id="<?= $row['booking_id'] ?>" data-action="decline">Decline</button>
-                            <?php endif; ?>
-                          </td>
-                        </tr>
-                      <?php endforeach; ?>
-                    <?php endif; ?>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Profile Content -->
-        <div id="profileContent" style="display:none;">
-          <?php include '../user/profile.php'; ?>
-        </div>
-
-        <!-- Services Content -->
-          <div id="servicesContent" style="display:none;">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="fw-bold m-0">Active Services</h3>
-              <button class="btn btn-orange" data-bs-toggle="modal" data-bs-target="#addServiceModal" id="addServiceButton">+ Add Service</button>
-              </div>
-            <div class="table-responsive">
-              <table class="table table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th>Title</th>
-                    <th>Fee</th>
-                    <th>Rating</th>
-                    <th>Categories</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  
-                  // Query to get services with provider info
-                    $sql = "
-                    SELECT 
-                        s.service_id,
-                        s.title,
-                        s.description,
-                        s.service_fee,
-                        s.average_rating,
-                        u.first_name + ' ' + u.last_name AS provider_name,
-                        u.email,
-                        u.user_id,
-                        u.phone,
-                        si.image_path
-                    FROM Services s
-                    JOIN Users u ON s.provider_id = u.user_id
-                    LEFT JOIN (
-                        SELECT service_id, image_path 
-                        FROM ServiceImages 
-                        WHERE is_primary = 1
-                    ) si ON s.service_id = si.service_id
-                    WHERE s.is_active = 1 and u.user_id = ?
-                    ";
-
-                    $stmt = sqlsrv_query($conn, $sql, [$provider_id]);
-                    if ($stmt === false) {
-                        die("Query failed:<br><pre>" . print_r(sqlsrv_errors(), true) . "</pre>");
-                    }
-                  while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                      $serviceId = $row['service_id'];
-                      $title = htmlspecialchars($row['title']);
-                      $fee = number_format($row['service_fee'], 2);
-                      if ($row['average_rating'] === null) {
-                        $ratingDisplay = 'No reviews yet';
-                      } else {
-                        $ratingValue = floatval($row['average_rating']);
-                        $stars = str_repeat("★", floor($ratingValue)) . (fmod($ratingValue, 1) >= 0.5 ? "☆" : "");
-                        $ratingDisplay = number_format($ratingValue, 1) . " " . $stars;
-                      }
-
-                      // Fetch categories
-                      $catStmt = sqlsrv_query($conn, "
-                          SELECT c.name 
-                          FROM ServiceCategoryLink scl 
-                          JOIN Categories c ON scl.category_id = c.category_id 
-                          WHERE scl.service_id = ?", [$serviceId]);
-                      $categoryNames = [];
-                      while ($catRow = sqlsrv_fetch_array($catStmt, SQLSRV_FETCH_ASSOC)) {
-                          $categoryNames[] = $catRow['name'];
-                      }
-                      $categoryList = implode(', ', $categoryNames);
-                      $description = htmlspecialchars($row['description']);
-                      $service_fee = $row['service_fee'];
-                      $categoryArray = $categoryNames;
-
-                      // Fetch all images for the service
-                      $imageQuery = "SELECT image_path, is_primary FROM ServiceImages WHERE service_id = ?";
-                      $imageStmt = sqlsrv_query($conn, $imageQuery, [$serviceId]);
-
-                      $imagePaths = [];
-                      $primaryIndex = 1;
-                      $index = 1;
-
-                      while ($imgRow = sqlsrv_fetch_array($imageStmt, SQLSRV_FETCH_ASSOC)) {
-                          $imagePaths[] = $imgRow['image_path'];
-                          if ($imgRow['is_primary']) {
-                              $primaryIndex = $index;
-                          }
-                          $index++;
-                      }
-                      $encodedCategories = htmlspecialchars(json_encode($categoryNames), ENT_QUOTES);
-                      $fullImagePaths = array_map(fn($path) => "/Surevice/" . ltrim($path, "/"), $imagePaths);
-                      $encodedImages = htmlspecialchars(json_encode($fullImagePaths));
-                      
-                      $bookingCheck = sqlsrv_query($conn, "SELECT COUNT(*) AS count FROM Bookings WHERE service_id = ?", [$serviceId]);
-                      $count = sqlsrv_fetch_array($bookingCheck, SQLSRV_FETCH_ASSOC)['count'];
-
-                      echo <<<HTML
-                      <tr>
-                      <td>{$title}</td>
-                      <td>₱{$fee}</td>
-                      <td>{$ratingDisplay}</td>
-                      <td>{$categoryList}</td>
-                      <td>
-                        <button class="btn btn-sm btn-warning edit-service-btn"
-                          data-id="{$serviceId}"
-                          data-title="{$title}"
-                          data-description="{$description}"
-                          data-fee="{$service_fee}"
-                          data-categories='{$encodedCategories}'
-                          data-images='{$encodedImages}'
-                          data-primary="{$primaryIndex}"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editServiceModal">
-                          Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="confirmDelete({$serviceId})">Delete</button>
-                      </td>
-                    </tr>
-          HTML;
-                  }
-                  ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-
-        <div id="walletContent" style="display:none;">
-          <!-- Wallet Balance -->
-            <div class="container">
-              <div class="row g-4">
-                <div class="col-5">
-                  <div class="card-style p-4 text-center">
-                    <h4 class="fw-bold">Wallet Balance</h4>
-                    <h2 class="text-success mt-2">₱<?= number_format($walletBalance, 2) ?></h2>
-                    <p class="text-muted">
-                      Last updated: <?= $lastUpdated ? $lastUpdated->format("F j, Y, g:i a") : 'N/A' ?>
-                    </p>
-                    <?php if ($walletBalance >= 0): ?>
-                    <form method="POST" action="../utils/request-payout.php">
-                      <button class="btn btn-orange btn-outline-warning text-black mt-2">Request Payout</button>
-                    </form>
-                  <?php endif ?>
-                  </div>
-                </div>
-                <div class="col-md-7">
-                  <div class="card-style">
-                    <canvas id="earningsChart"></canvas>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Recent Transactions -->
-              <h4 class="fw-bold mt-4">Earnings Overview</h4>
-              <div class="card-style">
-                <h5 class="fw-bold mb-2">Recent Transactions</h5>
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Date</th>
-                        <th>Service Type</th>
-                        <th>Amount</th>
-                        <th>Fee</th>
-                        <th>Net Earnings</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php foreach ($transactions as $t): ?>
-                        <tr>
-                          <td><?= $t['paid_at'] ? $t['paid_at']->format('M j, Y') : '-' ?></td>
-                          <td><?= htmlspecialchars($t['title']) ?></td>
-                          <td>₱<?= number_format($t['amount'], 2) ?></td>
-                          <td>₱<?= isset($t['fee_deducted']) ? number_format($t['fee_deducted'], 2) : '0.00' ?></td>
-                          <td>₱<?= number_format($t['provider_earnings'], 2) ?></td>
-                          <td>
-                            <span class="badge bg-<?=
-                              $t['status'] == 'released' ? 'success' :
-                              ($t['status'] == 'held' ? 'warning' : 'danger') ?>">
-                              <?= ucfirst($t['status']) ?>
-                            </span>
-                          </td>
-                        </tr>
-                      <?php endforeach ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-        </div>
-
-      </div>
-      
+    
+  <div class="sidebar">
+    <div class="mb-2 logo-container ">
+      <img src="../assets/images/logo-go.png" alt="Surevice Logo" class="logo" />
     </div>
+
+    <div class="text-left mb-3 border-bottom pb-2">
+      <h4 class="fw-bold"><?= htmlspecialchars($fullName) ?></h4>
+      <small class="fw-light fs-6"><?= htmlspecialchars(ucfirst(string: $userType)) ?></small>
+    </div>
+
+    <?php if ($_SESSION['is_verified']): ?>
+      <a href="#" id="dashboardLink" class="d-block mb-2"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="#" id="profileLink" class="d-block mb-2"><i class="bi bi-person"></i> Profile</a>
+      <a href="#" id="servicesLink" class="d-block mb-2"><i class="bi bi-tools"></i> Services</a>
+      <a href="#" id="walletLink" class="d-block mb-2"><i class="bi bi-wallet2"></i> Wallet</a>
+      <a href="#" class="d-block mb-2 nav-link disabled text-secondary"><i class="bi bi-question-circle"></i> Help</a>
+    <?php else: ?>
+      <div class="alert alert-warning text-center fs-6">
+        Your account is not verified. Please complete your profile and wait for admin approval.
+      </div>
+      <a href="#" class="d-block mb-2 nav-link disabled text-secondary"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="#" id="profileLink" class="d-block mb-2"><i class="bi bi-person"></i> Profile</a>
+      <a href="#" class="d-block mb-2 nav-link disabled text-secondary"><i class="bi bi-tools"></i> Services</a>
+      <a href="#" class="d-block mb-2 nav-link disabled text-secondary"><i class="bi bi-wallet2"></i> Wallet</a>
+      <a href="#" class="d-block mb-2 nav-link disabled text-secondary"><i class="bi bi-question-circle"></i> Help</a>
+    <?php endif; ?>
+
+    <a href="../utils/logout.php" class="d-block mb-2 logout-btn mt-auto"><i class="bi bi-box-arrow-right"></i>Logout</a>
   </div>
+
+  <!-- Main Content -->
+  <main>
+      <h2 class="fw-bold mb-4 section-title" id="sectionTitle">Service Provider</h2>
+
+      <!-- Dashboard Content -->
+      <div id="dashboardContent">
+        <?php include '../components/provider-dashboard.php'; ?>
+      </div>
+
+      <!-- Profile Content -->
+      <div id="profileContent" style="display:none;">
+        <?php include '../user/profile.php'; ?>
+      </div>
+      
+      <!-- Services Content -->
+      <div id="servicesContent" style="display:none;">
+        <?php include '../components/provider-services.php'; ?>
+      </div>
+
+      <!-- Wallet Content -->
+      <div id="walletContent" style="display:none;">
+        <?php include '../components/provider-wallet.php'; ?>
+      </div>
+    </div>
+  </main>
+      
 
   <!-- Add Service Modal -->
 <?php 

@@ -1,175 +1,300 @@
-body {
-      position: relative;
-      font-family: 'Segoe UI', sans-serif;
-      z-index: 0;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: url('../images/surevice-bg.png') no-repeat center center fixed;
-      background-size: cover;
-      opacity: 0.1; /* Adjust this value from 0 (invisible) to 1 (fully visible) */
-      z-index: -1;
-    }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins, 'Segoe UI', sans-serif;
+    overflow: hidden; 
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    box-sizing: border-box;
+  }
 
-    .sidebar {
-      background-color: #fff;
-      padding: 2rem 1rem;
-      height: 100vh;
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: url('../images/surevice-bg.png') no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.3;
+    z-index: -1;
+  }
 
-    .sidebar a {
-      display: block;
-      margin: 1rem 0;
-      color: #000;
-      text-decoration: none;
-    }
+  /* Main content area */
+  main {
+    position: absolute;
+    top: 0;
+    left: 290px; 
+    right: 0;
+    bottom: 0;
+    padding: 2rem 2.5rem;
+    overflow-y: auto;
+    height: 100vh;
+    color: #282828;
+  }
 
-    .card-style {
-      border: 2px solid orange;
-      border-radius: 20px;
-      text-align: center;
-      padding: 1rem;
-      background-color: #fff;
-    }
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 290px;
+    height: 100vh;
+    padding: 1rem;
+    background-color: #fbfbfb;
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 10;
+  }
 
-    .btn-orange {
-      background-color: orange;
-      border: none;
-      color: white;
-      font-weight: bold;
-    }
+  .logo-container {
+    text-align: center;
+  }
 
-    .chart-container {
-      width: 100%;
-      height: 300px;
-    }
+  .logo {
+    width: 180px;
+    height: auto;
+  }
 
-    .table-box {
-      border: 2px solid orange;
-      border-radius: 20px;
-      padding: 1rem;
-      background-color: #fff;
-    }
+  .sidebar h1 {
+    font-size: 2.4rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
 
-        /* Animate modal dialog slide */
-    .modal.fade .modal-dialog {
-      transform: translateY(-40px);
-      transition: transform 0.3s ease-out;
-    }
-    .modal.fade.show .modal-dialog {
-      transform: translateY(0);
-    }
+  .sidebar a {
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    color: #ff8210;
+    border: 1px solid #ff8210;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
 
-    #addServiceModal .modal-content {
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(40, 40, 40, 0.15);
-      border: none;
-      background-color: #ecedea;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+  .sidebar a:hover:not(.disabled),
+  .sidebar a.active {
+    background-color: #ff8210;
+    color: #fff;
+  }
 
-    #addServiceModal .modal-header {
-      background-color: #efae6f;
-      border-bottom: 2px solid #ff8210;
-      padding: 1.25rem 1.75rem;
-      border-top-left-radius: 14px;
-      border-top-right-radius: 14px;
-    }
-    #addServiceModal .modal-title {
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #282828;
-    }
+  .sidebar a.disabled {
+    pointer-events: none;
+    color: #aaa;
+    border-color: #ddd;
+  }
 
-    /* Close button */
-    #addServiceModal .btn-close {
-      filter: brightness(0.4);
-      transition: filter 0.2s ease;
-    }
-    #addServiceModal .btn-close:hover {
-      filter: brightness(0.8);
-    }
+  /* Card */
+  .card-style {
+    background-color: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-    #addServiceModal .modal-body {
-      padding: 1.75rem 2rem;
-    }
+  .card-style:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09);
+  }
 
-    #addServiceModal .form-label {
-      font-weight: 600;
-      color: #282828;
-      margin-bottom: 0.3rem;
-    }
+  .card-style i {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+  }
 
-    #addServiceModal .form-control,
-    #addServiceModal .form-select {
-      border-radius: 8px;
-      border: 1.5px solid #ff8210;
-      padding: 0.5rem 0.75rem;
-      font-size: 1rem;
-      font-family: inherit;
-      color: #282828;
-      background-color: #fff;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    /* #addServiceModal .form-control::placeholder {
-      color: #efae6f;
-    } */
-    #addServiceModal .form-control:focus,
-    #addServiceModal .form-select:focus {
-      border-color: #f69432;
-      box-shadow: 0 0 0 0.2rem rgba(246, 148, 50, 0.25);
-      outline: none;
-    }
+  .card-style:hover i {
+    color: #ff8210;
+  }
 
-    #addServiceModal .modal-footer {
-      padding: 1rem 1.75rem;
-      border-top: 2px solid #ff8210;
-      justify-content: flex-end;
-      background-color: #efae6f;
-      border-bottom-left-radius: 14px;
-      border-bottom-right-radius: 14px;
-    }
+  .card-style h4 {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
 
-    /* Save button */
-    #addServiceModal .btn-orange {
-      background-color: #282828;
-      border: none;
-      border-radius: 10px;
-      padding: 0.55rem 1.8rem;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #ecedea;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    #addServiceModal .btn-orange:hover {
-      background-color: #f69432;
-      color: #282828;
-    }
+  .card-style h3 {
+    font-size: 1.8rem;
+    color: #212529;
+    font-weight: 700;
+    margin: 0;
+  }
 
-    
-#previewContainer img {
-  max-width: 100px;
-  height: auto;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+  .table-box {
+    background-color: #fcfcfc;
+    border: 1px solid #ddd;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+  }
 
-#previewWrapper::-webkit-scrollbar {
-  height: 6px;
-}
-#previewWrapper::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-#previewWrapper::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+  .table-box table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .dashboard-table thead {
+    background-color: #f98d26; 
+    color: #fff;
+  }
+
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .dashboard-table tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+
+  .dashboard-table tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+
+  .section-title {
+    font-family: Poppins, 'Segoe UI', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f98d26;
+    padding-bottom: 0.5rem;
+  }
+
+  .chart-container {
+    width: 100%;
+    height: 300px;
+  }
+
+  /* Animate modal dialog slide */
+  .modal.fade .modal-dialog {
+    transform: translateY(-40px);
+    transition: transform 0.3s ease-out;
+  }
+  .modal.fade.show .modal-dialog {
+    transform: translateY(0);
+  }
+
+  #addServiceModal .modal-content {
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(40, 40, 40, 0.15);
+    border: none;
+    background-color: #ecedea;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #addServiceModal .modal-header {
+    background-color: #efae6f;
+    border-bottom: 2px solid #ff8210;
+    padding: 1.25rem 1.75rem;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+  #addServiceModal .modal-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #282828;
+  }
+
+  /* Close button */
+  #addServiceModal .btn-close {
+    filter: brightness(0.4);
+    transition: filter 0.2s ease;
+  }
+  #addServiceModal .btn-close:hover {
+    filter: brightness(0.8);
+  }
+
+  #addServiceModal .modal-body {
+    padding: 1.75rem 2rem;
+  }
+
+  #addServiceModal .form-label {
+    font-weight: 600;
+    color: #282828;
+    margin-bottom: 0.3rem;
+  }
+
+  #addServiceModal .form-control,
+  #addServiceModal .form-select {
+    border-radius: 8px;
+    border: 1.5px solid #ff8210;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #282828;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  /* #addServiceModal .form-control::placeholder {
+    color: #efae6f;
+  } */
+  #addServiceModal .form-control:focus,
+  #addServiceModal .form-select:focus {
+    border-color: #f69432;
+    box-shadow: 0 0 0 0.2rem rgba(246, 148, 50, 0.25);
+    outline: none;
+  }
+
+  #addServiceModal .modal-footer {
+    padding: 1rem 1.75rem;
+    border-top: 2px solid #ff8210;
+    justify-content: flex-end;
+    background-color: #efae6f;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+  }
+
+  /* Save button */
+  #addServiceModal .btn-orange {
+    background-color: #282828;
+    border: none;
+    border-radius: 10px;
+    padding: 0.55rem 1.8rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ecedea;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #addServiceModal .btn-orange:hover {
+    background-color: #f69432;
+    color: #282828;
+  }
+
+  
+  #previewContainer img {
+    max-width: 100px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #previewWrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+  #previewWrapper::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+  #previewWrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
