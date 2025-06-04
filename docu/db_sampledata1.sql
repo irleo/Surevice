@@ -11,12 +11,12 @@ INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_ve
 VALUES ('Kang', 'Provider', 'kang@gmail.com', 'hashed_provider_pw', 'provider', 1);
 
 INSERT INTO Categories (name) VALUES 
-('Cleaning'), 
-('Home'), 
-('Urgent'), 
-('Electrical'), 
-('Plumbing')
-('Handyman');
+('Maintenance & Repair'), 
+('Home Improvement'), 
+('Security & Smart Home'), 
+('Cleaning Services'), 
+('Outdoor & Landscaping')
+('Other Services');
 
 -- Assume (user_id = 3) is the provider
 INSERT INTO Services (provider_id, title, description, price, average_rating, is_active)
@@ -25,32 +25,22 @@ VALUES
 (3, 'Electrical Repair', 'Fix wiring and electrical fixtures.', 1799.00, 4.2, 1),
 (3, 'Pipe Leak Fix', 'Repair minor pipe leaks and drips.', 899.00, 4.8, 1);
 
--- Bodyguard Service (service_id = 4)
-INSERT INTO Services (provider_id, title, description, price, average_rating, is_active)
-VALUES 
-(3, 'Bodyguard', '12hr shift for a personal bodyguard.', 2999.00, 4.4, 1);
 
 -- Aircon Cleaning (service_id = 1)
 INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES
-(1, 1),  -- Cleaning
-(1, 2),  -- Home
-(1, 3);  -- Urgent
+(1, 1),  -- Maintenance & Repair
+(1, 4);  -- Cleaning Services
 
 -- Electrical Repair (service_id = 2)
 INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES
-(2, 2),  -- Home
-(2, 3),  -- Urgent
-(2, 4);  -- Electrical
+(2, 1),  -- Maintenance & Repair
+(2, 2);  -- Home Improvement
 
 -- Pipe Leak Fix (service_id = 3)
 INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES
-(3, 2),  -- Home
-(3, 3),  -- Urgent
-(3, 5);  -- Plumbing
+(3, 1),  -- Maintenance & Repair
+(3, 2);  -- Home Improvement
 
--- Bodyguard (service_id = 4)
-INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES
-(4, 3); -- Urgent
 
 INSERT INTO Wallets (provider_id, balance)
 VALUES (3, 0.00);
