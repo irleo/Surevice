@@ -1,3 +1,154 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+      margin: 2rem 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 0 1rem;
+    }
+
+    .row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .col-md-5, .col-md-7 {
+      flex: 0 0 auto;
+    }
+
+    .col-md-5 {
+      flex-basis: 40%;
+    }
+
+    .col-md-7 {
+      flex-basis: 58%;
+    }
+
+    @media (max-width: 768px) {
+      .col-md-5, .col-md-7 {
+        flex-basis: 100%;
+      }
+    }
+
+    .card-style {
+      position: relative;
+      background-color: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      transition: transform 0.2s ease-in-out;
+      overflow: hidden;
+    }
+
+    .card-style:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-style::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('/assets/images/surevice-bg.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.1;
+      border-radius: 1rem;
+      z-index: 0;
+    }
+
+    .card-style > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-style h4 {
+      font-weight: 700;
+      color: #282828;
+    }
+
+    .card-style h2 {
+      font-size: 2.5rem;
+      color: #ff8210;
+      margin-top: 1rem;
+    }
+
+    .card-style p {
+      font-size: 0.9rem;
+      color: #282828;
+    }
+
+    .btn-orange {
+      background-color: #efae6f !important;
+      border-color: #efae6f !important;
+      color: #282828 !important;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      border-radius: 0.375rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-style: solid;
+      border-width: 1px;
+    }
+
+    .btn-orange:hover {
+      background-color: #f69432 !important;
+      border-color: #f69432 !important;
+      color: #ecedea !important;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background-color: #efae6f;
+      font-weight: 700;
+      color: #282828;
+    }
+
+    th, td {
+      vertical-align: middle;
+      padding: 0.75rem;
+      border-bottom: 1px solid #ddd;
+      color: #282828;
+      text-align: left;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25em 0.5em;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .bg-success {
+      background-color: #ff8210;
+      color: #ecedea;
+    }
+
+    .bg-warning {
+      background-color: #f69432;
+      color: #282828;
+    }
+
+    .bg-danger {
+      background-color: #282828;
+      color: #efae6f;
+    }
+</style>
+
 <!-- Wallet Balance -->
           <div class="container">
             <div class="row g-4">
