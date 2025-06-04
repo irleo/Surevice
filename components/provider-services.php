@@ -1,3 +1,170 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+  body {
+    position: relative;
+    min-height: 100vh;
+    background-color: #ecedea;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('/assets/images/surevice-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Color variables */
+  :root {
+    --main-orange: #ff8210;
+    --dark-gray: #282828;
+    --light-orange: #efae6f;
+    --medium-orange: #f69432;
+    --light-bg: #ecedea;
+  }
+  
+
+  .d-flex.justify-content-between.align-items-center.mb-3 {
+    margin-bottom: 1.5rem;
+  }
+
+  .d-flex h3.fw-bold {
+    color: #282828;
+  }
+
+  .d-flex.justify-content-between.align-items-center.mb-3 h3.fw-bold {
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--dark-gray);
+    margin: 0;
+  }
+
+  .btn.btn-warning#addServiceButton {
+    background-color: var(--main-orange);
+    border-color: var(--main-orange);
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgb(255 130 16 / 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn.btn-warning#addServiceButton:hover,
+  .btn.btn-warning#addServiceButton:focus {
+    background-color: var(--medium-orange);
+    border-color: var(--medium-orange);
+    box-shadow: 0 6px 12px rgb(246 148 50 / 0.6);
+    color: #fff;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.05);
+    background-color: #fff;
+    padding: 1rem;
+  }
+
+  .table.table-hover.align-middle {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.75rem;
+  }
+
+  .table thead.table-light {
+    background-color: var(--light-orange);
+    color: var(--dark-gray);
+    font-weight: 600;
+    border-radius: 1rem;
+  }
+
+  .table thead.table-light th {
+    border: none;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-size: 1rem;
+    vertical-align: middle;
+  }
+
+  .table tbody tr {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .table tbody tr:hover {
+    box-shadow: 0 6px 14px rgb(255 130 16 / 0.25);
+  }
+
+  .table tbody td {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    color: var(--dark-gray);
+    font-size: 0.95rem;
+  }
+
+  .btn.btn-sm.btn-warning.edit-service-btn {
+    background-color: var(--light-orange);
+    border-color: var(--light-orange);
+    color: var(--dark-gray);
+    font-weight: 600;
+    padding: 0.25rem 0.7rem;
+    border-radius: 0.4rem;
+    margin-right: 0.4rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn.btn-sm.btn-warning.edit-service-btn:hover,
+  .btn.btn-sm.btn-warning.edit-service-btn:focus {
+    background-color: var(--medium-orange);
+    border-color: var(--medium-orange);
+    color: #fff;
+  }
+
+  .btn.btn-sm.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.25rem 0.7rem;
+    border-radius: 0.4rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn.btn-sm.btn-danger:hover,
+  .btn.btn-sm.btn-danger:focus {
+    background-color: #a62a37;
+    border-color: #a62a37;
+    color: #fff;
+  }
+
+  @media (max-width: 576px) {
+    .d-flex.justify-content-between.align-items-center.mb-3 {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .btn#addServiceButton {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
 <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="fw-bold m-0">Active Services</h3>
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addServiceModal" id="addServiceButton">+ Add Service</button>

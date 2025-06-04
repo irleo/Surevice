@@ -1,3 +1,92 @@
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .dashboard-section {
+      position: relative;
+      min-height: 100vh;
+      padding: 30px;
+      background-image: url('/assets/images/surevice-bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ecedea; 
+    }
+
+    .dashboard-section::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.52); 
+      z-index: 1;
+    }
+
+    .dashboard-section > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-style {
+      background-color: rgba(255, 250, 250, 0.97);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      color:#282828;
+    }
+
+    .card-style:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-style i {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: #ff8210;
+    }
+
+    .table-box {
+      background-color: rgba(255, 252, 252, 0.98);
+      padding: 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      color: #282828;
+    }
+
+    .dashboard-table {
+      width: 100%;
+      color: #282828;
+    }
+
+    .dashboard-table th, .dashboard-table td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(40, 40, 40, 0.21);
+    }
+
+    .dashboard-table th {
+      text-transform: uppercase;
+    }
+
+    .badge.bg-warning {
+      background-color: #ff6f00 !important; 
+      color: #fff !important;               
+    }
+
+    .badge.bg-info {
+      background-color: #282828 !important;  
+      color: #fff !important;                
+    }
+
+    .btn-sm {
+      margin-right: 5px;
+    }
+  </style>
+
 <div class="row g-4 mb-4">
   <div class="col-md-3">
     <div class="card-style">
