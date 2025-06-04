@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ${booking.status === "in_progress" 
         ? `<button class="btn btn-sm btn-success mark-complete" data-id="${booking.booking_id}">Mark Complete</button>` 
         : ""}
-        <button class="btn btn-sm btn-danger cancel-booking" data-id="${booking.booking_id}>Cancel</button>
+        <button class="btn btn-sm btn-danger cancel-booking" data-id="${booking.booking_id}">Cancel</button>
       </div>
     `;
     currentList.appendChild(div);

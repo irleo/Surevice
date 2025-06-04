@@ -1,30 +1,30 @@
 -- Insert Admin
 INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified)
-VALUES ('Leo', 'Admin', 'admin@gmail.com', 'hashed_admin_pw', 'admin', 1);
+VALUES ('Leo', 'Admin', 'admin@gmail.com', 'a', 'admin', 1);
 
 -- Insert Customer
 INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified)
 VALUES ('Yen', 'Customer', 'yen@gmail.com', 'hashed_customer_pw', 'customer', 1);
 
 -- Insert Service Provider
-INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified)
-VALUES ('Kang', 'Provider', 'kang@gmail.com', 'hashed_provider_pw', 'provider', 1);
+INSERT INTO Users (first_name, last_name, email, password_hash, user_type, is_verified, gender, account_status)
+VALUES ('Kang', 'Je Sun', 'kang@gmail.com', '213', 'provider', 1, 'Other', 'Active');
 
-INSERT INTO Categories (name) VALUES 
-('Maintenance & Repair'), 
-('Home Improvement'), 
-('Security & Smart Home'), 
-('Cleaning Services'), 
-('Outdoor & Landscaping')
-('Other Services');
+INSERT INTO Categories (name, color) VALUES 
+('Maintenance & Repair', '#4CAF50'),        -- Green
+('Home Improvement', '#2196F3'),            -- Blue
+('Security & Smart Home', '#FF9800'),       -- Orange
+('Cleaning Services', '#9C27B0'),            -- Purple
+('Outdoor & Landscaping', '#00BCD4'),       -- Cyan
+('Other Services', '#FF5722');               -- Deep Orange
 
--- Assume (user_id = 3) is the provider
-INSERT INTO Services (provider_id, title, description, price, average_rating, is_active)
+
+-- Assume (user_id = 2) is the provider
+INSERT INTO Services (provider_id, title, description, service_fee, average_rating, is_active)
 VALUES 
-(3, 'Aircon Cleaning', 'Full cleaning of air conditioning units.', 1499.00, 4.5, 1),
-(3, 'Electrical Repair', 'Fix wiring and electrical fixtures.', 1799.00, 4.2, 1),
-(3, 'Pipe Leak Fix', 'Repair minor pipe leaks and drips.', 899.00, 4.8, 1);
-
+(2, 'Aircon Cleaning', 'Full cleaning of air conditioning units.', 1499.00, NULL, 1),
+(2, 'Electrical Repair', 'Fix wiring and electrical fixtures.', 1799.00, NULL, 1),
+(2, 'Pipe Leak Fix', 'Repair minor pipe leaks and drips.', 899.00, NULL, 1);
 
 -- Aircon Cleaning (service_id = 1)
 INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES
@@ -43,7 +43,7 @@ INSERT INTO ServiceCategoryLink (service_id, category_id) VALUES
 
 
 INSERT INTO Wallets (provider_id, balance)
-VALUES (3, 0.00);
+VALUES (2, 0.00);
 
 -- Simulate a Booking first
 INSERT INTO Bookings (service_id, customer_id, scheduled_for, status)
@@ -64,9 +64,9 @@ VALUES (2, 'assets/images/services/plumbing1.jpg', 1);
 
 -- Service 3: Three images
 INSERT INTO ServiceImages (service_id, image_path, is_primary)
-VALUES (3, 'assets/images/services/electrical1.jpg', 1),
+VALUES (3, 'assets/images/services/electrical1.jpg', 0),
        (3, 'assets/images/services/electrical2.jpg', 0),
-       (3, 'assets/images/services/electrical3.jpg', 0);
+       (3, 'assets/images/services/electrical3.jpg', 1);
 
 -- Service 4: One image
 INSERT INTO ServiceImages (service_id, image_path, is_primary)

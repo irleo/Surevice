@@ -39,29 +39,23 @@
   </div>
 
   <!-- Contact Section -->
-  <div class="border-top border-2 p-1">
-    <h3 class="fs-5 fw-bold mb-3 mt-3">Contact Us</h3>
-    <ul class="list-unstyled">
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-facebook me-2"></i>Facebook
+  <div class="sidebar-footer">
+    <div class="sidebar-footer border-top border-2 p-3">
+    <h3 class="fs-6 fw-bold mb-3">Contact Us</h3>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+          <i class="bi bi-facebook me-1"></i> Facebook
         </a>
-      </li>
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-twitter me-2"></i>Twitter
+        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+          <i class="bi bi-twitter me-1"></i> Twitter
         </a>
-      </li>
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-instagram me-2"></i>Instagram
+        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+          <i class="bi bi-instagram me-1"></i> Instagram
         </a>
-      </li>
-      <li class="mb-2">
-        <a href="#" class="text-decoration-none text-dark">
-          <i class="bi bi-google me-2"></i>Gmail
+        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+          <i class="bi bi-google me-1"></i> Gmail
         </a>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 

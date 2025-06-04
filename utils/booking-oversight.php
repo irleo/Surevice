@@ -22,7 +22,11 @@ if (!$stmt) {
     die(print_r(sqlsrv_errors(), true));
 }
 
+$hasBookings = false;
+
 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    $hasBookings = true;
+
     $id = $row['booking_id'];
     $provider = htmlspecialchars($row['provider_name']);
     $customer = htmlspecialchars($row['customer_name']);
@@ -43,5 +47,9 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <button class='btn'>Cancel Booking</button>
     </div>
     ";
+}
+
+if (!$hasBookings) {
+    echo "<p class='text-muted text-center booking-box'>No bookings yet.</p>";
 }
 ?>

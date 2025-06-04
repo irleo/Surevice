@@ -56,7 +56,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a href="#" class="btn btn-primary" id="modalBookNowLink">Book Now</a>
+        <a href="utils/billing.php?service_id={$serviceId}&product={$title}&fee={$rawFee}" class="btn btn-primary" id="modalBookNowLink">Book Now</a>
       </div>
     </div>
   </div>

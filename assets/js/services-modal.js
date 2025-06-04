@@ -46,7 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const title = encodeURIComponent(button.getAttribute('data-title'));
-    const fee = button.getAttribute('data-fee');
-    document.getElementById('modalBookNowLink').href = `billing.html?product=${title}&fee=${fee}`;
+    const fee = encodeURIComponent(button.getAttribute('data-fee'));
+    const serviceId = encodeURIComponent(button.getAttribute('data-service-id'));
+    const bookNowLink = document.getElementById('modalBookNowLink');
+    if (bookNowLink) {
+      bookNowLink.href = `utils/billing.php?service_id=${serviceId}&product=${title}&fee=${fee}`;
+    }
+
   });
 });

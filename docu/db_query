@@ -9,9 +9,10 @@ CREATE USER surevice_admin FOR LOGIN surevice_admin;
 EXEC sp_addrolemember 'db_owner', 'surevice_admin';
 
 -- Login
-Customer: yen@example.com - customer123
-Provider: kang@example.com - provider123
-Admin: admin@example.com - admin123
+Admin: admin@gmail.com - admin123
+Customer: yen@gmail.com - customer123
+Provider: kang@gmail.com - provider123
+
 
 -- 1. Users Table
 CREATE TABLE Users (

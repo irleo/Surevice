@@ -6,7 +6,8 @@
                 <img src="assets/images/logo-nobg.png" id="logo" alt="logo">Surevice
             </a>
         </li>
-        <li class="me-auto"><a href="index.php" >Home</a></li>
+        <li><a href="index.php" >Home</a></li>
+        <li class="me-auto"><button id="toggleSidebarBtn" class="btn toggle-btn" aria-label="Toggle Sidebar">&#9776;</button></li>
 
         <div class="search-li"> 
             <input type="text" placeholder="Search..." name="search" class="search-input">

@@ -90,6 +90,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <p>₱{$service_fee}</p>
         <div class="view-details">
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#serviceModal" 
+                data-service-id="{$serviceId}"
                 data-images="{$dataImages}" 
                 data-title="{$title}" 
                 data-fee="{$rawFee}" 

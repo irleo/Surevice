@@ -92,7 +92,7 @@
     border-color: #ddd;
   }
 
-  /* Card */
+  /* Service Provider Dashboard */
   .card-style {
     background-color: #fdfdfd;
     border: 1px solid #e0e0e0;
@@ -184,7 +184,85 @@
     height: 300px;
   }
 
-  /* Animate modal dialog slide */
+  /* Services Dashboard */
+
+  .service-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .service-heading h3{
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #282828;
+    margin: 0;
+  }
+
+  .service-table {
+    overflow-x: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.05);
+    background-color: #fff;
+    padding: 1rem;
+  }
+
+  .services-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.75rem;
+  }
+
+  .services-table thead {
+    background-color: #efae6f;
+    color: #282828;
+    font-weight: 600;
+    border-radius: 1rem;
+  }
+
+  .services-table thead th {
+    border: none;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-size: 1rem;
+    vertical-align: middle;
+  }
+
+  .services-table tbody tr {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .services-table tbody tr:hover {
+    box-shadow: 0 6px 14px rgb(255 130 16 / 0.25);
+  }
+
+  .services-table tbody td {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    color: #282828;
+    font-size: 0.95rem;
+  }
+
+  .btn.btn-warning#addServiceButton {
+    background-color: #ff8210;
+    border-color: #ff8210;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgb(255 130 16 / 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .btn.btn-warning#addServiceButton:hover,
+  .btn.btn-warning#addServiceButton:focus {
+    background-color: #f69432;
+    border-color: #f69432;
+    box-shadow: 0 6px 12px rgb(246 148 50 / 0.6);
+    color: #fff;
+  }
+
   .modal.fade .modal-dialog {
     transform: translateY(-40px);
     transition: transform 0.3s ease-out;
@@ -213,16 +291,7 @@
     font-size: 1.3rem;
     color: #282828;
   }
-
-  /* Close button */
-  #addServiceModal .btn-close {
-    filter: brightness(0.4);
-    transition: filter 0.2s ease;
-  }
-  #addServiceModal .btn-close:hover {
-    filter: brightness(0.8);
-  }
-
+ 
   #addServiceModal .modal-body {
     padding: 1.75rem 2rem;
   }
@@ -244,9 +313,7 @@
     background-color: #fff;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  /* #addServiceModal .form-control::placeholder {
-    color: #efae6f;
-  } */
+ 
   #addServiceModal .form-control:focus,
   #addServiceModal .form-select:focus {
     border-color: #f69432;
@@ -279,7 +346,6 @@
     background-color: #f69432;
     color: #282828;
   }
-
   
   #previewContainer img {
     max-width: 100px;

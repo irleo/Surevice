@@ -90,87 +90,12 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     </div>
 
     <div id="userMgmt" class="section active">
-      <h2>User Management</h2>
-      <p>Approve or suspend user accounts.</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>Status</th>  
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($users as $user): ?>
-          <tr>
-            <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></td>
-            <td><?= htmlspecialchars($user['email']) ?></td>
-            <td><?= htmlspecialchars(ucfirst($user['user_type'])) ?></td>
-            <?php
-              $statusText = '';
-              if ($user['user_type'] === 'provider') {
-                if ($user['is_verified'] == 0) {
-                  $statusText = 'Pending Verification';
-                } else {
-                  $statusText = ucfirst($user['account_status']);
-                }
-              } else {
-                $statusText = ucfirst($user['account_status']);
-              }
-            ?>
-            <td><?= $statusText ?></td>
-            <td>
-              <?php if ($user['account_status'] === 'Pending'): ?>
-                <button class="btn approve-btn" data-id="<?= $user['user_id'] ?>">Approve</button>
-              <?php endif; ?>
-              <?php if ($user['account_status'] === 'Suspended'): ?>
-                <button class="btn reactivate-btn" data-id="<?= $user['user_id'] ?>">Reactivate</button>
-              <?php elseif ($user['account_status'] === 'Active'): ?>
-                <button class="btn suspend-btn" data-id="<?= $user['user_id'] ?>">Suspend</button>
-              <?php endif; ?>
-            </td>
-          </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-      <div id="pagination" class="pagination"></div>
+      <?php include '../components/admin-management.php'?>
     </div>
 
     <!-- Service Provider Verification -->
     <div id="serviceVerify" class="section">
-      <h2>Service Provider Verification</h2>
-      <p>Review submitted documents and ID for verification.</p>
-                
-      <?php if (empty($providers)): ?>
-          <div class="doc-box">
-            <p>No providers pending verification.</p>
-          </div>
-      <?php else: ?>
-          <?php foreach ($providers as $provider): ?>
-              <div class="doc-box">
-                  <strong>Provider:</strong> <?= htmlspecialchars($provider['name']) ?><br>
-            
-                  <?php if (count($provider['documents']) === 0): ?>
-                      <em>No submitted documents.</em><br>
-                  <?php else: ?>
-                      <ul>
-                          <?php foreach ($provider['documents'] as $doc): ?>
-                              <li>
-                                  <a href="../assets/documents/<?= htmlspecialchars($doc['filename']) ?>" target="_blank"><?= htmlspecialchars($doc['filename']) ?></a>
-                                  <div class="ms-auto">
-                                    <button class="btn approve-doc" data-doc-id="<?= $doc['document_id'] ?>">Approve</button>
-                                    <button class="btn reject-doc" data-doc-id="<?= $doc['document_id'] ?>">Reject</button>
-                                  </div>
-                              </li>
-                          <?php endforeach; ?>
-                      </ul>
-                  <?php endif; ?>
-              </div>
-              <hr>
-          <?php endforeach; ?>
-      <?php endif; ?>
+      <?php include '../components/admin-verification.php'?>
     </div>
                           
     <!-- Booking Overview -->

@@ -1,3 +1,4 @@
 
 # Ignore the 'config.php' file inside the 'utils' folder
 utils/config.php
+utils/hash-pass.php
